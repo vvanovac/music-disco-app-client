@@ -6,7 +6,7 @@
         x-large
         outlined
         rounded
-        v-show="$route.name !== 'login'"
+        v-show="show"
         @click="$router.push({ name: 'login' })"
     >
       Log Out
@@ -19,6 +19,11 @@
 <script>
 export default {
   name: 'App',
+  computed: {
+    show () {
+      return !['register', 'login'].includes(this.$route.name)
+    }
+  }
 }
 </script>
 

@@ -17,17 +17,15 @@
       ></v-text-field>
       <v-btn
           class="loginButtons"
-          color="accent"
           x-large
           outlined
           rounded
-          @click="submit"
+          @click="login"
       >
-        Submit
+        Log in
       </v-btn>
       <v-btn
           class="loginButtons"
-          color="accent"
           x-large
           outlined
           rounded
@@ -55,21 +53,33 @@ export default {
   computed: {
     usernameErrors () {
       const errors = []
-      if (!this.$v.username.$dirty) return errors
-      !this.$v.username.maxLength && errors.push('Username must be at most 16 characters long.')
-      !this.$v.username.required && errors.push('Username is required.')
+      if (!this.$v.username.$dirty) {
+        return errors
+      }
+      if (!this.$v.username.maxLength) {
+        errors.push('Username must be at most 16 characters long.')
+      }
+      if (!this.$v.username.required) {
+        errors.push('Username is required.')
+      }
       return errors
     },
     passwordErrors () {
       const errors = []
-      if (!this.$v.password.$dirty) return errors
-      !this.$v.password.minLength && errors.push('Password must be at least 8 characters long.')
-      !this.$v.password.required && errors.push('Password is required')
+      if (!this.$v.password.$dirty) {
+        return errors
+      }
+      if (!this.$v.password.minLength) {
+        errors.push('Password must be at least 8 characters long.')
+      }
+      if (!this.$v.password.required) {
+        errors.push('Password is required')
+      }
       return errors
     },
   },
   methods: {
-    submit () {
+    login () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         window.alert('Invalid form');
