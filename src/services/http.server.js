@@ -1,8 +1,8 @@
 const serverURL = 'http://localhost:3000/';
 const tokenService = {
-  get: () => localStorage.getItem('userToken'),
-  set: (token) => localStorage.setItem('userToken', token),
-  delete: () => localStorage.removeItem('userToken')
+  get: () => localStorage.getItem('accessToken'),
+  set: (token) => localStorage.setItem('accessToken', token),
+  delete: () => localStorage.removeItem('accessToken')
 }
 const common = (method, url, body) => {
   const headers = new Headers();
@@ -14,12 +14,13 @@ const common = (method, url, body) => {
     const options = {
       method,
       headers,
-      body,
+      body: JSON.stringify(body),
       redirect: 'follow'
     };
     let ok = true;
     return fetch(serverURL + url, options)
       .then((data) => {
+        console.log(data, "data")
         ok = data.ok;
         return data.json();
       })
@@ -33,7 +34,7 @@ const common = (method, url, body) => {
 
 export default {
   storeToken: tokenService.set,
-  clearToken: localStorage.delete,
+  clearToken: tokenService.delete,
   get: (url) => common('get', url),
   post: (url, body) => common('post', url, body),
   put: (url, body) => common('put', url, body),
