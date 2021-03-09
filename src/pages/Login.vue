@@ -2,22 +2,18 @@
   <form>
     <v-container>
       <v-text-field
-          v-model="username"
+          v-model="$v.username.$model"
           :error-messages="usernameErrors"
           :counter="16"
           label="Username"
           required
-          @input="$v.username.$touch()"
-          @blur="$v.username.$touch()"
       ></v-text-field>
       <v-text-field
-          v-model="password"
+          v-model="$v.password.$model"
           :error-messages="passwordErrors"
-          :type="showPassword ? 'text' : 'password'"
+          type="password"
           label="Password"
           required
-          @input="$v.password.$touch()"
-          @blur="$v.password.$touch()"
       ></v-text-field>
       <v-btn
           class="loginButtons"
@@ -49,22 +45,13 @@ import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Login',
-  mounted() {
-    this.$http.clearToken();
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
   },
   mixins: [validationMixin],
-
-  validations: {
-    username: { required, maxLength: maxLength(16) },
-    password: { required, minLength: minLength(8) },
-  },
-
-  data: () => ({
-    username: '',
-    password: '',
-    showPassword: false,
-  }),
-
   computed: {
     usernameErrors () {
       const errors = []
@@ -81,9 +68,13 @@ export default {
       return errors
     },
   },
-
   methods: {
     submit () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        window.alert('Invalid form');
+        return;
+      }
       this.$http.post('login', {username: this.username, password: this.password})
       .then((token) => this.$http.storeToken(token.accessToken))
       .then(() => this.$router.push({ name: 'home'}))
@@ -94,6 +85,13 @@ export default {
       this.username = ''
       this.password = ''
     },
+  },
+  validations: {
+    username: { required, maxLength: maxLength(16) },
+    password: { required, minLength: minLength(8) },
+  },
+  mounted() {
+    this.$http.clearToken();
   },
 }
 </script>
