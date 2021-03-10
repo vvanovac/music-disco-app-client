@@ -1,4 +1,4 @@
-const serverURL = 'http://localhost:3000/';
+const serverURL = 'http://localhost:3000';
 const tokenService = {
   get: () => localStorage.getItem('accessToken'),
   set: (token) => localStorage.setItem('accessToken', token),
@@ -20,7 +20,6 @@ const common = (method, url, body) => {
     let ok = true;
     return fetch(serverURL + url, options)
       .then((data) => {
-        console.log(data, "data")
         ok = data.ok;
         return data.json();
       })

@@ -1,58 +1,79 @@
 <template>
-  <form>
-    <v-container>
-      <v-text-field
-        v-model="$v.username.$model"
-        :error-messages="usernameErrors"
-        :counter="16"
-        label="Username"
-        required
-      />
-      <v-text-field
-        v-model="$v.password.$model"
-        :error-messages="passwordErrors"
-        :counter="8"
-        label="Password"
-        required
-      />
-      <v-text-field
-        v-model="$v.email.$model"
-        :error-messages="emailErrors"
-        label="Email"
-      />
-      <v-btn
-        class="registerButtons"
-        x-large
-        outlined
-        rounded
-        @click="register"
-      >
-        Register
-      </v-btn>
-      <v-btn
-        class="registerButtons"
-        x-large
-        outlined
-        rounded
-        @click="clear"
-      >
-        Clear
-      </v-btn>
-    </v-container>
-  </form>
+  <div>
+    <invalid-form
+      header="Registration failed."
+      text="Invalid form. Please try again."
+      v-show="invalidForm"
+    ></invalid-form>
+    <valid-form
+      header="Successfully registered."
+      text="You will be shortly redirected to login page."
+      v-show="validForm"
+    ></valid-form>
+    <form class="registrationForm">
+      <v-container>
+        <v-text-field
+          v-model="$v.username.$model"
+          :error-messages="usernameErrors"
+          :counter="16"
+          label="Username"
+          required
+        />
+        <v-text-field
+          v-model="$v.password.$model"
+          :error-messages="passwordErrors"
+          :counter="8"
+          label="Password"
+          required
+        />
+        <v-text-field
+          v-model="$v.email.$model"
+          :error-messages="emailErrors"
+          label="Email"
+          required
+        />
+        <v-btn
+          class="registerButtons"
+          x-large
+          outlined
+          rounded
+          @click="register"
+        >
+          Register
+        </v-btn>
+        <v-btn
+          class="registerButtons"
+          x-large
+          outlined
+          rounded
+          @click="clear"
+        >
+          Clear
+        </v-btn>
+      </v-container>
+    </form>
+  </div>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
+import InvalidForm from '@/components/Invalid.form'
+import ValidForm from '@/components/Valid.form'
 
 export default {
   name: 'Register',
+  components: {
+    ValidForm,
+    InvalidForm
+  },
   data() {
     return {
       username: '',
       password: '',
-      email: ''
+      email: '',
+      invalidForm: false,
+      validForm: false,
     }
   },
   mixins: [validationMixin],
@@ -61,6 +82,9 @@ export default {
       const errors =[]
       if (!this.$v.username.$dirty) {
         return errors
+      }
+      if (!this.$v.username.minLength) {
+        errors.push('Username must be at least 3 characters long.')
       }
       if (!this.$v.username.maxLength) {
         errors.push('Username must be at most 16 characters long.')
@@ -91,41 +115,68 @@ export default {
       if (!this.$v.email.email) {
         errors.push('Email must be in a valid format.')
       }
+      if(!this.$v.email.required) {
+        errors.push('Email is required.')
+      }
       return errors
     }
   },
   validations: {
-    username: { required, maxLength: maxLength(16) },
+    username: { required, minLength: minLength(3), maxLength: maxLength(16) },
     password: { required, minLength: minLength(8) },
-    email: { email }
+    email: { required, email }
   },
   methods: {
     register() {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        window.alert('Invalid form')
+        this.invalidForm = true
+        setTimeout(() => {
+          this.invalidForm = false;
+        }, 3000)
+        return
       }
-      this.$http.post('register', {username: this.username, password: this.password, email: this.email})
-      .then(() => this.$router.push({ name: 'login' }))
-      .catch(error => window.alert(error.message));
+      this.$http.post('/register', {username: this.username, password: this.password, email: this.email})
+        .then(() => {
+          this.invalidForm = false;
+          this.validForm = true;
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 3000)
+        })
+        .catch(() => {
+          this.invalidForm = true
+          setTimeout(() => {
+            this.invalidForm = false;
+          }, 3000)
+        });
     },
     clear() {
       this.$v.$reset()
       this.username = ''
       this.password = ''
       this.email = ''
+      this.invalidForm = false
+      this.validForm = false;
     }
   }
 }
 </script>
 
 <style scoped>
+.registrationForm {
+  width: 40%;
+  margin: auto;
+}
 .registerButtons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
   font-weight: bolder;
-  background-color: aquamarine;
+  background-color: #a2d2ff;
   margin: 10px 40px;
+  border: 1px solid #2c3e50;
 }
 </style>

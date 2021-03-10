@@ -1,52 +1,72 @@
 <template>
-  <form>
-    <v-container>
-      <v-text-field
+  <div>
+    <invalid-form
+        header="Login failed."
+        text="Invalid form. Please try again."
+        v-show="invalidForm"
+    ></invalid-form>
+    <valid-form
+        header="Successfully logged in."
+        text="You will be shortly redirected to home page."
+        v-show="validForm"
+    ></valid-form>
+    <form class="loginForm">
+      <v-container>
+        <v-text-field
           v-model="$v.username.$model"
           :error-messages="usernameErrors"
           :counter="16"
           label="Username"
           required
-      ></v-text-field>
-      <v-text-field
+        ></v-text-field>
+        <v-text-field
           v-model="$v.password.$model"
           :error-messages="passwordErrors"
           type="password"
           label="Password"
           required
-      ></v-text-field>
-      <v-btn
+        ></v-text-field>
+        <v-btn
           class="loginButtons"
           x-large
           outlined
           rounded
           @click="login"
-      >
-        Log in
-      </v-btn>
-      <v-btn
+        >
+          Log in
+        </v-btn>
+        <v-btn
           class="loginButtons"
           x-large
           outlined
           rounded
           @click="clear"
-      >
-        Clear
-      </v-btn>
-    </v-container>
-  </form>
+        >
+          Clear
+        </v-btn>
+      </v-container>
+    </form>
+  </div>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import InvalidForm from '@/components/Invalid.form';
+import ValidForm from '@/components/Valid.form'
 
 export default {
   name: 'Login',
+  components: {
+    InvalidForm,
+    ValidForm
+  },
   data() {
     return {
       username: '',
       password: '',
+      invalidForm: false,
+      validForm: false,
     }
   },
   mixins: [validationMixin],
@@ -79,21 +99,40 @@ export default {
     },
   },
   methods: {
-    login () {
+    login: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        window.alert('Invalid form');
-        return;
+        this.invalidForm = true
+        setTimeout(() => {
+          this.invalidForm = false;
+        }, 3000)
+        return
       }
-      this.$http.post('login', {username: this.username, password: this.password})
-      .then((token) => this.$http.storeToken(token.accessToken))
-      .then(() => this.$router.push({ name: 'home'}))
-      .catch(error => window.alert(error.message));
+      this.$http.post('/login', {username: this.username, password: this.password})
+        .then((token) => this.$http.storeToken(token.accessToken))
+        .then(() => {
+          this.invalidForm = false;
+          this.validForm = true;
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.$router.push({name: 'home'})
+          }, 3000)
+        })
+        .catch(() => {
+          this.invalidForm = true
+          setTimeout(() => {
+            this.invalidForm = false;
+          }, 3000)
+        });
     },
     clear () {
       this.$v.$reset()
       this.username = ''
       this.password = ''
+      this.invalidForm = false
+      this.validForm = false
+
     },
   },
   validations: {
@@ -107,12 +146,17 @@ export default {
 </script>
 
 <style scoped>
+.loginForm {
+  width: 40%;
+  margin: auto;
+}
 .loginButtons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
   font-weight: bolder;
-  background-color: aquamarine;
+  background-color: #a2d2ff;
   margin: 10px 40px;
+  border: 1px solid #2c3e50;
 }
 </style>
