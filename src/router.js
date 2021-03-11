@@ -3,7 +3,7 @@ import Login from "@/pages/Login";
 import Home from '@/pages/Home';
 import Register from "@/pages/Register";
 
-const router = new VueRouter({mode: 'history', routes: [{
+const router = new VueRouter({mode: 'hash', routes: [{
     name: 'login',
     component: Login,
     path: '/login'
@@ -11,7 +11,8 @@ const router = new VueRouter({mode: 'history', routes: [{
   {
     name: 'home',
     component: Home,
-    path: 'home'
+    path: 'home',
+    alias: ['/']
   },
   {
     name: 'register',

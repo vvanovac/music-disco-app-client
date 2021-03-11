@@ -1,4 +1,4 @@
-const serverURL = 'http://localhost:3000';
+const serverURL = process.env.VUE_APP_SERVER_URL || 'http://localhost:3000';
 const tokenService = {
   get: () => localStorage.getItem('accessToken'),
   set: (token) => localStorage.setItem('accessToken', token),
