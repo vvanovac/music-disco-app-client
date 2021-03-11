@@ -16,7 +16,7 @@
       :header="promptData.header"
       :text="promptData.text"
       :validity="promptData.validity"
-      v-show="showFormPrompt"
+      v-show="promptData.showPrompt"
     ></form-message>
     <router-view @message-prompt="showPrompt"></router-view>
   </div>
@@ -33,26 +33,23 @@ export default {
   data() {
     return {
       promptData: {
-        header: 'Incomplete form.',
-        text: 'Please fill out the form above.',
-        validity: 'incomplete',
-        showMessage: false,
+        header: '',
+        text: '',
+        validity: '',
+        showPrompt: false,
       },
     }
   },
   computed: {
     showLogoutButton () {
       return !['register', 'login'].includes(this.$route.name)
-    },
-    showFormPrompt () {
-      return ['register', 'login'].includes(this.$route.name)
     }
   },
   methods: {
     showPrompt (messageData) {
-      this.promptData = { ...messageData, showMessage: true }
+      this.promptData = { ...messageData, showPrompt: true }
       setTimeout(() => {
-        this.promptData.showMessage = false
+        this.promptData.showPrompt = false
       }, 3000)
     }
   }

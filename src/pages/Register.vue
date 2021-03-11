@@ -122,19 +122,11 @@ export default {
         .then(() => {
           this.$emit('message-prompt', {
             header: 'Successfully registered.',
-            text: 'You will be shortly redirected to login page.',
             validity: 'success',
           })
         })
         .then(() => {
-          setTimeout(() => {
-            this.$router.push({name: 'login'})
-            this.$emit('message-prompt', {
-              header: 'Incomplete form.',
-              text: 'Please fill out the form above.',
-              validity: 'incomplete'
-            })
-          }, 3000)
+          this.$router.push({name: 'login'})
         })
         .catch((error) => {
           this.$emit('message-prompt', {
@@ -150,9 +142,8 @@ export default {
       this.password = ''
       this.email = ''
       this.$emit('message-prompt', {
-        header: 'Incomplete form.',
-        text: 'Please fill out the form above.',
-        validity: 'incomplete'
+        header: 'All fields cleared.',
+        validity: 'info'
       })
     }
   }

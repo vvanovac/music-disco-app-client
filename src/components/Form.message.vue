@@ -1,10 +1,7 @@
 <template>
   <div
       class="messageForm"
-      :class="{
-        validForm: validity === 'success',
-        invalidForm: validity === 'error',
-        incompleteForm: validity === 'incomplete' }"
+      :class="formClass"
   >
     <h1>{{header}}</h1>
     <p>{{text}}</p>
@@ -27,6 +24,20 @@ export default {
       type: String,
       required: true
     }
+  },
+  computed: {
+    formClass() {
+      switch (this.validity) {
+        case 'error':
+          return 'invalid-form'
+        case 'success':
+          return 'valid-form'
+        case 'info':
+          return 'info-form'
+        default:
+          return ''
+      }
+    }
   }
 }
 </script>
@@ -41,20 +52,23 @@ export default {
   color: #2c3e50;
   font-weight: bold;
   border-radius: 15px;
+  z-index: 1;
+  background-color: #ccccb3;
+  border-left: 20px solid #999966;
 }
 
-.validForm {
+.valid-form {
   background-color: #80ff80;
-  border-left: 20px solid green;
+  border-left-color: green;
 }
 
-.invalidForm {
+.invalid-form {
   background-color: #ff8080;
-  border-left: 20px solid red;
+  border-left-color: red;
 }
 
-.incompleteForm {
-  background-color: #ffd280;
-  border-left: 20px solid orange;
+.info-form {
+  background-color:  #80dfff;
+  border-left-color: #33ccff;
 }
 </style>

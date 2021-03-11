@@ -11,6 +11,7 @@
       <v-text-field
           v-model="$v.password.$model"
           :error-messages="passwordErrors"
+          :counter="8"
           type="password"
           label="Password"
           required
@@ -94,19 +95,11 @@ export default {
         .then(() => {
           this.$emit('message-prompt', {
             header: 'Successfully logged in.',
-            text: 'You will be shortly redirected to home page.',
             validity: 'success',
           })
         })
         .then(() => {
-          setTimeout(() => {
-            this.$router.push({ name: 'home' })
-            this.$emit('message-prompt', {
-              header: 'Incomplete form.',
-              text: 'Please fill out the form above.',
-              validity: 'incomplete'
-            })
-          }, 3000)
+          this.$router.push({ name: 'home' })
         })
         .catch((error) => {
           this.$emit('message-prompt', {
@@ -121,9 +114,8 @@ export default {
       this.username = ''
       this.password = ''
       this.$emit('message-prompt', {
-        header: 'Incomplete form.',
-        text: 'Please fill out the form above.',
-        validity: 'incomplete'
+        header: 'All fields cleared.',
+        validity: 'info'
       })
     },
   },
