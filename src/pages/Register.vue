@@ -1,79 +1,60 @@
 <template>
-  <div>
-    <invalid-form
-      header="Registration failed."
-      text="Invalid form. Please try again."
-      v-show="invalidForm"
-    ></invalid-form>
-    <valid-form
-      header="Successfully registered."
-      text="You will be shortly redirected to login page."
-      v-show="validForm"
-    ></valid-form>
-    <form class="registrationForm">
-      <v-container>
-        <v-text-field
+  <form class="registrationForm">
+    <v-container>
+      <v-text-field
           v-model="$v.username.$model"
           :error-messages="usernameErrors"
           :counter="16"
           label="Username"
           required
-        />
-        <v-text-field
+      />
+      <v-text-field
           v-model="$v.password.$model"
           :error-messages="passwordErrors"
           :counter="8"
+          type="password"
           label="Password"
           required
-        />
-        <v-text-field
+      />
+      <v-text-field
           v-model="$v.email.$model"
           :error-messages="emailErrors"
           label="Email"
           required
-        />
-        <v-btn
+      />
+      <v-btn
           class="registerButtons"
           x-large
           outlined
           rounded
           @click="register"
-        >
-          Register
-        </v-btn>
-        <v-btn
+      >
+        Register
+      </v-btn>
+      <v-btn
           class="registerButtons"
           x-large
           outlined
           rounded
           @click="clear"
-        >
-          Clear
-        </v-btn>
-      </v-container>
-    </form>
-  </div>
+      >
+        Clear
+      </v-btn>
+    </v-container>
+  </form>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
-import InvalidForm from '@/components/Invalid.form'
-import ValidForm from '@/components/Valid.form'
 
 export default {
   name: 'Register',
-  components: {
-    ValidForm,
-    InvalidForm
-  },
   data() {
     return {
       username: '',
       password: '',
       email: '',
-      invalidForm: false,
-      validForm: false,
     }
   },
   mixins: [validationMixin],
@@ -130,27 +111,37 @@ export default {
     register() {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.invalidForm = true
-        setTimeout(() => {
-          this.invalidForm = false;
-        }, 3000)
+        this.$emit('message-prompt', {
+          header: 'Registration failed.',
+          text: 'Invalid form. Please try again.',
+          validity: 'error',
+        })
         return
       }
       this.$http.post('/register', {username: this.username, password: this.password, email: this.email})
         .then(() => {
-          this.invalidForm = false;
-          this.validForm = true;
+          this.$emit('message-prompt', {
+            header: 'Successfully registered.',
+            text: 'You will be shortly redirected to login page.',
+            validity: 'success',
+          })
         })
         .then(() => {
           setTimeout(() => {
             this.$router.push({name: 'login'})
+            this.$emit('message-prompt', {
+              header: 'Incomplete form.',
+              text: 'Please fill out the form above.',
+              validity: 'incomplete'
+            })
           }, 3000)
         })
-        .catch(() => {
-          this.invalidForm = true
-          setTimeout(() => {
-            this.invalidForm = false;
-          }, 3000)
+        .catch((error) => {
+          this.$emit('message-prompt', {
+            header: 'Registration failed.',
+            text: error.message,
+            validity: 'error',
+          })
         });
     },
     clear() {
@@ -158,8 +149,11 @@ export default {
       this.username = ''
       this.password = ''
       this.email = ''
-      this.invalidForm = false
-      this.validForm = false;
+      this.$emit('message-prompt', {
+        header: 'Incomplete form.',
+        text: 'Please fill out the form above.',
+        validity: 'incomplete'
+      })
     }
   }
 }

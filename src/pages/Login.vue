@@ -1,72 +1,52 @@
 <template>
-  <div>
-    <invalid-form
-        header="Login failed."
-        text="Invalid form. Please try again."
-        v-show="invalidForm"
-    ></invalid-form>
-    <valid-form
-        header="Successfully logged in."
-        text="You will be shortly redirected to home page."
-        v-show="validForm"
-    ></valid-form>
-    <form class="loginForm">
-      <v-container>
-        <v-text-field
+  <form class="loginForm">
+    <v-container>
+      <v-text-field
           v-model="$v.username.$model"
           :error-messages="usernameErrors"
           :counter="16"
           label="Username"
           required
-        ></v-text-field>
-        <v-text-field
+      ></v-text-field>
+      <v-text-field
           v-model="$v.password.$model"
           :error-messages="passwordErrors"
           type="password"
           label="Password"
           required
-        ></v-text-field>
-        <v-btn
+      ></v-text-field>
+      <v-btn
           class="loginButtons"
           x-large
           outlined
           rounded
           @click="login"
-        >
-          Log in
-        </v-btn>
-        <v-btn
+      >
+        Log in
+      </v-btn>
+      <v-btn
           class="loginButtons"
           x-large
           outlined
           rounded
           @click="clear"
-        >
-          Clear
-        </v-btn>
-      </v-container>
-    </form>
-  </div>
+      >
+        Clear
+      </v-btn>
+    </v-container>
+  </form>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
-import InvalidForm from '@/components/Invalid.form';
-import ValidForm from '@/components/Valid.form'
 
 export default {
   name: 'Login',
-  components: {
-    InvalidForm,
-    ValidForm
-  },
   data() {
     return {
       username: '',
       password: '',
-      invalidForm: false,
-      validForm: false,
     }
   },
   mixins: [validationMixin],
@@ -99,40 +79,52 @@ export default {
     },
   },
   methods: {
-    login: function () {
+    login () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.invalidForm = true
-        setTimeout(() => {
-          this.invalidForm = false;
-        }, 3000)
+        this.$emit('message-prompt', {
+          header: 'Login failed.',
+          text: 'Invalid form. Please try again.',
+          validity: 'error',
+        })
         return
       }
       this.$http.post('/login', {username: this.username, password: this.password})
         .then((token) => this.$http.storeToken(token.accessToken))
         .then(() => {
-          this.invalidForm = false;
-          this.validForm = true;
+          this.$emit('message-prompt', {
+            header: 'Successfully logged in.',
+            text: 'You will be shortly redirected to home page.',
+            validity: 'success',
+          })
         })
         .then(() => {
           setTimeout(() => {
-            this.$router.push({name: 'home'})
+            this.$router.push({ name: 'home' })
+            this.$emit('message-prompt', {
+              header: 'Incomplete form.',
+              text: 'Please fill out the form above.',
+              validity: 'incomplete'
+            })
           }, 3000)
         })
-        .catch(() => {
-          this.invalidForm = true
-          setTimeout(() => {
-            this.invalidForm = false;
-          }, 3000)
+        .catch((error) => {
+          this.$emit('message-prompt', {
+            header: 'Login failed.',
+            text: error.message,
+            validity: 'error',
+          })
         });
     },
     clear () {
       this.$v.$reset()
       this.username = ''
       this.password = ''
-      this.invalidForm = false
-      this.validForm = false
-
+      this.$emit('message-prompt', {
+        header: 'Incomplete form.',
+        text: 'Please fill out the form above.',
+        validity: 'incomplete'
+      })
     },
   },
   validations: {
