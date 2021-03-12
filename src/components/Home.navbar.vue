@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .navigation {
-  background-color: #ccd5ae;
+  background-color: whitesmoke;
 }
 ul {
   list-style-type: none;
