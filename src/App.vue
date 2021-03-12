@@ -2,20 +2,9 @@
   <div class="app-container">
     <sidebar
         class="app-sidebar"
-        v-show="isHomePage"
+        v-show="notRegisterOrLogin"
     />
     <div class="app-main" >
-      <v-btn
-          id="logoutBtn"
-          class="mr-4"
-          x-large
-          outlined
-          rounded
-          @click="$router.push({ name: 'login' }) && $http.clearToken();"
-          v-show="isHomePage"
-      >
-        Log Out
-      </v-btn>
       <router-view @message-prompt="showPrompt"></router-view>
     </div>
     <form-message
@@ -48,7 +37,7 @@ export default {
     }
   },
   computed: {
-    isHomePage () {
+    notRegisterOrLogin () {
       return !['register', 'login'].includes(this.$route.name)
     },
   },
@@ -77,6 +66,8 @@ body {
   text-align: center;
   color: #2c3e50;
   height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .app-sidebar {
@@ -87,12 +78,5 @@ body {
   width: 100%;
   background-color: cadetblue;
   justify-content: flex-end;
-}
-#logoutBtn {
-  float: right;
-  margin-left: 95%;
-  color: #2c3e50;
-  font-weight: bold;
-  background-color: #ff8080;
 }
 </style>
