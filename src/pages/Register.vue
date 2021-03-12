@@ -1,6 +1,15 @@
 <template>
   <div>
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
+    <v-btn
+        class="loginButton"
+        x-large
+        outlined
+        rounded
+        @click="$router.push({name: 'login'})"
+    >
+      Log In
+    </v-btn>
     <form class="registrationForm">
       <v-container>
         <v-text-field
@@ -158,7 +167,7 @@ export default {
   width: 40%;
   margin: 2% auto auto;
 }
-.registerButtons {
+.registerButtons, .loginButton {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
@@ -166,5 +175,9 @@ export default {
   background-color: #a2d2ff;
   margin: 10px 40px;
   border: 1px solid #2c3e50;
+}
+
+.loginButton {
+  float: right;
 }
 </style>

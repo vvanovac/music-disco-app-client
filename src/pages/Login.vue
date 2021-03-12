@@ -1,6 +1,15 @@
 <template>
   <div>
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
+    <v-btn
+        class="registerButton"
+        x-large
+        outlined
+        rounded
+        @click="$router.push({name: 'register'})"
+    >
+      Register
+    </v-btn>
     <form class="loginForm">
       <v-container>
         <v-text-field
@@ -77,7 +86,7 @@ export default {
         errors.push('Password must be at least 8 characters long.')
       }
       if (!this.$v.password.required) {
-        errors.push('Password is required')
+        errors.push('Password is required.')
       }
       return errors
     },
@@ -137,7 +146,7 @@ export default {
   width: 40%;
   margin: 2% auto auto;
 }
-.loginButtons {
+.loginButtons, .registerButton {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
@@ -145,5 +154,9 @@ export default {
   background-color: #a2d2ff;
   margin: 10px 40px;
   border: 1px solid #2c3e50;
+}
+
+.registerButton {
+  float: right;
 }
 </style>
