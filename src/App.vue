@@ -1,34 +1,41 @@
 <template>
-  <div id="app">
-    <v-btn
-        id="logoutBtn"
-        class="mr-4"
-        x-large
-        outlined
-        rounded
-        v-show="showLogoutButton"
-        @click="$router.push({ name: 'login' })"
-    >
-      Log Out
-    </v-btn>
-    <img alt="Music Disco App logo" src="./assets/music-logo.png">
+  <div class="app-container">
+    <sidebar
+        class="app-sidebar"
+        v-show="isHomePage"
+    />
+    <div class="app-main" >
+      <v-btn
+          id="logoutBtn"
+          class="mr-4"
+          x-large
+          outlined
+          rounded
+          @click="$router.push({ name: 'login' }) && $http.clearToken();"
+          v-show="isHomePage"
+      >
+        Log Out
+      </v-btn>
+      <router-view @message-prompt="showPrompt"></router-view>
+    </div>
     <form-message
-      :header="promptData.header"
-      :text="promptData.text"
-      :validity="promptData.validity"
-      v-show="promptData.showPrompt"
+        :header="promptData.header"
+        :text="promptData.text"
+        :validity="promptData.validity"
+        v-show="promptData.showPrompt"
     ></form-message>
-    <router-view @message-prompt="showPrompt"></router-view>
   </div>
 </template>
 
 <script>
 import FormMessage from '@/components/Form.message'
+import Sidebar from "@/components/Sidebar";
 
 export default {
   name: 'App',
   components: {
-    FormMessage
+    FormMessage,
+    Sidebar
   },
   data() {
     return {
@@ -41,9 +48,9 @@ export default {
     }
   },
   computed: {
-    showLogoutButton () {
+    isHomePage () {
       return !['register', 'login'].includes(this.$route.name)
-    }
+    },
   },
   methods: {
     showPrompt (messageData) {
@@ -60,20 +67,32 @@ export default {
 body {
   background-color: #e9edc9;
 }
-#app {
+.app-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 100vh;
+}
+
+.app-sidebar {
+  width: 20%;
+}
+
+.app-main {
+  width: 100%;
+  background-color: cadetblue;
+  justify-content: flex-end;
 }
 #logoutBtn {
   float: right;
+  margin-left: 95%;
   color: #2c3e50;
-  font-size: 2em;
   font-weight: bold;
   background-color: #ff8080;
-  margin: 10px 40px;
 }
 </style>

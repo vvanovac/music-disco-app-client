@@ -1,47 +1,50 @@
 <template>
-  <form class="registrationForm">
-    <v-container>
-      <v-text-field
-          v-model="$v.username.$model"
-          :error-messages="usernameErrors"
-          :counter="16"
-          label="Username"
-          required
-      />
-      <v-text-field
-          v-model="$v.password.$model"
-          :error-messages="passwordErrors"
-          :counter="8"
-          type="password"
-          label="Password"
-          required
-      />
-      <v-text-field
-          v-model="$v.email.$model"
-          :error-messages="emailErrors"
-          label="Email"
-          required
-      />
-      <v-btn
-          class="registerButtons"
-          x-large
-          outlined
-          rounded
-          @click="register"
-      >
-        Register
-      </v-btn>
-      <v-btn
-          class="registerButtons"
-          x-large
-          outlined
-          rounded
-          @click="clear"
-      >
-        Clear
-      </v-btn>
-    </v-container>
-  </form>
+  <div>
+    <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
+    <form class="registrationForm">
+      <v-container>
+        <v-text-field
+            v-model="$v.username.$model"
+            :error-messages="usernameErrors"
+            :counter="16"
+            label="Username"
+            required
+        />
+        <v-text-field
+            v-model="$v.password.$model"
+            :error-messages="passwordErrors"
+            :counter="8"
+            type="password"
+            label="Password"
+            required
+        />
+        <v-text-field
+            v-model="$v.email.$model"
+            :error-messages="emailErrors"
+            label="Email"
+            required
+        />
+        <v-btn
+            class="registerButtons"
+            x-large
+            outlined
+            rounded
+            @click="register"
+        >
+          Register
+        </v-btn>
+        <v-btn
+            class="registerButtons"
+            x-large
+            outlined
+            rounded
+            @click="clear"
+        >
+          Clear
+        </v-btn>
+      </v-container>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -153,7 +156,7 @@ export default {
 <style scoped>
 .registrationForm {
   width: 40%;
-  margin: auto;
+  margin: 2% auto auto;
 }
 .registerButtons {
   justify-content: center;

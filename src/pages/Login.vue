@@ -1,41 +1,44 @@
 <template>
-  <form class="loginForm">
-    <v-container>
-      <v-text-field
-          v-model="$v.username.$model"
-          :error-messages="usernameErrors"
-          :counter="16"
-          label="Username"
-          required
-      ></v-text-field>
-      <v-text-field
-          v-model="$v.password.$model"
-          :error-messages="passwordErrors"
-          :counter="8"
-          type="password"
-          label="Password"
-          required
-      ></v-text-field>
-      <v-btn
-          class="loginButtons"
-          x-large
-          outlined
-          rounded
-          @click="login"
-      >
-        Log in
-      </v-btn>
-      <v-btn
-          class="loginButtons"
-          x-large
-          outlined
-          rounded
-          @click="clear"
-      >
-        Clear
-      </v-btn>
-    </v-container>
-  </form>
+  <div>
+    <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
+    <form class="loginForm">
+      <v-container>
+        <v-text-field
+            v-model="$v.username.$model"
+            :error-messages="usernameErrors"
+            :counter="16"
+            label="Username"
+            required
+        ></v-text-field>
+        <v-text-field
+            v-model="$v.password.$model"
+            :error-messages="passwordErrors"
+            :counter="8"
+            type="password"
+            label="Password"
+            required
+        ></v-text-field>
+        <v-btn
+            class="loginButtons"
+            x-large
+            outlined
+            rounded
+            @click="login"
+        >
+          Log in
+        </v-btn>
+        <v-btn
+            class="loginButtons"
+            x-large
+            outlined
+            rounded
+            @click="clear"
+        >
+          Clear
+        </v-btn>
+      </v-container>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -132,7 +135,7 @@ export default {
 <style scoped>
 .loginForm {
   width: 40%;
-  margin: auto;
+  margin: 2% auto auto;
 }
 .loginButtons {
   justify-content: center;

@@ -14,4 +14,4 @@ Vue.prototype.$http = HttpServer;
 new Vue({
   render: h => h(App),
   router: router
-}).$mount('#login')
+}).$mount('#app')
