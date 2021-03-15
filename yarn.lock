@@ -859,11 +859,6 @@
     "lodash" "^4.17.19"
     "to-fast-properties" "^2.0.0"
 
-"@fortawesome/fontawesome-free@^5.15.2":
-  "integrity" "sha512-7l/AX41m609L/EXI9EKH3Vs3v0iA8tKlIOGtw+kgcoanI7p+e4I4GYLqW3UXWiTnjSFymKSmTTPKYrivzbxxqA=="
-  "resolved" "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-5.15.2.tgz"
-  "version" "5.15.2"
-
 "@hapi/address@2.x.x":
   "integrity" "sha1-XWftQ/P9QaadS5/3tW58DR0KgeU="
   "resolved" "https://registry.npm.taobao.org/@hapi/address/download/@hapi/address-2.1.4.tgz"
@@ -8568,7 +8563,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^2.6.11", "vue@^2.6.4":
+"vue@^2 || ^3.0.0-0", "vue@^2.5.18", "vue@^2.6.11":
   "integrity" "sha1-9evU+mvShpQD4pqJau1JBEVskSM="
   "resolved" "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz?cache=0&sync_timestamp=1614614622087&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-2.6.12.tgz"
   "version" "2.6.12"
@@ -8578,10 +8573,10 @@
   "resolved" "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.6.tgz"
   "version" "0.7.6"
 
-"vuetify@^2.4.5":
-  "integrity" "sha512-P4bN9xwyU91Iq1iW/XBCzgVMQ9fHG0HgJeiPDRoHzC0fX6ZPYBZIN6xPCuoG7zLyGSSoc6JnQqnO7H5mPEsVuA=="
-  "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-2.4.5.tgz"
-  "version" "2.4.5"
+"vuetify@1.5.16":
+  "integrity" "sha512-yBgOsfurKQkeS+l+rrTQZ2bFk0D9ezjHhkuVM5A/yVzcg62sY2nfYaq/H++uezBWC9WYFrp/5OmSocJQcWn9Qw=="
+  "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-1.5.16.tgz"
+  "version" "1.5.16"
 
 "watchpack-chokidar2@^2.0.1":
   "integrity" "sha1-OFAAcu5uzmbzdpk2lQ6hdxvhyVc="
