@@ -13,7 +13,9 @@
                     :key="item.title"
                 >
                   <v-list-tile-content>
-                    <v-list-tile-title>{{ item.courseTitle }} | {{ item.lessonNumber }} - {{ item.lessonTitle }}</v-list-tile-title>
+                    <v-list-tile-title>
+                      {{ item.courseTitle }} | {{ item.lessonNumber }} - {{ item.lessonTitle }}
+                    </v-list-tile-title>
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
