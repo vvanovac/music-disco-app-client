@@ -76,7 +76,7 @@ body {
 
 .app-main {
   width: 100%;
-  background-color: whitesmoke;
+  background-color: white;
   justify-content: flex-end;
 }
 </style>

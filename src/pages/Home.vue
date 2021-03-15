@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .welcome-message {
-  margin: 5% auto auto;
+  margin: 2% auto auto;
 }
 
 .lessons {

@@ -3,9 +3,7 @@
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
     <v-btn
         class="loginButton"
-        x-large
-        outlined
-        rounded
+        round=true
         @click="$router.push({name: 'login'})"
     >
       Log In
@@ -35,18 +33,14 @@
         />
         <v-btn
             class="registerButtons"
-            x-large
-            outlined
-            rounded
+            round=true
             @click="register"
         >
           Register
         </v-btn>
         <v-btn
             class="registerButtons"
-            x-large
-            outlined
-            rounded
+            round=true
             @click="clear"
         >
           Clear

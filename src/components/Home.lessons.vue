@@ -1,45 +1,52 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <h2>Lessons</h2>
-    </div>
-    <div class="list">
-      <ul>
-        <li>Course Title: Lesson number - lesson title</li>
-        <li>Course Title: Lesson number - lesson title</li>
-        <li>Course Title: Lesson number - lesson title</li>
-        <a href="#">show more...</a>
-      </ul>
-    </div>
-  </div>
+  <v-container fill-height>
+    <v-layout align-left>
+      <v-flex>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">Lessons</h3>
+              <v-list class="pt-0">
+                <v-list-tile
+                    class="list"
+                    v-for="item in items"
+                    :key="item.title"
+                >
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ item.courseTitle }} | {{ item.lessonNumber }} - {{ item.lessonTitle }}</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </div>
+          </v-card-title>
+
+          <v-card-actions>
+            <v-btn flat color="gray">show more</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
-name: "Home.lessons"
+  name: "Home.lessons",
+  data () {
+    return {
+      items: [
+        { courseTitle: 'Course title', lessonNumber: '1', lessonTitle: 'Lesson title' },
+        { courseTitle: 'Course title', lessonNumber: '2', lessonTitle: 'Lesson title' },
+        { courseTitle: 'Course title', lessonNumber: '3', lessonTitle: 'Lesson title' }
+      ],
+    }
+  }
 }
 </script>
 
 <style scoped>
-.container {
-  font-size: 1.5em;
+.headline {
+  padding: 0 15px 25px;
+  text-align: left;
 }
-.header, .list, a {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 2%;
-}
-
-li {
-  padding: 2% 0;
-}
-
-a, a:active {
-  font-style: italic;
-  font-size: 0.75em;
-  text-decoration: none;
-  color: inherit;
-}
-
 </style>
