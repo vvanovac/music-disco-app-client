@@ -17,6 +17,7 @@
           class="list"
           v-for="item in items"
           :key="item.title"
+          @click="$router.push({name: item.route})"
       >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
@@ -36,10 +37,10 @@ export default {
   data () {
     return {
       items: [
-        { title: 'Home', icon: 'home' },
-        { title: 'Lessons', icon: 'home' }, //book-music
-        { title: 'Courses', icon: 'home' }, //box-music
-        { title: 'Challenges', icon: 'home' } //award
+        { title: 'Home', icon: 'home', route: 'home' },
+        { title: 'Lessons', icon: 'home', route: 'lessons' }, //icon should be something like book-music
+        { title: 'Courses', icon: 'home', route: 'courses' }, //icon should be something like box-music
+        { title: 'Challenges', icon: 'home', route: 'challenges' } //icon should be something like award
       ],
       right: null
     }

@@ -37,9 +37,9 @@ export default {
   data () {
     return {
       items: [
-        { courseTitle: 'Course title', lessonNumber: '1', lessonTitle: 'Lesson title' },
-        { courseTitle: 'Course title', lessonNumber: '2', lessonTitle: 'Lesson title' },
-        { courseTitle: 'Course title', lessonNumber: '3', lessonTitle: 'Lesson title' }
+        { courseTitle: 'Course title', lessonNumber: 'Lesson 1', lessonTitle: 'Lesson title' },
+        { courseTitle: 'Course title', lessonNumber: 'Lesson 2', lessonTitle: 'Lesson title' },
+        { courseTitle: 'Course title', lessonNumber: 'Lesson 3', lessonTitle: 'Lesson title' }
       ],
     }
   }
