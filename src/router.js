@@ -2,38 +2,34 @@ import VueRouter from 'vue-router';
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
+import { tokenService } from "@/services/http.server";
 
-const router = new VueRouter({mode: 'hash', routes: [{
-    name: 'register',
-    component: Register,
-    path: '/register'
-  },
-  {
-    name: 'login',
-    component: Login,
-    path: '/login'
-  },
-  {
-    name: 'home',
-    component: Home,
-    path: '/home',
-    alias: ['/']
-  },
-  {
-    name: 'lessons',
-    //this component should be the one for lessons page
-    path: '/lessons'
-  },
-  {
-    name: 'courses',
-    //this component should be the one for courses page
-    path: '/courses'
-  },
-  {
-    name: 'challenges',
-    //this component should be the one for challenges page
-    path: '/challenges'
-  }],
+const protectionType = {
+  unprotected: 'unprotected',
+  protected: 'protected',
+  adminProtected: 'adminProtected'
+}
+
+const generateMeta = (protection) => ({ protection });
+
+const routes = [
+  { name: 'register', component: Register, path: '/register', meta: generateMeta(protectionType.unprotected) },
+  { name: 'login', component: Login, path: '/login', meta: generateMeta(protectionType.unprotected) },
+  { name: 'home', component: Home, path: '/home', alias: ['/'], meta: generateMeta(protectionType.protected) },
+];
+
+const router = new VueRouter({mode: 'hash', routes});
+
+router.beforeEach(async (to, from, next) => {
+  const redirect = 'login';
+
+  if (to.meta.protection === protectionType.unprotected) {
+    return next();
+  }
+  const token = tokenService.get();
+  if (!token) {
+    return next(redirect);
+  }
+  return next();
 })
-
 export default router;
