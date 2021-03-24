@@ -5,13 +5,13 @@
         v-show="notRegisterOrLogin"
     />
     <div class="app-main" >
-      <router-view @message-prompt="showPrompt"></router-view>
+      <router-view></router-view>
     </div>
     <form-message
-        :header="promptData.header"
-        :text="promptData.text"
-        :validity="promptData.validity"
-        v-show="promptData.showPrompt"
+        :header="messagePrompt.header"
+        :text="messagePrompt.text"
+        :validity="messagePrompt.validity"
+        v-show="messagePrompt.showPrompt"
     ></form-message>
   </div>
 </template>
@@ -19,6 +19,7 @@
 <script>
 import FormMessage from '@/components/Form.message'
 import Sidebar from "@/components/Sidebar";
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -37,17 +38,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['messagePrompt']),
     notRegisterOrLogin () {
       return !['register', 'login'].includes(this.$route.name)
     },
-  },
-  methods: {
-    showPrompt (messageData) {
-      this.promptData = { ...messageData, showPrompt: true }
-      setTimeout(() => {
-        this.promptData.showPrompt = false
-      }, 3000)
-    }
   }
 }
 </script>

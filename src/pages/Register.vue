@@ -53,6 +53,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
+import { mapActions } from "vuex";
 
 export default {
   name: 'Register',
@@ -114,10 +115,11 @@ export default {
     email: { required, email }
   },
   methods: {
+    ...mapActions(['messagePrompt']),
     register() {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.$emit('message-prompt', {
+        this.messagePrompt( {
           header: 'Registration failed.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
@@ -126,7 +128,7 @@ export default {
       }
       this.$http.post('/register', {username: this.username, password: this.password, email: this.email})
         .then(() => {
-          this.$emit('message-prompt', {
+          this.messagePrompt( {
             header: 'Successfully registered.',
             validity: 'success',
           })
@@ -135,7 +137,7 @@ export default {
           this.$router.push({name: 'login'})
         })
         .catch((error) => {
-          this.$emit('message-prompt', {
+          this.messagePrompt( {
             header: 'Registration failed.',
             text: error.message,
             validity: 'error',
@@ -147,7 +149,7 @@ export default {
       this.username = ''
       this.password = ''
       this.email = ''
-      this.$emit('message-prompt', {
+      this.messagePrompt( {
         header: 'All fields cleared.',
         validity: 'info'
       })

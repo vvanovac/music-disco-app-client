@@ -1,10 +1,10 @@
-//u store -> token, i podaci korisnika
 import TokenService from '../services/token.service';
 
 export default (Vuex) => {
   return new Vuex.Store({
     state: {
-      token: TokenService.get()
+      token: TokenService.get(),
+      messagePrompt: {},
     },
     mutations: {
       CLEAR_TOKEN: (state) => {
@@ -14,6 +14,12 @@ export default (Vuex) => {
       STORE_TOKEN: (state, payload) => {
         TokenService.set(payload);
         state.token = TokenService.get();
+      },
+      ADD_MESSAGE_PROMPT: (state, messageData) => {
+        state.messagePrompt = { ...messageData, showPrompt: true }
+        setTimeout(() => {
+          state.messagePrompt.showPrompt = false
+        }, 3000)
       }
     },
     actions: {
@@ -22,10 +28,13 @@ export default (Vuex) => {
       },
       storeToken: ({commit}, payload) => {
         commit('STORE_TOKEN', payload);
+      },
+      messagePrompt: ({commit}, payload) => {
+        commit('ADD_MESSAGE_PROMPT', payload)
       }
     },
     getters: {
-      getTestValue: state => state.test
+      messagePrompt: state => state.messagePrompt
     }
   });
 }

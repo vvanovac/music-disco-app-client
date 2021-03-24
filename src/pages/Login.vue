@@ -47,6 +47,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -86,10 +87,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['storeToken', 'clearToken', 'messagePrompt']),
     login () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.$emit('message-prompt', {
+        this.messagePrompt({
           header: 'Login failed.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
@@ -97,9 +99,9 @@ export default {
         return
       }
       this.$http.post('/login', {username: this.username, password: this.password})
-        .then((token) => this.$store.dispatch('storeToken', token.accessToken))
+        .then((token) => this.storeToken(token.accessToken))
         .then(() => {
-          this.$emit('message-prompt', {
+          this.messagePrompt({
             header: 'Successfully logged in.',
             validity: 'success',
           })
@@ -108,7 +110,7 @@ export default {
           this.$router.push({ name: 'home' })
         })
         .catch((error) => {
-          this.$emit('message-prompt', {
+          this.messagePrompt({
             header: 'Login failed.',
             text: error.message,
             validity: 'error',
@@ -119,7 +121,7 @@ export default {
       this.$v.$reset()
       this.username = ''
       this.password = ''
-      this.$emit('message-prompt', {
+      this.messagePrompt({
         header: 'All fields cleared.',
         validity: 'info'
       })
@@ -130,7 +132,7 @@ export default {
     password: { required, minLength: minLength(8) },
   },
   mounted() {
-    this.$store.dispatch('clearToken');
+    this.clearToken();
   },
 }
 </script>
