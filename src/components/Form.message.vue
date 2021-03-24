@@ -1,11 +1,17 @@
 <template>
   <div
-      class="messageForm"
-      :class="formClass"
-      v-if="messagePrompt"
+      v-if="messagePrompt.length > 0"
+      class="messageFormContainer"
   >
-    <h1>{{messagePrompt.header}}</h1>
-    <p>{{messagePrompt.text}}</p>
+    <div
+        class="messageForm"
+        :class="formClass(message)"
+        v-for="message of messagePrompt"
+        :key="message.index"
+    >
+      <h1>{{message.header}}</h1>
+      <p>{{message.text}}</p>
+    </div>
   </div>
 </template>
 
@@ -16,8 +22,10 @@ export default {
   name: "Invalid.form",
   computed: {
     ...mapGetters(['messagePrompt']),
-    formClass() {
-      switch (this.messagePrompt.validity) {
+  },
+  methods: {
+    formClass(messagePrompt) {
+      switch (messagePrompt.validity) {
         case 'error':
           return 'invalid-form'
         case 'success':
@@ -33,16 +41,18 @@ export default {
 </script>
 
 <style scoped>
-.messageForm {
+.messageFormContainer {
   position: absolute;
-  bottom: 2%;
-  left: 35%;
-  right: 35%;
-  width: 30%;
+  top: 2%;
+  right: 3%;
+  width: 20%;
+  z-index: 1;
+}
+.messageForm {
   color: #2c3e50;
   font-weight: bold;
+  font-size: 10px;
   border-radius: 15px;
-  z-index: 1;
   background-color: #ccccb3;
   border-left: 20px solid #999966;
 }

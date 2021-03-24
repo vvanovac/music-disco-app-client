@@ -5,7 +5,8 @@ export default (Vuex) => {
   return new Vuex.Store({
     state: {
       token: TokenService.get(),
-      messagePrompt: null,
+      messagePrompt: [],
+      messagePromptCounter: 0,
       userData: null
     },
     mutations: {
@@ -18,9 +19,14 @@ export default (Vuex) => {
         state.token = TokenService.get();
       },
       ADD_MESSAGE_PROMPT: (state, messageData) => {
-        state.messagePrompt = { header: '', text: '', ...messageData }
+        const currentIndex = state.messagePromptCounter;
+        state.messagePromptCounter++;
+        state.messagePrompt.push({ header: '', text: '', ...messageData, index: currentIndex })
         setTimeout(() => {
-          state.messagePrompt = null;
+          state.messagePrompt = state.messagePrompt.filter((message) => message.index !== currentIndex);
+          if (state.messagePrompt.length === 0) {
+            state.messagePromptCounter = 0;
+          }
         }, 3000)
       },
       FETCH_USER_DATA: (state, payload) => {
@@ -84,7 +90,7 @@ export default (Vuex) => {
       }
     },
     getters: {
-      messagePrompt: state => state.messagePrompt,
+      messagePrompt: state => state.messagePrompt.slice(0, 4),
       unprotectedRoutes: () => ['register', 'login'],
       adminProtectedRoutes: () => [],
       userData: state => state.userData
