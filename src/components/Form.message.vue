@@ -2,32 +2,22 @@
   <div
       class="messageForm"
       :class="formClass"
+      v-if="messagePrompt"
   >
-    <h1>{{header}}</h1>
-    <p>{{text}}</p>
+    <h1>{{messagePrompt.header}}</h1>
+    <p>{{messagePrompt.text}}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Invalid.form",
-  props: {
-    header: {
-      type: String,
-      required: true,
-    },
-    text: {
-      type: String,
-      required: true,
-    },
-    validity: {
-      type: String,
-      required: true
-    }
-  },
   computed: {
+    ...mapGetters(['messagePrompt']),
     formClass() {
-      switch (this.validity) {
+      switch (this.messagePrompt.validity) {
         case 'error':
           return 'invalid-form'
         case 'success':

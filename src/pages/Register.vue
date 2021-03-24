@@ -3,7 +3,7 @@
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
     <v-btn
         class="loginButton"
-        round=true
+        :round="true"
         @click="$router.push({name: 'login'})"
     >
       Log In
@@ -33,14 +33,14 @@
         />
         <v-btn
             class="registerButtons"
-            round=true
+            :round="true"
             @click="register"
         >
           Register
         </v-btn>
         <v-btn
             class="registerButtons"
-            round=true
+            :round="true"
             @click="clear"
         >
           Clear
@@ -115,7 +115,7 @@ export default {
     email: { required, email }
   },
   methods: {
-    ...mapActions(['messagePrompt']),
+    ...mapActions(['messagePrompt', 'registerUser']),
     register() {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -126,23 +126,8 @@ export default {
         })
         return
       }
-      this.$http.post('/register', {username: this.username, password: this.password, email: this.email})
-        .then(() => {
-          this.messagePrompt( {
-            header: 'Successfully registered.',
-            validity: 'success',
-          })
-        })
-        .then(() => {
-          this.$router.push({name: 'login'})
-        })
-        .catch((error) => {
-          this.messagePrompt( {
-            header: 'Registration failed.',
-            text: error.message,
-            validity: 'error',
-          })
-        });
+      this.registerUser({username: this.username, password: this.password, email: this.email})
+        .then((shouldRedirect) => shouldRedirect && this.$router.push({name: 'login'}))
     },
     clear() {
       this.$v.$reset()

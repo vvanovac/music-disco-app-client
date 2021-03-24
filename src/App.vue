@@ -7,12 +7,7 @@
     <div class="app-main" >
       <router-view></router-view>
     </div>
-    <form-message
-        :header="messagePrompt.header"
-        :text="messagePrompt.text"
-        :validity="messagePrompt.validity"
-        v-show="messagePrompt.showPrompt"
-    ></form-message>
+    <form-message/>
   </div>
 </template>
 
@@ -38,9 +33,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['messagePrompt']),
+    ...mapGetters(['unprotectedRoutes']),
     notRegisterOrLogin () {
-      return !['register', 'login'].includes(this.$route.name)
+      return !this.unprotectedRoutes.includes(this.$route.name)
     },
   }
 }

@@ -3,7 +3,7 @@
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
     <v-btn
         class="registerButton"
-        round=true
+        :round="true"
         @click="$router.push({name: 'register'})"
     >
       Register
@@ -27,14 +27,14 @@
         ></v-text-field>
         <v-btn
             class="loginButtons"
-            round=true
+            :round="true"
             @click="login"
         >
           Log in
         </v-btn>
         <v-btn
             class="loginButtons"
-            round=true
+            :round="true"
             @click="clear"
         >
           Clear
@@ -87,7 +87,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['storeToken', 'clearToken', 'messagePrompt']),
+    ...mapActions(['storeToken', 'clearToken', 'messagePrompt', 'loginUser']),
     login () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -98,24 +98,8 @@ export default {
         })
         return
       }
-      this.$http.post('/login', {username: this.username, password: this.password})
-        .then((token) => this.storeToken(token.accessToken))
-        .then(() => {
-          this.messagePrompt({
-            header: 'Successfully logged in.',
-            validity: 'success',
-          })
-        })
-        .then(() => {
-          this.$router.push({ name: 'home' })
-        })
-        .catch((error) => {
-          this.messagePrompt({
-            header: 'Login failed.',
-            text: error.message,
-            validity: 'error',
-          })
-        });
+      this.loginUser({username: this.username, password: this.password})
+        .then((shouldRedirect) => shouldRedirect && this.$router.push({name: 'home'}));
     },
     clear () {
       this.$v.$reset()
