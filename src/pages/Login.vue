@@ -97,7 +97,7 @@ export default {
         return
       }
       this.$http.post('/login', {username: this.username, password: this.password})
-        .then((token) => this.$http.storeToken(token.accessToken))
+        .then((token) => this.$store.dispatch('storeToken', token.accessToken))
         .then(() => {
           this.$emit('message-prompt', {
             header: 'Successfully logged in.',
@@ -130,7 +130,7 @@ export default {
     password: { required, minLength: minLength(8) },
   },
   mounted() {
-    this.$http.clearToken();
+    this.$store.dispatch('clearToken');
   },
 }
 </script>
