@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>To create new task, please fill the fields bellow.</h2>
     <form>
       <v-container>
