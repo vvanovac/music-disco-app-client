@@ -87,12 +87,28 @@ export default (Vuex) => {
             validity: 'error',
           })
         }
+      },
+      createTask: async ({dispatch, state}, payload) => {
+        try {
+          await HttpServer.post('/tasks', {token: state.token}, payload);
+          dispatch('messagePrompt', {
+            header: 'Task successfully created.',
+            validity: 'success',
+          })
+          return true;
+        } catch (error) {
+          dispatch('messagePrompt', {
+            header: 'Task creating failed.',
+            text: error.message,
+            validity: 'error'
+          })
+        }
       }
     },
     getters: {
       messagePrompt: state => state.messagePrompt.slice(0, 4),
       unprotectedRoutes: () => ['register', 'login'],
-      adminProtectedRoutes: () => [],
+      adminProtectedRoutes: () => ['createTask'],
       userData: state => state.userData
     }
   });

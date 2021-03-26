@@ -33,9 +33,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['unprotectedRoutes']),
+    ...mapGetters(['unprotectedRoutes', 'adminProtectedRoutes']),
     notRegisterOrLogin () {
-      return !this.unprotectedRoutes.includes(this.$route.name)
+      return !this.unprotectedRoutes.includes(this.$route.name) && !this.adminProtectedRoutes.includes(this.$route.name)
     },
   }
 }

@@ -2,11 +2,13 @@ import VueRouter from 'vue-router';
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
+import CreateTask from "@/pages/Create.task"
 
 const routes = [
   { name: 'register', component: Register, path: '/register' },
   { name: 'login', component: Login, path: '/login'},
   { name: 'home', component: Home, path: '/home', alias: ['/']},
+  { name: 'createTask', component: CreateTask, path: '/createTask' },
 ];
 
 const router = (store) => {
