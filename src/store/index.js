@@ -103,6 +103,23 @@ export default (Vuex) => {
             validity: 'error'
           })
         }
+      },
+      updateTask: async ({dispatch, state}, payload) => {
+        try {
+          const { taskID, ...rest } = payload
+          await HttpServer.put(`/tasks/${taskID}`, {token: state.token}, rest);
+          dispatch('messagePrompt', {
+            header: 'Task successfully updated.',
+            validity: 'success',
+          })
+          return true;
+        } catch (error) {
+          dispatch('messagePrompt', {
+            header: 'Task updating failed.',
+            text: error.message,
+            validity: 'error'
+          })
+        }
       }
     },
     getters: {

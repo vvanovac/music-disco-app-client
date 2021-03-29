@@ -1,7 +1,7 @@
 <template>
-  <div class="home-container">
+  <div class="d-flex flex-row justify-start align-start home-container">
     <sidebar class="home-sidebar"/>
-    <div class="home-main">
+    <div class="justify-end home-main">
       <home-navbar/>
       <welcome-message class="welcome-message"/>
       <home-lessons class="lessons"></home-lessons>
@@ -36,10 +36,6 @@ export default {
 
 <style scoped>
 .home-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -50,7 +46,6 @@ export default {
 
 .home-main {
   width: 100%;
-  justify-content: flex-end;
 }
 
 .welcome-message, .lessons {

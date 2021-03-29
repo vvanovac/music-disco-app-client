@@ -1,28 +1,31 @@
 <template>
   <div class="container">
-    <h2>To create a new task, please fill the fields bellow.</h2>
+    <h2>To update a task, please fill the fields bellow.</h2>
     <form>
       <v-container>
+        <v-text-field
+            v-model="$v.taskID.$model"
+            :error-messages="taskIDErrors"
+            label="Task ID"
+            required
+        ></v-text-field>
         <v-text-field
             v-model="$v.title.$model"
             :error-messages="titleErrors"
             :counter="8"
             label="Title"
-            required
         ></v-text-field>
         <v-text-field
             v-model="$v.subtitle.$model"
             :error-messages="subtitleErrors"
             :counter="8"
             label="Subtitle"
-            required
         ></v-text-field>
         <v-text-field
             v-model="$v.description.$model"
             :error-messages="descriptionErrors"
             :counter="16"
             label="Description"
-            required
         ></v-text-field>
         <v-text-field
             v-model="$v.imageURL.$model"
@@ -31,14 +34,14 @@
             label="Image URL"
         ></v-text-field>
         <v-btn
-            class="createTaskButtons"
+            class="updateTaskButtons"
             :round="true"
-            @click="create"
+            @click="update"
         >
-          Create Task
+          Update Task
         </v-btn>
         <v-btn
-            class="createTaskButtons"
+            class="updateTaskButtons"
             :round="true"
             @click="clear"
         >
@@ -55,9 +58,10 @@ import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Create.task',
+  name: 'Update.task',
   data() {
     return {
+      taskID: '',
       title: '',
       subtitle: '',
       description: '',
@@ -66,6 +70,16 @@ export default {
   },
   mixins: [validationMixin],
   computed: {
+    taskIDErrors () {
+      const errors = []
+      if (!this.$v.taskID.$dirty) {
+        return errors
+      }
+      if (!this.$v.taskID.required) {
+        errors.push('Task ID is required.')
+      }
+      return errors
+    },
     titleErrors () {
       const errors = []
       if (!this.$v.title.$dirty) {
@@ -73,9 +87,6 @@ export default {
       }
       if (!this.$v.title.minLength) {
         errors.push('Title must be at least 8 characters long.')
-      }
-      if (!this.$v.title.required) {
-        errors.push('Title is required.')
       }
       return errors
     },
@@ -87,9 +98,6 @@ export default {
       if (!this.$v.subtitle.minLength) {
         errors.push('Subtitle must be at least 8 characters long.')
       }
-      if (!this.$v.subtitle.required) {
-        errors.push('Subtitle is required.')
-      }
       return errors
     },
     descriptionErrors () {
@@ -99,9 +107,6 @@ export default {
       }
       if (!this.$v.description.minLength) {
         errors.push('Description must be at least 16 characters long.')
-      }
-      if (!this.$v.description.required) {
-        errors.push('Subtitle is required.')
       }
       return errors
     },
@@ -117,26 +122,31 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['messagePrompt', 'createTask']),
-    create () {
+    ...mapActions(['messagePrompt', 'updateTask']),
+    update () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.messagePrompt({
-          header: 'Creating failed.',
+          header: 'Updating failed.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
         })
         return
       }
-      this.createTask({
+      const task = {
+        taskID: this.taskID,
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
         imageURL: this.imageURL
-      })
+      }
+      const updated = Object.fromEntries(Object.entries(task).filter(([key, value]) => !!key && !!value));
+      this.updateTask(updated);
+      this.clearFields();
     },
-    clearFields () {
+    clearFields() {
       this.$v.$reset()
+      this.taskID = ''
       this.title = ''
       this.subtitle = ''
       this.description = ''
@@ -151,9 +161,10 @@ export default {
     },
   },
   validations: {
-    title: { required, minLength: minLength(8) },
-    subtitle: { required, minLength: minLength(8) },
-    description: { required, minLength: minLength(8) },
+    taskID: { required },
+    title: { minLength: minLength(8) },
+    subtitle: { minLength: minLength(8) },
+    description: { minLength: minLength(8) },
     imageURL: { url },
   }
 }
@@ -165,7 +176,7 @@ h2 {
   text-align: left;
 }
 
-.createTaskButtons {
+.updateTaskButtons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
