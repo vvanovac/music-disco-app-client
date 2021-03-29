@@ -2,7 +2,9 @@
   <div class="container">
     <h2>To update a task, please fill the fields bellow.</h2>
     <form>
-      <v-container>
+      <v-container
+          @keyup.enter="update"
+      >
         <v-text-field
             v-model="$v.taskID.$model"
             :error-messages="taskIDErrors"

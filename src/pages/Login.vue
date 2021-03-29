@@ -9,7 +9,9 @@
       Register
     </v-btn>
     <form class="loginForm">
-      <v-container>
+      <v-container
+          @keyup.enter="login"
+      >
         <v-text-field
             v-model="$v.username.$model"
             :error-messages="usernameErrors"

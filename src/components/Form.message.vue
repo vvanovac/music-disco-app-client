@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 .messageFormContainer {
-  position: absolute;
+  position: fixed;
   top: 2%;
   right: 3%;
   width: 20%;

@@ -2,7 +2,9 @@
   <div class="container">
     <h2>To create a new task, please fill the fields bellow.</h2>
     <form>
-      <v-container>
+      <v-container
+          @keyup.enter="create"
+      >
         <v-text-field
             v-model="$v.title.$model"
             :error-messages="titleErrors"
@@ -134,6 +136,7 @@ export default {
         description: this.description,
         imageURL: this.imageURL
       })
+      this.clearFields();
     },
     clearFields () {
       this.$v.$reset()
