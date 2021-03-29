@@ -38,9 +38,10 @@ export default {
     return {
       items: [
         { title: 'Home', icon: 'home', route: 'home' },
-        { title: 'Lessons', icon: 'home', route: 'lessons' }, //icon should be something like book-music
-        { title: 'Courses', icon: 'home', route: 'courses' }, //icon should be something like box-music
-        { title: 'Challenges', icon: 'home', route: 'challenges' } //icon should be something like award
+        { title: 'Lessons', icon: 'home', route: '' }, //icon should be something like book-music
+        { title: 'Courses', icon: 'home', route: '' }, //icon should be something like box-music
+        { title: 'Challenges', icon: 'home', route: '' }, //icon should be something like award
+        { title: 'Admin Panel', icon: 'home', route: 'administrator' } //icon should be something like dashboard/panel
       ],
       right: null
     }

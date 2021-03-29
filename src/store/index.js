@@ -108,7 +108,7 @@ export default (Vuex) => {
     getters: {
       messagePrompt: state => state.messagePrompt.slice(0, 4),
       unprotectedRoutes: () => ['register', 'login'],
-      adminProtectedRoutes: () => ['createTask'],
+      adminProtectedRoutes: () => ['administrator'],
       userData: state => state.userData
     }
   });

@@ -55,7 +55,7 @@ import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'CreateTask',
+  name: 'Create.task',
   data() {
     return {
       title: '',

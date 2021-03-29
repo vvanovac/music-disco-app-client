@@ -19,7 +19,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "Invalid.form",
+  name: 'Form.message',
   computed: {
     ...mapGetters(['messagePrompt']),
   },
