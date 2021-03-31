@@ -13,7 +13,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "home.welcome.message",
+  name: "Home.welcome.message",
   computed: {
     ...mapGetters(['userData'])
   }

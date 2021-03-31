@@ -1,23 +1,43 @@
 <template>
-  <div class="admin-container">
+  <div>
     <administrator-navbar/>
-    <create-task/>
-    <update-task/>
+    <v-tabs fixed-tabs>
+      <v-tab
+          v-for="tab in tabs"
+          :key="tab"
+          @click="current(tab)"
+      >
+        {{ tab }}
+      </v-tab>
+    </v-tabs>
+    <keep-alive>
+      <component :is="currentTab"></component>
+    </keep-alive>
   </div>
 </template>
 
 <script>
 import AdministratorNavbar from '@/components/Administrator.navbar'
-import CreateTask from '@/components/Create.task'
-import UpdateTask from '@/components/Update.task'
+import Tasks from '@/pages/Tasks'
 
 export default {
   name: 'Administrator',
   components: {
     AdministratorNavbar,
-    CreateTask,
-    UpdateTask
+    Tasks
   },
+  data() {
+    const tabs = ['Tasks'];
+    return {
+      currentTab: tabs[0],
+      tabs
+    }
+  },
+  methods: {
+    current(tab) {
+      this.currentTab = tab;
+    }
+  }
 }
 </script>
 
