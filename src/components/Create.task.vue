@@ -33,14 +33,14 @@
             label="Image URL"
         ></v-text-field>
         <v-btn
-            class="createTaskButtons"
+            class="create-buttons"
             :round="true"
             @click="create"
         >
           Create Task
         </v-btn>
         <v-btn
-            class="createTaskButtons"
+            class="create-buttons"
             :round="true"
             @click="clear"
         >
@@ -168,7 +168,7 @@ h2 {
   text-align: left;
 }
 
-.createTaskButtons {
+.create-buttons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;

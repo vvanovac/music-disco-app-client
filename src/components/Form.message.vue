@@ -1,10 +1,10 @@
 <template>
   <div
       v-if="messagePrompt.length > 0"
-      class="messageFormContainer"
+      class="message-form-container"
   >
     <div
-        class="messageForm"
+        class="message-form"
         :class="formClass(message)"
         v-for="message of messagePrompt"
         :key="message.index"
@@ -41,14 +41,14 @@ export default {
 </script>
 
 <style scoped>
-.messageFormContainer {
+.message-form-container {
   position: fixed;
   top: 2%;
   right: 3%;
   width: 20%;
   z-index: 1;
 }
-.messageForm {
+.message-form {
   color: #2c3e50;
   font-weight: bold;
   font-size: 10px;

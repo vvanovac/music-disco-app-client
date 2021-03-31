@@ -2,13 +2,13 @@
   <div>
     <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
     <v-btn
-        class="registerButton"
+        class="register-button"
         :round="true"
         @click="$router.push({name: 'register'})"
     >
       Register
     </v-btn>
-    <form class="loginForm">
+    <form class="login-form">
       <v-container
           @keyup.enter="login"
       >
@@ -28,14 +28,14 @@
             required
         ></v-text-field>
         <v-btn
-            class="loginButtons"
+            class="login-buttons"
             :round="true"
             @click="login"
         >
           Log in
         </v-btn>
         <v-btn
-            class="loginButtons"
+            class="login-buttons"
             :round="true"
             @click="clear"
         >
@@ -124,11 +124,11 @@ export default {
 </script>
 
 <style scoped>
-.loginForm {
+.login-form {
   width: 40%;
   margin: 2% auto auto;
 }
-.loginButtons, .registerButton {
+.login-buttons, .register-button {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
@@ -138,7 +138,7 @@ export default {
   border: 1px solid #2c3e50;
 }
 
-.registerButton {
+.register-button {
   float: right;
 }
 </style>

@@ -36,14 +36,14 @@
             label="Image URL"
         ></v-text-field>
         <v-btn
-            class="updateTaskButtons"
+            class="update-buttons"
             :round="true"
             @click="update"
         >
           Update Task
         </v-btn>
         <v-btn
-            class="updateTaskButtons"
+            class="update-buttons"
             :round="true"
             @click="clear"
         >
@@ -178,7 +178,7 @@ h2 {
   text-align: left;
 }
 
-.updateTaskButtons {
+.update-buttons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;
