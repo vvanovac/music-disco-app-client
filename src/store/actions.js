@@ -84,5 +84,16 @@ export default {
         validity: 'error'
       });
     }
+  },
+  getTask: async ({dispatch, state}, taskID) => {
+    try {
+      return await HttpServer.get(`/tasks/${taskID}`, {token: state.token});
+    } catch (error) {
+      dispatch('messagePrompt', {
+        header: 'Task not found.',
+        text: error.message,
+        validity: 'error'
+      });
+    }
   }
 };

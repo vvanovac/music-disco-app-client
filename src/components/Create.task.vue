@@ -2,9 +2,7 @@
   <div class="container">
     <h2>To create a new task, please fill the fields bellow.</h2>
     <form>
-      <v-container
-          @keyup.enter="create"
-      >
+      <v-container>
         <v-text-field
             v-model="$v.title.$model"
             :error-messages="titleErrors"
@@ -64,6 +62,7 @@ export default {
       subtitle: '',
       description: '',
       imageURL: null,
+      isEdit: this.$route.params.taskID || null,
     }
   },
   mixins: [validationMixin],
@@ -119,7 +118,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['messagePrompt', 'createTask']),
+    ...mapActions(['messagePrompt', 'createTask', 'getTask']),
     create () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -140,10 +139,7 @@ export default {
     },
     clearFields () {
       this.$v.$reset()
-      this.title = ''
-      this.subtitle = ''
-      this.description = ''
-      this.imageURL = ''
+      this.setData();
     },
     clear () {
       this.clearFields();
@@ -152,6 +148,18 @@ export default {
         validity: 'info'
       })
     },
+    setData (data = {}) {
+      this.title = data.title || '';
+      this.subtitle = data.subtitle || '';
+      this.description = data.description || '';
+      this.imageURL = data.imageURL || null;
+    }
+  },
+  async mounted() {
+    if (this.isEdit !== null) {
+      const data = await this.getTask(this.$route.params.taskID);
+      this.setData(data);
+    }
   },
   validations: {
     title: { required, minLength: minLength(8) },
