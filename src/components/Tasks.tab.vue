@@ -6,7 +6,7 @@
     <div class="button">
       <v-btn
           :round="true"
-          @click="$router.push({name: 'tasks'})"
+          @click="$router.push({name: 'createTasks'})"
       >
         Create
       </v-btn>

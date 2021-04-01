@@ -1,7 +1,7 @@
 export default {
   messagePrompt: state => state.messagePrompt.slice(0, 4),
   unprotectedRoutes: () => ['register', 'login'],
-  adminProtectedRoutes: () => ['administrator', 'administrator/tasks'],
+  adminProtectedRoutes: () => ['administrator', 'createTasks', 'updateTasks'],
   userData: state => state.userData,
   taskData: () => [
     {taskID: 1, title: 'task 1 title'},
@@ -15,4 +15,4 @@ export default {
     {taskID: 9, title: 'task 9 title'},
     {taskID: 10, title: 'task 10 title'}
   ]
-}
+};

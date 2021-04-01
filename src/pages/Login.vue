@@ -9,15 +9,14 @@
       Register
     </v-btn>
     <form class="login-form">
-      <v-container
-          @keyup.enter="login"
-      >
+      <v-container>
         <v-text-field
             v-model="$v.username.$model"
             :error-messages="usernameErrors"
             :counter="16"
             label="Username"
             required
+            @keyup.enter="login"
         ></v-text-field>
         <v-text-field
             v-model="$v.password.$model"
@@ -26,6 +25,7 @@
             type="password"
             label="Password"
             required
+            @keyup.enter="login"
         ></v-text-field>
         <v-btn
             class="login-buttons"
@@ -55,6 +55,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      loading: false,
       username: '',
       password: '',
     }
@@ -90,18 +91,24 @@ export default {
   },
   methods: {
     ...mapActions(['storeToken', 'clearToken', 'messagePrompt', 'loginUser']),
-    login () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        this.messagePrompt({
-          header: 'Login failed.',
-          text: 'Invalid form. Please try again.',
-          validity: 'error',
-        })
-        return
+    async login () {
+      if (!this.loading) {
+        this.loading = true;
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          this.messagePrompt({
+            header: 'Login failed.',
+            text: 'Invalid form. Please try again.',
+            validity: 'error',
+          })
+        } else {
+          const shouldRedirect = await this.loginUser({username: this.username, password: this.password})
+          if (shouldRedirect) {
+            await this.$router.push({name: 'home'})
+          }
+        }
+      this.loading = false;
       }
-      this.loginUser({username: this.username, password: this.password})
-        .then((shouldRedirect) => shouldRedirect && this.$router.push({name: 'home'}));
     },
     clear () {
       this.$v.$reset()

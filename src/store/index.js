@@ -1,7 +1,7 @@
-import state from './state'
-import mutations from './mutations'
-import actions from './actions'
-import getters from './getters'
+import state from './state';
+import mutations from './mutations';
+import actions from './actions';
+import getters from './getters';
 
 export default (Vuex) => {
   return new Vuex.Store({
@@ -10,4 +10,4 @@ export default (Vuex) => {
     actions,
     getters
   });
-}
+};

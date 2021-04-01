@@ -24,11 +24,11 @@ const common = (method, url, header, body) => {
       }
       return Promise.reject(data);
     });
-}
+};
 
 export default {
   get: (url, header) => common('get', url, header),
   post: (url, header, body) => common('post', url, header, body),
   put: (url, header, body) => common('put', url, header, body),
-  delete: (url, header) => common('delete', url, header),
+  delete: (url, header) => common('delete', url, header)
 };

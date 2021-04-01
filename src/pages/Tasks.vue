@@ -1,8 +1,8 @@
 <template>
   <div>
     <administrator-navbar/>
-    <create-task/>
-    <update-task/>
+    <create-task v-show="showCreate"/>
+    <update-task v-show="showUpdate"/>
   </div>
 </template>
 
@@ -18,6 +18,14 @@ export default {
     CreateTask,
     UpdateTask,
   },
+  computed: {
+    showCreate() {
+      return this.$route.name === 'createTasks'
+    },
+    showUpdate() {
+      return this.$route.name === 'updateTasks'
+    }
+  }
 }
 </script>
 

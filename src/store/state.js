@@ -5,4 +5,4 @@ export default {
   messagePrompt: [],
   messagePromptCounter: 0,
   userData: null
-}
+};

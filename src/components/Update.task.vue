@@ -6,12 +6,6 @@
           @keyup.enter="update"
       >
         <v-text-field
-            v-model="$v.taskID.$model"
-            :error-messages="taskIDErrors"
-            label="Task ID"
-            required
-        ></v-text-field>
-        <v-text-field
             v-model="$v.title.$model"
             :error-messages="titleErrors"
             :counter="8"
@@ -56,14 +50,13 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength, url } from 'vuelidate/lib/validators'
+import { minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'Update.task',
   data() {
     return {
-      taskID: '',
       title: '',
       subtitle: '',
       description: '',
@@ -72,16 +65,6 @@ export default {
   },
   mixins: [validationMixin],
   computed: {
-    taskIDErrors () {
-      const errors = []
-      if (!this.$v.taskID.$dirty) {
-        return errors
-      }
-      if (!this.$v.taskID.required) {
-        errors.push('Task ID is required.')
-      }
-      return errors
-    },
     titleErrors () {
       const errors = []
       if (!this.$v.title.$dirty) {
@@ -136,7 +119,7 @@ export default {
         return
       }
       const task = {
-        taskID: this.taskID,
+        taskID: this.$route.params.taskID,
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
@@ -148,7 +131,6 @@ export default {
     },
     clearFields() {
       this.$v.$reset()
-      this.taskID = ''
       this.title = ''
       this.subtitle = ''
       this.description = ''
@@ -163,7 +145,6 @@ export default {
     },
   },
   validations: {
-    taskID: { required },
     title: { minLength: minLength(8) },
     subtitle: { minLength: minLength(8) },
     description: { minLength: minLength(8) },

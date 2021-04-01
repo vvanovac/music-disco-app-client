@@ -12,18 +12,18 @@ export default {
   ADD_MESSAGE_PROMPT: (state, messageData) => {
     const currentIndex = state.messagePromptCounter;
     state.messagePromptCounter++;
-    state.messagePrompt.push({header: '', text: '', ...messageData, index: currentIndex})
+    state.messagePrompt.push({header: '', text: '', ...messageData, index: currentIndex});
     setTimeout(() => {
       state.messagePrompt = state.messagePrompt.filter((message) => message.index !== currentIndex);
       if (state.messagePrompt.length === 0) {
         state.messagePromptCounter = 0;
       }
-    }, 3000)
+    }, 3000);
   },
   FETCH_USER_DATA: (state, payload) => {
     state.userData = payload;
   },
   CLEAR_USER_DATA: state => {
-    state.userData = null
+    state.userData = null;
   }
-}
+};
