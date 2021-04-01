@@ -85,12 +85,26 @@ export default {
       });
     }
   },
+  getTasks: async ({dispatch, commit, state}, forceFetch) => {
+    try {
+      if (!state.taskData || forceFetch) {
+        const data = await HttpServer.get('/tasks', {token: state.token});
+        commit('STORE_TASK_DATA', data);
+      }
+    } catch (error) {
+      dispatch('messagePrompt', {
+        header: 'Error during fetching.',
+        text: error.message,
+        validity: 'error'
+      });
+    }
+  },
   getTask: async ({dispatch, state}, taskID) => {
     try {
       return await HttpServer.get(`/tasks/${taskID}`, {token: state.token});
     } catch (error) {
       dispatch('messagePrompt', {
-        header: 'Task not found.',
+        header: 'Error during fetching.',
         text: error.message,
         validity: 'error'
       });

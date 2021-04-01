@@ -4,5 +4,6 @@ export default {
   token: TokenService.get(),
   messagePrompt: [],
   messagePromptCounter: 0,
-  userData: null
+  userData: null,
+  taskData: null
 };

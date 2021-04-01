@@ -25,5 +25,8 @@ export default {
   },
   CLEAR_USER_DATA: state => {
     state.userData = null;
+  },
+  STORE_TASK_DATA: (state, payload) => {
+    state.taskData = payload;
   }
 };

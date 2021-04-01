@@ -2,9 +2,9 @@
   <div>
     <v-toolbar
         v-for="task in taskData"
-        :key="task.taskID"
+        :key="task.id"
     >
-      <v-toolbar-title>{{ task.taskID }}</v-toolbar-title>
+      <v-toolbar-title>{{ task.id }}</v-toolbar-title>
       <v-toolbar-title>{{ task.title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: "Item",
@@ -29,9 +29,13 @@ export default {
     ...mapGetters(['taskData'])
   },
   methods: {
+    ...mapActions(['getTasks']),
     updateRedirect(task) {
-      this.$router.push({name: 'updateTasks', params: { taskID: task.taskID}})
+      this.$router.push({name: 'updateTasks', params: { taskID: task.id}})
     }
+  },
+  created() {
+    this.getTasks();
   }
 }
 </script>

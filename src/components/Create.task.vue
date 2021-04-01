@@ -57,12 +57,14 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Create.task',
   data() {
+    const taskID = this.$route.params.taskID;
     return {
+      taskID,
       title: '',
       subtitle: '',
       description: '',
       imageURL: null,
-      isEdit: this.$route.params.taskID || null,
+      isEdit: Number.isFinite(+taskID),
     }
   },
   mixins: [validationMixin],
@@ -118,8 +120,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['messagePrompt', 'createTask', 'getTask']),
-    create () {
+    ...mapActions(['messagePrompt', 'createTask', 'updateTask', 'getTasks', 'getTask']),
+    async create () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.messagePrompt({
@@ -129,13 +131,20 @@ export default {
         })
         return
       }
-      this.createTask({
+      const payload = {
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
         imageURL: this.imageURL
-      })
+      };
+      if (!this.isEdit) {
+        await this.createTask(payload);
+      } else {
+        await this.updateTask({ ...payload, taskID: this.taskID });
+      }
       this.clearFields();
+      this.getTasks(true);
+      this.$router.push({name: 'administrator'});
     },
     clearFields () {
       this.$v.$reset()
@@ -156,7 +165,7 @@ export default {
     }
   },
   async mounted() {
-    if (this.isEdit !== null) {
+    if (this.isEdit) {
       const data = await this.getTask(this.$route.params.taskID);
       this.setData(data);
     }
