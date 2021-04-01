@@ -18,7 +18,7 @@
 
 <script>
 import AdministratorNavbar from '@/components/Administrator.navbar'
-import Tasks from '@/pages/Tasks'
+import Tasks from '@/components/Tasks.tab'
 
 export default {
   name: 'Administrator',
