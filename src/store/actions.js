@@ -101,6 +101,9 @@ export default {
   },
   getTask: async ({dispatch, state}, taskID) => {
     try {
+      if (state.taskData && state.taskData.length > 0) {
+        return state.taskData.find((task) => task.id === taskID);
+      }
       return await HttpServer.get(`/tasks/${taskID}`, {token: state.token});
     } catch (error) {
       dispatch('messagePrompt', {

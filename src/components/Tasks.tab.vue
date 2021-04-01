@@ -10,6 +10,12 @@
       >
         Create
       </v-btn>
+      <v-btn
+          :round="true"
+          @click="$store.dispatch('getTasks', true)"
+      >
+        Reload Tasks
+      </v-btn>
     </div>
   </div>
 </template>
