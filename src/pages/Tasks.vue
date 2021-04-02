@@ -1,19 +1,19 @@
 <template>
   <div>
     <administrator-navbar/>
-    <create-task/>
+    <edit-task/>
   </div>
 </template>
 
 <script>
 import AdministratorNavbar from '@/components/Administrator.navbar'
-import CreateTask from '@/components/Create.task'
+import EditTask from '@/components/Edit.task'
 
 export default {
   name: 'Tasks',
   components: {
     AdministratorNavbar,
-    CreateTask,
+    EditTask,
   },
 }
 </script>

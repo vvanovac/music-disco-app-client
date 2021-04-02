@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>To create a new task, please fill the fields bellow.</h2>
+    <h2>To {{ edit.toLowerCase() }} a task, please fill the fields bellow.</h2>
     <form>
       <v-container>
         <v-text-field
@@ -31,14 +31,14 @@
             label="Image URL"
         ></v-text-field>
         <v-btn
-            class="create-buttons"
+            class="edit-buttons"
             :round="true"
             @click="create"
         >
-          Create Task
+          {{ edit }} Task
         </v-btn>
         <v-btn
-            class="create-buttons"
+            class="edit-buttons"
             :round="true"
             @click="clear"
         >
@@ -55,7 +55,7 @@ import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Create.task',
+  name: 'Edit.task',
   data() {
     const taskID = this.$route.params.taskID;
     return {
@@ -118,6 +118,13 @@ export default {
       }
       return errors
     },
+    edit () {
+      if (!this.isEdit) {
+        return 'Create'
+      } else {
+        return 'Update'
+      }
+    }
   },
   methods: {
     ...mapActions(['messagePrompt', 'createTask', 'updateTask', 'getTasks', 'getTask']),
@@ -143,8 +150,8 @@ export default {
         await this.updateTask({ ...payload, taskID: this.taskID });
       }
       this.clearFields();
-      this.getTasks(true);
-      this.$router.push({name: 'administrator'});
+      await this.getTasks(true);
+      await this.$router.push({name: 'administrator'});
     },
     clearFields () {
       this.$v.$reset()
@@ -185,7 +192,7 @@ h2 {
   text-align: left;
 }
 
-.create-buttons {
+.edit-buttons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;

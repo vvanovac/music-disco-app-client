@@ -9,15 +9,14 @@
       Log In
     </v-btn>
     <form class="registration-form">
-      <v-container
-          @keyup.enter="register"
-      >
+      <v-container>
         <v-text-field
             v-model="$v.username.$model"
             :error-messages="usernameErrors"
             :counter="16"
             label="Username"
             required
+            @keyup.enter="register"
         />
         <v-text-field
             v-model="$v.password.$model"
@@ -26,12 +25,14 @@
             type="password"
             label="Password"
             required
+            @keyup.enter="register"
         />
         <v-text-field
             v-model="$v.email.$model"
             :error-messages="emailErrors"
             label="Email"
             required
+            @keyup.enter="register"
         />
         <v-btn
             class="register-buttons"
@@ -61,6 +62,7 @@ export default {
   name: 'Register',
   data() {
     return {
+      loading: false,
       username: '',
       password: '',
       email: '',
@@ -111,25 +113,30 @@ export default {
       return errors
     }
   },
-  validations: {
-    username: { required, minLength: minLength(3), maxLength: maxLength(16) },
-    password: { required, minLength: minLength(8) },
-    email: { required, email }
-  },
   methods: {
     ...mapActions(['messagePrompt', 'registerUser']),
-    register() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        this.messagePrompt( {
-          header: 'Registration failed.',
-          text: 'Invalid form. Please try again.',
-          validity: 'error',
-        })
-        return
+    async register() {
+      if (!this.loading) {
+        this.loading = true;
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          this.messagePrompt({
+            header: 'Registration failed.',
+            text: 'Invalid form. Please try again.',
+            validity: 'error',
+          })
+        } else {
+          const shouldRedirect = await this.registerUser({
+            username: this.username,
+            password: this.password,
+            email: this.email
+          })
+          if (shouldRedirect) {
+            await this.$router.push({name: 'login'});
+          }
+        }
+        this.loading = false;
       }
-      this.registerUser({username: this.username, password: this.password, email: this.email})
-        .then((shouldRedirect) => shouldRedirect && this.$router.push({name: 'login'}))
     },
     clear() {
       this.$v.$reset()
@@ -141,6 +148,11 @@ export default {
         validity: 'info'
       })
     }
+  },
+  validations: {
+    username: { required, minLength: minLength(3), maxLength: maxLength(16) },
+    password: { required, minLength: minLength(8) },
+    email: { required, email }
   }
 }
 </script>
