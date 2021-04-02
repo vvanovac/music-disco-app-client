@@ -3,7 +3,7 @@
     <div>
       <item/>
     </div>
-    <div class="button">
+    <div>
       <v-btn
           :round="true"
           @click="$router.push({name: 'createTasks'})"
@@ -36,11 +36,5 @@ export default {
   width: 60%;
   margin: 3% auto;
 }
-
-.button {
-  padding-right: 18px;
-  float: right;
-}
-
 
 </style>

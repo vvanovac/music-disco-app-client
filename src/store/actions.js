@@ -112,5 +112,20 @@ export default {
         validity: 'error'
       });
     }
+  },
+  deleteTask: async ({dispatch, state}, taskID) => {
+    try {
+      await HttpServer.delete(`/tasks/${taskID}`, {token: state.token})
+      dispatch('messagePrompt', {
+        header: 'Task successfully deleted.',
+        validity: 'success'
+      });
+    } catch (error) {
+      dispatch('messagePrompt', {
+        header: 'Deletion error.',
+        text: error.message,
+        validity: 'error'
+      })
+    }
   }
 };
