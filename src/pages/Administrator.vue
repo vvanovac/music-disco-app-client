@@ -1,6 +1,5 @@
 <template>
   <div>
-    <administrator-navbar/>
     <v-tabs fixed-tabs>
       <v-tab
           v-for="tab in tabs"
@@ -17,13 +16,11 @@
 </template>
 
 <script>
-import AdministratorNavbar from '@/components/Administrator.navbar'
 import Tasks from '@/components/Tasks.tab'
 
 export default {
   name: 'Administrator',
   components: {
-    AdministratorNavbar,
     Tasks
   },
   data() {

@@ -2,7 +2,6 @@
   <div class="d-flex flex-row justify-start align-start home-container">
     <sidebar class="home-sidebar"/>
     <div class="justify-end home-main">
-      <home-navbar/>
       <welcome-message class="welcome-message"/>
       <home-lessons class="lessons"></home-lessons>
       <v-divider class="divider"></v-divider>
@@ -14,8 +13,7 @@
 </template>
 
 <script>
-import Sidebar from "@/components/Sidebar";
-import HomeNavbar from '@/components/Home.navbar'
+import Sidebar from '@/components/Sidebar';
 import WelcomeMessage from '@/components/Home.welcome.message'
 import HomeLessons from '@/components/Home.lessons'
 import HomeCourses from '@/components/Home.courses'
@@ -25,7 +23,6 @@ export default {
   name: 'Home',
   components: {
     Sidebar,
-    HomeNavbar,
     WelcomeMessage,
     HomeLessons,
     HomeCourses,
