@@ -9,6 +9,12 @@
       <v-spacer></v-spacer>
       <v-btn
           :round="true"
+          @click="viewTask(task)"
+      >
+        View
+      </v-btn>
+      <v-btn
+          :round="true"
           @click="updateRedirect(task)"
       >
         Update
@@ -79,6 +85,9 @@ export default {
     async taskDelete(taskID) {
       await this.deleteTask(taskID);
       this.hideDeleteDialog();
+    },
+    viewTask(task) {
+      this.$router.push({name: 'task', params: { taskID: task.id }})
     }
   },
   created() {

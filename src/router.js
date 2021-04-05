@@ -4,6 +4,7 @@ import Register from '@/pages/Register';
 import Home from '@/pages/Home';
 import Administrator from '@/pages/Administrator';
 import Tasks from '@/pages/Tasks';
+import Task from '@/pages/Single.task';
 
 const routes = [
   { name: 'register', component: Register, path: '/register' },
@@ -11,7 +12,8 @@ const routes = [
   { name: 'home', component: Home, path: '/home', alias: ['/']},
   { name: 'administrator', component: Administrator, path: '/administrator' },
   { name: 'createTasks', component: Tasks, path: '/administrator/tasks' },
-  { name: 'updateTasks', component: Tasks, path: `/administrator/tasks/:taskID` }
+  { name: 'updateTasks', component: Tasks, path: `/administrator/tasks/:taskID` },
+  { name: 'task', component: Task, path: `/administrator/tasks/view/:taskID` }
 ];
 
 const router = (store) => {

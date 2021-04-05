@@ -1,7 +1,7 @@
 export default {
   messagePrompt: state => state.messagePrompt.slice(0, 4),
   unprotectedRoutes: () => ['register', 'login'],
-  adminProtectedRoutes: () => ['administrator', 'createTasks', 'updateTasks'],
+  adminProtectedRoutes: () => ['administrator', 'createTasks', 'updateTasks', 'task'],
   userProtectedRoutes: () => ['home'],
   userData: state => state.userData,
   taskData: (state) => state.taskData || [],
