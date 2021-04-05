@@ -89,6 +89,7 @@ export default {
     try {
       if (!state.taskData || forceFetch) {
         const data = await HttpServer.get('/tasks', {token: state.token});
+        state.tasksLength = data.length;
         commit('STORE_TASK_DATA', data);
       }
     } catch (error) {
@@ -123,6 +124,34 @@ export default {
     } catch (error) {
       dispatch('messagePrompt', {
         header: 'Deletion error.',
+        text: error.message,
+        validity: 'error'
+      })
+    }
+  },
+  nextPage: async ({dispatch, commit, state}) => {
+    try {
+      if (state.taskPage * 10 <= state.tasksLength) {
+        commit('NEXT_PAGE');
+        state.taskPage++;
+      }
+    } catch (error) {
+      dispatch('messagePrompt', {
+        header: 'Error during loading.',
+        text: error.message,
+        validity: 'error'
+      })
+    }
+  },
+  previousPage: async ({dispatch, commit, state}) => {
+    try {
+      if (state.taskPage > 1) {
+        commit('PREVIOUS_PAGE');
+        state.taskPage--;
+      }
+    } catch (error) {
+      dispatch('messagePrompt', {
+        header: 'Error during loading.',
         text: error.message,
         validity: 'error'
       })

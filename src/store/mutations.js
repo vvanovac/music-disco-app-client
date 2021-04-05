@@ -28,5 +28,13 @@ export default {
   },
   STORE_TASK_DATA: (state, payload) => {
     state.taskData = payload;
+  },
+  NEXT_PAGE: state => {
+    state.tasksStartIndex += 10;
+    state.tasksEndIndex += 10;
+  },
+  PREVIOUS_PAGE: state => {
+    state.tasksStartIndex -= 10;
+    state.tasksEndIndex -= 10;
   }
 };

@@ -8,13 +8,25 @@
           :round="true"
           @click="$router.push({name: 'createTasks'})"
       >
-        Create
+        Create Task
       </v-btn>
       <v-btn
           :round="true"
           @click="$store.dispatch('getTasks', true)"
       >
         Reload Tasks
+      </v-btn>
+      <v-btn
+          :round="true"
+          @click="$store.dispatch('previousPage')"
+      >
+        Previous Page
+      </v-btn>
+      <v-btn
+          :round="true"
+          @click="$store.dispatch('nextPage')"
+      >
+        Next Page
       </v-btn>
     </div>
   </div>

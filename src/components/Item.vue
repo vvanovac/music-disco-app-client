@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar
-        v-for="task in taskData"
+        v-for="task in taskData.slice(this.taskPagination.start, this.taskPagination.end)"
         :key="task.id"
     >
       <v-toolbar-title>{{ task.id }}</v-toolbar-title>
@@ -56,7 +56,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['taskData'])
+    ...mapGetters(['taskData', 'taskPagination'])
   },
   methods: {
     ...mapActions(['getTasks', 'deleteTask']),
