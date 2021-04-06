@@ -2,6 +2,7 @@
   <div>
     <v-tabs fixed-tabs>
       <v-tab
+          class="title font-weight-regular"
           v-for="tab in tabs"
           :key="tab"
           @click="current(tab)"

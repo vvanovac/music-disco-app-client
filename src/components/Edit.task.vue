@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>To {{ edit.toLowerCase() }} a task, please fill the fields bellow.</h2>
+    <h2>To {{ determineAction }} a task, please fill the fields bellow.</h2>
     <form>
       <v-container>
         <v-text-field
@@ -33,9 +33,9 @@
         <v-btn
             class="edit-buttons"
             :round="true"
-            @click="create"
+            @click="edit"
         >
-          {{ edit }} Task
+          {{ determineAction }} Task
         </v-btn>
         <v-btn
             class="edit-buttons"
@@ -118,21 +118,21 @@ export default {
       }
       return errors
     },
-    edit () {
+    determineAction () {
       if (!this.isEdit) {
-        return 'Create'
+        return 'create'
       } else {
-        return 'Update'
+        return 'update'
       }
     }
   },
   methods: {
     ...mapActions(['messagePrompt', 'createTask', 'updateTask', 'getTasks', 'getTask']),
-    async create () {
+    async edit () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.messagePrompt({
-          header: 'Creating failed.',
+          header: 'Failed to edit.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
         })
