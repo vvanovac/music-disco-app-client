@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "Home.welcome.message",
+  name: 'Home.welcome.message',
   computed: {
     ...mapGetters(['userData'])
   }

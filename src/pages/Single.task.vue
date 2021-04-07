@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <view-task/>
-  </div>
+  <view-task/>
 </template>
 
 <script>
 import ViewTask from '@/components/View.task'
 
 export default {
-  name: "Task",
+  name: 'Task',
   components: {
     ViewTask
   }

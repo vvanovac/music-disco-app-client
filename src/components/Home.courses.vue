@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "Home.courses"
+  name: 'Home.courses'
 }
 </script>
 

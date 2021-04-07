@@ -31,14 +31,14 @@
             label="Image URL"
         ></v-text-field>
         <v-btn
-            class="edit-buttons"
+            class="save-buttons"
             :round="true"
-            @click="edit"
+            @click="save"
         >
           {{ determineAction }} Task
         </v-btn>
         <v-btn
-            class="edit-buttons"
+            class="save-buttons"
             :round="true"
             @click="clear"
         >
@@ -55,7 +55,7 @@ import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Edit.task',
+  name: 'Save.task',
   data() {
     const taskID = this.$route.params.taskID;
     return {
@@ -128,11 +128,11 @@ export default {
   },
   methods: {
     ...mapActions(['messagePrompt', 'createTask', 'updateTask', 'getTasks', 'getTask']),
-    async edit () {
+    async save () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.messagePrompt({
-          header: 'Failed to edit.',
+          header: 'Failed to save.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
         })
@@ -192,7 +192,7 @@ h2 {
   text-align: left;
 }
 
-.edit-buttons {
+.save-buttons {
   justify-content: center;
   color: #2c3e50;
   font-size: 2em;

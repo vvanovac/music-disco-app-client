@@ -1,20 +1,18 @@
 <template>
   <div class="wrapper">
-    <div>
-      <item/>
-    </div>
+    <tasks-tab-item/>
     <div>
       <v-btn
           :round="true"
           @click="$router.push({name: 'createTasks'})"
       >
-        Create Task
+        Create
       </v-btn>
       <v-btn
           :round="true"
           @click="$store.dispatch('getTasks', true)"
       >
-        Reload Tasks
+        Reload
       </v-btn>
       <v-btn
           :round="true"
@@ -33,12 +31,12 @@
 </template>
 
 <script>
-import Item from '@/components/Item'
+import TasksTabItem from '@/components/Tasks.tab.item'
 
 export default {
-  name: "Tasks.tab",
+  name: 'Tasks.tab',
   components: {
-    Item
+    TasksTabItem
   },
 }
 </script>

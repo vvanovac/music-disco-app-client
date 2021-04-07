@@ -54,7 +54,7 @@
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-  name: "Item",
+  name: 'Tasks.tab.item',
   data() {
     return {
       showDialog: false,

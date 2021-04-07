@@ -56,7 +56,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Register',

@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "Home.challenges"
+  name: 'Home.challenges'
 }
 </script>
 

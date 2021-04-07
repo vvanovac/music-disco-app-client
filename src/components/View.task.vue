@@ -11,10 +11,10 @@
 
 <script>
 
-import {mapActions} from "vuex";
+import {mapActions} from 'vuex';
 
 export default {
-  name: "View.task",
+  name: 'View.task',
   data() {
     return {
       title: '',

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <administrator-navbar v-show="showAdminNavbar"/>
-    <home-navbar v-show="showHomeNavbar"/>
+    <administrator-navbar v-if="navbarToShow === 'admin'"/>
+    <home-navbar v-if="navbarToShow === 'home'"/>
     <router-view></router-view>
     <form-message/>
   </div>
@@ -31,12 +31,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userProtectedRoutes', 'adminProtectedRoutes']),
-    showAdminNavbar() {
-      return this.adminProtectedRoutes.includes(this.$route.name);
-    },
-    showHomeNavbar() {
-      return this.userProtectedRoutes.includes(this.$route.name);
+    ...mapGetters(['adminProtectedRoutes', 'unprotectedRoutes']),
+    navbarToShow() {
+      if (this.adminProtectedRoutes.includes(this.$route.name)) {
+        return 'admin';
+      } else if (this.unprotectedRoutes.includes(this.$route.name)) {
+        return null;
+      } else {
+        return 'home';
+      }
     }
   }
 }

@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <edit-task/>
-  </div>
+  <edit-task/>
 </template>
 
 <script>
-import EditTask from '@/components/Edit.task'
+import EditTask from '@/components/Save.task'
 
 export default {
   name: 'Tasks',
