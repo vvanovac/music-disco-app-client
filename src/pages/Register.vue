@@ -37,6 +37,7 @@
         <v-btn
             class="register-buttons"
             :round="true"
+            :disabled="disableLoginButton"
             @click="register"
         >
           Register
@@ -44,6 +45,7 @@
         <v-btn
             class="register-buttons"
             :round="true"
+            :disabled="disableClearButton"
             @click="clear"
         >
           Clear
@@ -111,6 +113,12 @@ export default {
         errors.push('Email is required.')
       }
       return errors
+    },
+    disableLoginButton () {
+      return this.username === '' || this.password === '' || this.email === '';
+    },
+    disableClearButton () {
+      return this.username === '' && this.password === '' && this.email === '';
     }
   },
   methods: {

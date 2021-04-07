@@ -33,6 +33,7 @@
         <v-btn
             class="save-buttons"
             :round="true"
+            :disabled="disableSaveButton"
             @click="save"
         >
           {{ determineAction }} Task
@@ -40,6 +41,7 @@
         <v-btn
             class="save-buttons"
             :round="true"
+            :disabled="disableClearButton"
             @click="clear"
         >
           Clear
@@ -124,6 +126,18 @@ export default {
       } else {
         return 'update'
       }
+    },
+    disableSaveButton () {
+      if (!this.isEdit) {
+        return this.title === '' || this.subtitle === '' || this.description === '';
+      } else {
+        return this.title === '' && this.subtitle === '' && this.description === ''
+            && (this.imageURL === null || this.imageURL === '');
+      }
+    },
+    disableClearButton () {
+      return this.title === '' && this.subtitle === '' && this.description === ''
+          && (this.imageURL === null || this.imageURL === '');
     }
   },
   methods: {

@@ -30,6 +30,7 @@
         <v-btn
             class="login-buttons"
             :round="true"
+            :disabled="disableLoginButton"
             @click="login"
         >
           Log in
@@ -37,6 +38,7 @@
         <v-btn
             class="login-buttons"
             :round="true"
+            :disabled="disableClearButton"
             @click="clear"
         >
           Clear
@@ -88,6 +90,12 @@ export default {
       }
       return errors
     },
+    disableLoginButton () {
+      return this.username === '' || this.password === '';
+    },
+    disableClearButton () {
+      return this.username === '' && this.password === '';
+    }
   },
   methods: {
     ...mapActions(['storeToken', 'clearToken', 'messagePrompt', 'loginUser']),
