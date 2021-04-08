@@ -130,10 +130,8 @@ export default {
     disableSaveButton () {
       if (!this.isEdit) {
         return this.title === '' || this.subtitle === '' || this.description === '';
-      } else {
-        return this.title === '' && this.subtitle === '' && this.description === ''
-            && (this.imageURL === null || this.imageURL === '');
       }
+      return this.disableClearButton;
     },
     disableClearButton () {
       return this.title === '' && this.subtitle === '' && this.description === ''

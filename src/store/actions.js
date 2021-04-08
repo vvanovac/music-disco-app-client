@@ -117,6 +117,7 @@ export default {
   deleteTask: async ({dispatch, state}, taskID) => {
     try {
       await HttpServer.delete(`/tasks/${taskID}`, {token: state.token})
+      dispatch('getTasks', true);
       dispatch('messagePrompt', {
         header: 'Task successfully deleted.',
         validity: 'success'

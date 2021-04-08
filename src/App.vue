@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
-    <administrator-navbar v-if="navbarToShow === 'admin'"/>
-    <home-navbar v-if="navbarToShow === 'home'"/>
+    <keep-alive>
+      <component :is="navbarToShow"></component>
+    </keep-alive>
     <router-view></router-view>
     <form-message/>
   </div>
@@ -22,6 +23,7 @@ export default {
   },
   data() {
     return {
+      navbar: ['AdministratorNavbar', 'HomeNavbar'],
       promptData: {
         header: '',
         text: '',
@@ -34,11 +36,13 @@ export default {
     ...mapGetters(['adminProtectedRoutes', 'unprotectedRoutes']),
     navbarToShow() {
       if (this.adminProtectedRoutes.includes(this.$route.name)) {
-        return 'admin';
+        const index = this.navbar.indexOf('AdministratorNavbar')
+        return this.navbar[index];
       } else if (this.unprotectedRoutes.includes(this.$route.name)) {
         return null;
       } else {
-        return 'home';
+        const index = this.navbar.indexOf('HomeNavbar')
+        return this.navbar[index];
       }
     }
   }

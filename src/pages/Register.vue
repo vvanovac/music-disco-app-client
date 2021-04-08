@@ -37,7 +37,7 @@
         <v-btn
             class="register-buttons"
             :round="true"
-            :disabled="disableLoginButton"
+            :disabled="disableRegisterButton"
             @click="register"
         >
           Register
@@ -114,7 +114,7 @@ export default {
       }
       return errors
     },
-    disableLoginButton () {
+    disableRegisterButton () {
       return this.username === '' || this.password === '' || this.email === '';
     },
     disableClearButton () {
