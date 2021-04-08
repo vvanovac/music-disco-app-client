@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import TasksTabItem from '@/components/Tasks.tab.item'
+import TasksTabItem from '@/components/administrator/Tasks.tab.item'
 
 export default {
   name: 'Tasks.tab',

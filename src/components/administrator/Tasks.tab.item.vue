@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import DeleteDialog from '@/components/Delete.dialog'
+import DeleteDialog from '@/components/administrator/Delete.dialog'
 import {mapActions, mapGetters} from 'vuex';
 
 export default {

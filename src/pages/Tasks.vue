@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import EditTask from '@/components/Save.task'
+import EditTask from '@/components/administrator/Save.task'
 
 export default {
   name: 'Tasks',

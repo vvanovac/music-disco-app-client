@@ -14,10 +14,10 @@
 
 <script>
 import Sidebar from '@/components/Sidebar';
-import WelcomeMessage from '@/components/Home.welcome.message'
-import HomeLessons from '@/components/Home.lessons'
-import HomeCourses from '@/components/Home.courses'
-import HomeChallenges from '@/components/Home.challenges'
+import WelcomeMessage from '@/components/home/Home.welcome.message'
+import HomeLessons from '@/components/home/Home.lessons'
+import HomeCourses from '@/components/home/Home.courses'
+import HomeChallenges from '@/components/home/Home.challenges'
 
 export default {
   name: 'Home',

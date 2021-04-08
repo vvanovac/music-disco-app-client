@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import AdministratorNavbar from '@/components/Administrator.navbar'
-import HomeNavbar from '@/components/Home.navbar'
+import AdministratorNavbar from '@/components/administrator/Administrator.navbar'
+import HomeNavbar from '@/components/home/Home.navbar'
 import FormMessage from '@/components/Form.message'
 import {mapGetters} from 'vuex';
 

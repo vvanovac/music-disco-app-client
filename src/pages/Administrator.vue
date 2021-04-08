@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Tasks from '@/components/Tasks.tab'
+import Tasks from '@/components/administrator/Tasks.tab'
 
 export default {
   name: 'Administrator',

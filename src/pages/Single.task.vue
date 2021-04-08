@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ViewTask from '@/components/View.task'
+import ViewTask from '@/components/administrator/View.task'
 
 export default {
   name: 'Task',

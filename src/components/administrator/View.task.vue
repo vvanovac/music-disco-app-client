@@ -5,7 +5,7 @@
       <h6>{{ subtitle }}</h6>
     </div>
     <p class="title pt-5">{{ description }}</p>
-    <img src="../assets/task_image.png" alt="task">
+    <img src="../../assets/task_image.png" alt="task">
   </div>
 </template>
 
