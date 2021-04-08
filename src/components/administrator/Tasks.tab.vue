@@ -14,18 +14,6 @@
       >
         Reload
       </v-btn>
-      <v-btn
-          :round="true"
-          @click="$store.dispatch('previousPage')"
-      >
-        Previous Page
-      </v-btn>
-      <v-btn
-          :round="true"
-          @click="$store.dispatch('nextPage')"
-      >
-        Next Page
-      </v-btn>
     </div>
   </div>
 </template>

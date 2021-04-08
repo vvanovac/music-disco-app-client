@@ -6,8 +6,4 @@ export default {
   messagePromptCounter: 0,
   userData: null,
   taskData: null,
-  tasksLength: null,
-  taskPage: 1,
-  tasksStartIndex: 0,
-  tasksEndIndex: 10
 };

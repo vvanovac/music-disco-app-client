@@ -1,34 +1,35 @@
 import HttpServer from '@/services/http.server';
+import { mutation, action } from './store.constants'
 
 export default {
   clearToken: ({commit}) => {
-    commit('CLEAR_TOKEN');
-    commit('CLEAR_USER_DATA');
+    commit(mutation.CLEAR_TOKEN);
+    commit(mutation.CLEAR_USER_DATA);
   },
   storeToken: async ({commit, dispatch}, payload) => {
-    commit('STORE_TOKEN', payload);
-    await dispatch('getUserData');
+    commit(mutation.STORE_TOKEN, payload);
+    await dispatch(action.GET_USER_DATA);
   },
   messagePrompt: ({commit}, payload) => {
-    commit('ADD_MESSAGE_PROMPT', payload);
+    commit(mutation.ADD_MESSAGE_PROMPT, payload);
   },
   getUserData: async ({commit, state}) => {
     if (!state.userData) {
       const userData = await HttpServer.get('/currentUser', {token: state.token});
-      await commit('FETCH_USER_DATA', userData);
+      await commit(mutation.FETCH_USER_DATA, userData);
     }
     return state.userData;
   },
   registerUser: async ({dispatch}, payload) => {
     try {
       await HttpServer.post('/register', {}, payload);
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Successfully registered.',
         validity: 'success'
       });
       return true;
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Registration failed.',
         text: error.message,
         validity: 'error'
@@ -38,14 +39,14 @@ export default {
   loginUser: async ({dispatch}, payload) => {
     try {
       const token = await HttpServer.post('/login', {}, payload);
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Successfully logged in.',
         validity: 'success'
       });
-      await dispatch('storeToken', token.accessToken);
+      await dispatch(action.STORE_TOKEN, token.accessToken);
       return true;
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Login failed.',
         text: error.message,
         validity: 'error'
@@ -55,13 +56,13 @@ export default {
   createTask: async ({dispatch, state}, payload) => {
     try {
       await HttpServer.post('/tasks', {token: state.token}, payload);
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Task successfully created.',
         validity: 'success'
       });
       return true;
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Task creating failed.',
         text: error.message,
         validity: 'error'
@@ -72,13 +73,13 @@ export default {
     try {
       const {taskID, ...rest} = payload;
       await HttpServer.put(`/tasks/${taskID}`, {token: state.token}, rest);
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Task successfully updated.',
         validity: 'success'
       });
       return true;
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Task updating failed.',
         text: error.message,
         validity: 'error'
@@ -89,11 +90,10 @@ export default {
     try {
       if (!state.taskData || forceFetch) {
         const data = await HttpServer.get('/tasks', {token: state.token});
-        state.tasksLength = data.length;
-        commit('STORE_TASK_DATA', data);
+        commit(mutation.STORE_TASK_DATA, data);
       }
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Error during fetching.',
         text: error.message,
         validity: 'error'
@@ -107,7 +107,7 @@ export default {
       }
       return await HttpServer.get(`/tasks/${taskID}`, {token: state.token});
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Error during fetching.',
         text: error.message,
         validity: 'error'
@@ -117,42 +117,14 @@ export default {
   deleteTask: async ({dispatch, state}, taskID) => {
     try {
       await HttpServer.delete(`/tasks/${taskID}`, {token: state.token})
-      dispatch('getTasks', true);
-      dispatch('messagePrompt', {
+      dispatch(action.GET_TASKS, true);
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Task successfully deleted.',
         validity: 'success'
       });
     } catch (error) {
-      dispatch('messagePrompt', {
+      dispatch(action.MESSAGE_PROMPT, {
         header: 'Deletion error.',
-        text: error.message,
-        validity: 'error'
-      })
-    }
-  },
-  nextPage: async ({dispatch, commit, state}) => {
-    try {
-      if (state.taskPage * 10 <= state.tasksLength) {
-        commit('NEXT_PAGE');
-        state.taskPage++;
-      }
-    } catch (error) {
-      dispatch('messagePrompt', {
-        header: 'Error during loading.',
-        text: error.message,
-        validity: 'error'
-      })
-    }
-  },
-  previousPage: async ({dispatch, commit, state}) => {
-    try {
-      if (state.taskPage > 1) {
-        commit('PREVIOUS_PAGE');
-        state.taskPage--;
-      }
-    } catch (error) {
-      dispatch('messagePrompt', {
-        header: 'Error during loading.',
         text: error.message,
         validity: 'error'
       })

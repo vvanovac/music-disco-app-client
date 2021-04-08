@@ -4,10 +4,4 @@ export default {
   adminProtectedRoutes: () => ['administrator', 'createTasks', 'updateTasks', 'task'],
   userData: state => state.userData,
   taskData: (state) => state.taskData || [],
-  taskPagination: (state) => {
-    return {
-      start: state.tasksStartIndex,
-      end: state.tasksEndIndex
-    }
-  }
 };

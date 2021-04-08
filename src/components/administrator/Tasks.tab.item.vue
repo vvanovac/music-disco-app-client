@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar
-        v-for="task in taskData.slice(this.taskPagination.start, this.taskPagination.end)"
+        v-for="task in taskData"
         :key="task.id"
     >
       <v-toolbar-title>{{ task.id }}</v-toolbar-title>
@@ -37,7 +37,7 @@
 
 <script>
 import DeleteDialog from '@/components/administrator/Delete.dialog'
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Tasks.tab.item',
@@ -51,7 +51,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['taskData', 'taskPagination'])
+    ...mapGetters(['taskData'])
   },
   methods: {
     ...mapActions(['getTasks', 'deleteTask']),
