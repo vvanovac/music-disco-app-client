@@ -55,6 +55,7 @@
 import { validationMixin } from 'vuelidate'
 import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
+import { action } from '@/store/store.constants';
 
 export default {
   name: 'Save.task',
@@ -139,16 +140,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['messagePrompt', 'createTask', 'updateTask', 'getTasks', 'getTask']),
+    ...mapActions([action.MESSAGE_PROMPT, action.CREATE_TASK, action.UPDATE_TASK, action.GET_TASKS, action.GET_TASK]),
     async save () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.messagePrompt({
+        this[action.MESSAGE_PROMPT]({
           header: 'Failed to save.',
           text: 'Invalid form. Please try again.',
           validity: 'error',
         })
-        return
+        return;
       }
       const payload = {
         title: this.title,
@@ -157,12 +158,12 @@ export default {
         imageURL: this.imageURL
       };
       if (!this.isEdit) {
-        await this.createTask(payload);
+        await this[action.CREATE_TASK](payload)
       } else {
-        await this.updateTask({ ...payload, taskID: this.taskID });
+        await this[action.UPDATE_TASK]({ ...payload, taskID: this.taskID });
       }
       this.clearFields();
-      await this.getTasks(true);
+      await this[action.GET_TASKS](true);
       await this.$router.push({name: 'administrator'});
     },
     clearFields () {
@@ -171,7 +172,7 @@ export default {
     },
     clear () {
       this.clearFields();
-      this.messagePrompt({
+      this[action.MESSAGE_PROMPT]({
         header: 'All fields cleared.',
         validity: 'info'
       })
@@ -185,7 +186,7 @@ export default {
   },
   async mounted() {
     if (this.isEdit) {
-      const data = await this.getTask(this.$route.params.taskID);
+      const data = await this[action.GET_TASK](this.$route.params.taskID);
       this.setData(data);
     }
   },

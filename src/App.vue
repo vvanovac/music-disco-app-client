@@ -13,6 +13,7 @@ import AdministratorNavbar from '@/components/administrator/Administrator.navbar
 import HomeNavbar from '@/components/home/Home.navbar'
 import FormMessage from '@/components/Form.message'
 import {mapGetters} from 'vuex';
+import { getter } from '@/store/store.constants';
 
 export default {
   name: 'App',
@@ -33,12 +34,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['adminProtectedRoutes', 'unprotectedRoutes']),
+    ...mapGetters([getter.ADMIN_PROTECTED_ROUTES, getter.UNPROTECTED_ROUTES]),
     navbarToShow() {
-      if (this.adminProtectedRoutes.includes(this.$route.name)) {
+      if (this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name)) {
         const index = this.navbar.indexOf('AdministratorNavbar')
         return this.navbar[index];
-      } else if (this.unprotectedRoutes.includes(this.$route.name)) {
+      } else if (this[getter.UNPROTECTED_ROUTES].includes(this.$route.name)) {
         return null;
       } else {
         const index = this.navbar.indexOf('HomeNavbar')

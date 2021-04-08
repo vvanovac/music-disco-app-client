@@ -2,25 +2,25 @@ import HttpServer from '@/services/http.server';
 import { mutation, action } from './store.constants'
 
 export default {
-  clearToken: ({commit}) => {
+  [action.CLEAR_TOKEN]: ({commit}) => {
     commit(mutation.CLEAR_TOKEN);
     commit(mutation.CLEAR_USER_DATA);
   },
-  storeToken: async ({commit, dispatch}, payload) => {
+  [action.STORE_TOKEN]: async ({commit, dispatch}, payload) => {
     commit(mutation.STORE_TOKEN, payload);
     await dispatch(action.GET_USER_DATA);
   },
-  messagePrompt: ({commit}, payload) => {
+  [action.MESSAGE_PROMPT]: ({commit}, payload) => {
     commit(mutation.ADD_MESSAGE_PROMPT, payload);
   },
-  getUserData: async ({commit, state}) => {
+  [action.GET_USER_DATA]: async ({commit, state}) => {
     if (!state.userData) {
       const userData = await HttpServer.get('/currentUser', {token: state.token});
       await commit(mutation.FETCH_USER_DATA, userData);
     }
     return state.userData;
   },
-  registerUser: async ({dispatch}, payload) => {
+  [action.REGISTER]: async ({dispatch}, payload) => {
     try {
       await HttpServer.post('/register', {}, payload);
       dispatch(action.MESSAGE_PROMPT, {
@@ -36,7 +36,7 @@ export default {
       });
     }
   },
-  loginUser: async ({dispatch}, payload) => {
+  [action.LOGIN]: async ({dispatch}, payload) => {
     try {
       const token = await HttpServer.post('/login', {}, payload);
       dispatch(action.MESSAGE_PROMPT, {
@@ -53,7 +53,7 @@ export default {
       });
     }
   },
-  createTask: async ({dispatch, state}, payload) => {
+  [action.CREATE_TASK]: async ({dispatch, state}, payload) => {
     try {
       await HttpServer.post('/tasks', {token: state.token}, payload);
       dispatch(action.MESSAGE_PROMPT, {
@@ -69,7 +69,7 @@ export default {
       });
     }
   },
-  updateTask: async ({dispatch, state}, payload) => {
+  [action.UPDATE_TASK]: async ({dispatch, state}, payload) => {
     try {
       const {taskID, ...rest} = payload;
       await HttpServer.put(`/tasks/${taskID}`, {token: state.token}, rest);
@@ -86,7 +86,7 @@ export default {
       });
     }
   },
-  getTasks: async ({dispatch, commit, state}, forceFetch) => {
+  [action.GET_TASKS]: async ({dispatch, commit, state}, forceFetch) => {
     try {
       if (!state.taskData || forceFetch) {
         const data = await HttpServer.get('/tasks', {token: state.token});
@@ -100,7 +100,7 @@ export default {
       });
     }
   },
-  getTask: async ({dispatch, state}, taskID) => {
+  [action.GET_TASK]: async ({dispatch, state}, taskID) => {
     try {
       if (state.taskData && state.taskData.length > 0) {
         return state.taskData.find((task) => task.id === taskID);
@@ -114,7 +114,7 @@ export default {
       });
     }
   },
-  deleteTask: async ({dispatch, state}, taskID) => {
+  [action.DELETE_TASK]: async ({dispatch, state}, taskID) => {
     try {
       await HttpServer.delete(`/tasks/${taskID}`, {token: state.token})
       dispatch(action.GET_TASKS, true);

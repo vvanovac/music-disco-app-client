@@ -1,7 +1,9 @@
+import { getter } from '@/store/store.constants';
+
 export default {
-  messagePrompt: state => state.messagePrompt.slice(0, 4),
-  unprotectedRoutes: () => ['register', 'login'],
-  adminProtectedRoutes: () => ['administrator', 'createTasks', 'updateTasks', 'task'],
-  userData: state => state.userData,
-  taskData: (state) => state.taskData || [],
+  [getter.MESSAGE_PROMPT]: state => state.messagePrompt.slice(0, 4),
+  [getter.UNPROTECTED_ROUTES]: () => ['register', 'login'],
+  [getter.ADMIN_PROTECTED_ROUTES]: () => ['administrator', 'createTasks', 'updateTasks', 'task'],
+  [getter.USER_DATA]: state => state.userData,
+  [getter.TASK_DATA]: state => state.taskData || [],
 };

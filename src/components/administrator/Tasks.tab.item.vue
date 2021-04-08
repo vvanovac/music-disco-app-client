@@ -38,6 +38,7 @@
 <script>
 import DeleteDialog from '@/components/administrator/Delete.dialog'
 import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'Tasks.tab.item',
@@ -51,10 +52,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['taskData'])
+    ...mapGetters([getter.TASK_DATA])
   },
   methods: {
-    ...mapActions(['getTasks', 'deleteTask']),
+    ...mapActions([action.GET_TASKS, action.DELETE_TASK]),
     updateRedirect(task) {
       this.$router.push({name: 'updateTasks', params: { taskID: task.id}})
     },
@@ -69,7 +70,7 @@ export default {
       this.toggleDeleteDialog(true);
     },
     async confirmDeleting(taskID) {
-      await this.deleteTask(taskID);
+      await this[action.DELETE_TASK](taskID);
       this.toggleDeleteDialog(false);
     },
     viewTask(task) {
@@ -77,7 +78,7 @@ export default {
     }
   },
   created() {
-    this.getTasks();
+    this[action.GET_TASKS]();
   }
 }
 </script>

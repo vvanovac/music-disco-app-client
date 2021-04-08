@@ -11,7 +11,8 @@
 
 <script>
 
-import {mapActions} from 'vuex';
+import { mapActions } from 'vuex';
+import { action } from '@/store/store.constants';
 
 export default {
   name: 'View.task',
@@ -23,7 +24,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTask']),
+    ...mapActions([action.GET_TASK]),
     setData (data = {}) {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
@@ -31,7 +32,7 @@ export default {
     }
   },
   async mounted() {
-    const data = await this.getTask(this.$route.params.taskID)
+    const data = await this[action.GET_TASK](this.$route.params.taskID)
     this.setData(data);
   }
 }

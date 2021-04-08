@@ -52,6 +52,7 @@
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
+import { action } from '@/store/store.constants';
 
 export default {
   name: 'Login',
@@ -98,19 +99,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['storeToken', 'clearToken', 'messagePrompt', 'loginUser']),
+    ...mapActions([action.CLEAR_TOKEN, action.MESSAGE_PROMPT, action.LOGIN]),
     async login () {
       if (!this.loading) {
         this.loading = true;
         this.$v.$touch()
         if (this.$v.$invalid) {
-          this.messagePrompt({
+          this[action.MESSAGE_PROMPT]({
             header: 'Login failed.',
             text: 'Invalid form. Please try again.',
             validity: 'error',
           })
         } else {
-          const shouldRedirect = await this.loginUser({username: this.username, password: this.password})
+          const shouldRedirect = await this[action.LOGIN]({username: this.username, password: this.password})
           if (shouldRedirect) {
             await this.$router.push({name: 'home'})
           }
@@ -122,7 +123,7 @@ export default {
       this.$v.$reset()
       this.username = ''
       this.password = ''
-      this.messagePrompt({
+      this[action.MESSAGE_PROMPT]({
         header: 'All fields cleared.',
         validity: 'info'
       })
@@ -133,7 +134,7 @@ export default {
     password: { required, minLength: minLength(8) },
   },
   mounted() {
-    this.clearToken();
+    this[action.CLEAR_TOKEN]();
   },
 }
 </script>

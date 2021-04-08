@@ -11,11 +11,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { getter } from '@/store/store.constants';
 
 export default {
   name: 'Home.welcome.message',
   computed: {
-    ...mapGetters(['userData'])
+    ...mapGetters([getter.USER_DATA])
   }
 }
 </script>

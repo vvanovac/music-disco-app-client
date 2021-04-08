@@ -10,12 +10,18 @@
               color="green darken-3"
               :round="true"
               flat
-              @click="$emit('cancel')">Cancel</v-btn>
+              @click="$emit('cancel')"
+          >
+            Cancel
+          </v-btn>
           <v-btn
               color="red darken-3"
               :round="true"
               flat
-              @click="$emit('confirm')">Delete</v-btn>
+              @click="$emit('confirm')"
+          >
+            Delete
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

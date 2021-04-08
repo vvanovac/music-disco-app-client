@@ -5,6 +5,7 @@ import Home from '@/pages/Home';
 import Administrator from '@/pages/Administrator';
 import Tasks from '@/pages/Tasks';
 import Task from '@/pages/Single.task';
+import {action, getter} from '@/store/store.constants';
 
 const routes = [
   { name: 'register', component: Register, path: '/register' },
@@ -22,16 +23,16 @@ const router = (store) => {
   routerUsed.beforeEach(async (to, from, next) => {
     const redirect = 'login';
 
-    if (store.getters.unprotectedRoutes.includes(to.name)) {
+    if (store.getters[getter.UNPROTECTED_ROUTES].includes(to.name)) {
       return next();
     }
     const token = store.state.token;
     if (!token) {
       return next(redirect);
     }
-    const userData = await store.dispatch('getUserData');
-    if (userData && !userData.isAdmin && store.getters.adminProtectedRoutes.includes(to.name)) {
-      store.dispatch('messagePrompt', {
+    const userData = await store.dispatch(action.GET_USER_DATA);
+    if (userData && !userData.isAdmin && store.getters[getter.ADMIN_PROTECTED_ROUTES].includes(to.name)) {
+      store.dispatch(action.MESSAGE_PROMPT, {
         header: 'Access not allowed.',
         text: 'You cannot access this.',
         validity: 'error'

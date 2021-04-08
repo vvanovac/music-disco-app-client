@@ -23,6 +23,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import { getter } from '@/store/store.constants';
 
 export default {
   name: 'Sidebar',
@@ -32,9 +33,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userData']),
+    ...mapGetters([getter.USER_DATA]),
     adminProtected() {
-      return this.userData && this.userData.isAdmin;
+      return this[getter.USER_DATA] && this[getter.USER_DATA].isAdmin;
     },
     items() {
       return [
