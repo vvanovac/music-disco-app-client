@@ -5,7 +5,7 @@ import Home from '@/pages/Home';
 import Administrator from '@/pages/Administrator';
 import Tasks from '@/pages/Tasks';
 import Task from '@/pages/Single.task';
-import {action, getter} from '@/store/store.constants';
+import { action, getter } from '@/store/store.constants';
 
 const routes = [
   { name: 'register', component: Register, path: '/register' },

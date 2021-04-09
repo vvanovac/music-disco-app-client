@@ -90,6 +90,7 @@ export default {
     try {
       if (!state.taskData || forceFetch) {
         const data = await HttpServer.get('/tasks', {token: state.token});
+        state.taskDataLength = data.length;
         commit(mutation.STORE_TASK_DATA, data);
       }
     } catch (error) {
@@ -129,5 +130,8 @@ export default {
         validity: 'error'
       })
     }
+  },
+  [action.SET_SLICE]: ({commit}, page) => {
+    commit(mutation.SET_SLICE, page);
   }
 };

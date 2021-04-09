@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar
-        v-for="task in taskData"
+        v-for="task in taskData.slice(page * dataPerPage, (page + 1) * dataPerPage)"
         :key="task.id"
     >
       <v-toolbar-title>{{ task.id }}</v-toolbar-title>
@@ -52,7 +52,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([getter.TASK_DATA])
+    ...mapGetters({
+      taskData: getter.TASK_DATA,
+      page: getter.PAGINATION_PAGE,
+      dataPerPage: getter.DATA_PER_PAGE
+    })
   },
   methods: {
     ...mapActions([action.GET_TASKS, action.DELETE_TASK]),

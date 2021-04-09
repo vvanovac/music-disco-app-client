@@ -6,4 +6,7 @@ export default {
   [getter.ADMIN_PROTECTED_ROUTES]: () => ['administrator', 'createTasks', 'updateTasks', 'task'],
   [getter.USER_DATA]: state => state.userData,
   [getter.TASK_DATA]: state => state.taskData || [],
+  [getter.TASK_DATA_LENGTH]: state => state.taskDataLength,
+  [getter.PAGINATION_PAGE]: state => state.paginationPage,
+  [getter.DATA_PER_PAGE]: state => state.dataPerPage,
 };

@@ -31,7 +31,16 @@
 <script>
 export default {
   name: "Delete.dialog",
-  props: ['title', 'showDialog']
+  props: {
+    title: {
+      type: String,
+      required: false
+    },
+    showDialog: {
+      type: Boolean,
+      required: true
+    }
+  }
 }
 </script>
 

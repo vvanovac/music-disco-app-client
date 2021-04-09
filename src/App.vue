@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <keep-alive>
-      <component :is="navbarToShow"></component>
-    </keep-alive>
+    <component :is="navbarToShow"></component>
     <router-view></router-view>
     <form-message/>
   </div>
@@ -12,7 +10,7 @@
 import AdministratorNavbar from '@/components/administrator/Administrator.navbar'
 import HomeNavbar from '@/components/home/Home.navbar'
 import FormMessage from '@/components/Form.message'
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import { getter } from '@/store/store.constants';
 
 export default {

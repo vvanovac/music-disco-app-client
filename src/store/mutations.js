@@ -29,5 +29,8 @@ export default {
   },
   [mutation.STORE_TASK_DATA]: (state, payload) => {
     state.taskData = payload;
+  },
+  [mutation.SET_SLICE]: (state, page) => {
+    state.paginationPage = page - 1;
   }
 };

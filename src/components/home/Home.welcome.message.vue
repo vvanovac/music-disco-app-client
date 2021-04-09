@@ -16,7 +16,7 @@ import { getter } from '@/store/store.constants';
 export default {
   name: 'Home.welcome.message',
   computed: {
-    ...mapGetters([getter.USER_DATA])
+    ...mapGetters({ userData: getter.USER_DATA })
   }
 }
 </script>

@@ -1,30 +1,31 @@
 <template>
   <div class="wrapper">
     <tasks-tab-item/>
-    <div>
-      <v-btn
-          :round="true"
-          @click="$router.push({name: 'createTasks'})"
-      >
-        Create
-      </v-btn>
-      <v-btn
-          :round="true"
-          @click="$store.dispatch('getTasks', true)"
-      >
-        Reload
-      </v-btn>
-    </div>
+    <v-btn
+        :round="true"
+        @click="$router.push({name: 'createTasks'})"
+    >
+      Create
+    </v-btn>
+    <v-btn
+        :round="true"
+        @click="$store.dispatch('GET_TASKS', true)"
+    >
+      Reload
+    </v-btn>
+    <pagination/>
   </div>
 </template>
 
 <script>
 import TasksTabItem from '@/components/administrator/Tasks.tab.item'
+import Pagination from '@/components/administrator/Pagination';
 
 export default {
   name: 'Tasks.tab',
   components: {
-    TasksTabItem
+    TasksTabItem,
+    Pagination
   },
 }
 </script>

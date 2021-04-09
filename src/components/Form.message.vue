@@ -22,7 +22,7 @@ import { getter } from '@/store/store.constants';
 export default {
   name: 'Form.message',
   computed: {
-    ...mapGetters([getter.MESSAGE_PROMPT])
+    ...mapGetters({ messagePrompt: getter.MESSAGE_PROMPT })
   },
   methods: {
     formClass(messagePrompt) {
