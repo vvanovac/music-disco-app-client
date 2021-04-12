@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" data-app>
     <component :is="navbarToShow"></component>
     <router-view></router-view>
     <form-message/>

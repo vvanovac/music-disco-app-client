@@ -8,5 +8,6 @@ export default {
   taskData: null,
   taskDataLength: 0,
   paginationPage: 0,
-  dataPerPage: 10
+  dataPerPage: 10,
+  sortCriteria: null
 };

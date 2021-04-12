@@ -35,5 +35,8 @@ export default {
   },
   [mutation.SET_DATA_PER_PAGE]: (state, perPage) => {
     state.dataPerPage = perPage;
+  },
+  [mutation.SET_SORT_CRITERIA]: (state, criteria) => {
+    state.sortCriteria = criteria;
   }
 };

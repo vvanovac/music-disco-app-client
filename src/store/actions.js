@@ -136,5 +136,8 @@ export default {
   },
   [action.SET_DATA_PER_PAGE]: ({commit}, perPage) => {
     commit(mutation.SET_DATA_PER_PAGE, perPage);
+  },
+  [action.SET_SORT_CRITERIA]: ({commit}, criteria) => {
+    commit(mutation.SET_SORT_CRITERIA, criteria);
   }
 };
