@@ -35,14 +35,12 @@ export default {
     ...mapGetters([getter.ADMIN_PROTECTED_ROUTES, getter.UNPROTECTED_ROUTES]),
     navbarToShow() {
       if (this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name)) {
-        const index = this.navbar.indexOf('AdministratorNavbar')
-        return this.navbar[index];
-      } else if (this[getter.UNPROTECTED_ROUTES].includes(this.$route.name)) {
-        return null;
-      } else {
-        const index = this.navbar.indexOf('HomeNavbar')
-        return this.navbar[index];
+        return 'AdministratorNavbar';
       }
+      if (this[getter.UNPROTECTED_ROUTES].includes(this.$route.name)) {
+        return null;
+      }
+      return 'HomeNavbar';
     }
   }
 }

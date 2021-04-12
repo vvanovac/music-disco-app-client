@@ -32,5 +32,8 @@ export default {
   },
   [mutation.SET_SLICE]: (state, page) => {
     state.paginationPage = page - 1;
+  },
+  [mutation.SET_DATA_PER_PAGE]: (state, perPage) => {
+    state.dataPerPage = perPage;
   }
 };

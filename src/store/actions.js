@@ -133,5 +133,8 @@ export default {
   },
   [action.SET_SLICE]: ({commit}, page) => {
     commit(mutation.SET_SLICE, page);
+  },
+  [action.SET_DATA_PER_PAGE]: ({commit}, perPage) => {
+    commit(mutation.SET_DATA_PER_PAGE, perPage);
   }
 };
