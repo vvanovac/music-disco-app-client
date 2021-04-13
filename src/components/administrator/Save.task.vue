@@ -25,10 +25,10 @@
             required
         ></v-text-field>
         <v-text-field
-            v-model="$v.imageURL.$model"
-            :error-messages="imageURLErrors"
+            v-model="$v.musicNotes.$model"
+            :error-messages="musicNotesErrors"
             :required="false"
-            label="Image URL"
+            label="Music notes"
         ></v-text-field>
         <v-btn
             class="save-buttons"
@@ -53,7 +53,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength, url } from 'vuelidate/lib/validators'
+import { required, minLength } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 import { action } from '@/store/store.constants';
 import { taskMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants'
@@ -67,7 +67,7 @@ export default {
       title: '',
       subtitle: '',
       description: '',
-      imageURL: null,
+      musicNotes: '',
       isEdit: Number.isFinite(+taskID),
     }
   },
@@ -112,13 +112,13 @@ export default {
       }
       return errors
     },
-    imageURLErrors () {
+    musicNotesErrors () {
       const errors = []
-      if (!this.$v.imageURL.$dirty) {
+      if (!this.$v.musicNotes.$dirty) {
         return errors
       }
-      if (!this.$v.imageURL.url) {
-        errors.push(taskMessages.INVALID_IMAGE_URL);
+      if (!this.$v.musicNotes.required) {
+        errors.push(taskMessages.MUSIC_NOTES_REQUIRED);
       }
       return errors
     },
@@ -131,13 +131,12 @@ export default {
     },
     disableSaveButton () {
       if (!this.isEdit) {
-        return this.title === '' || this.subtitle === '' || this.description === '';
+        return this.title === '' || this.subtitle === '' || this.description === '' || this.musicNotes === '';
       }
       return this.disableClearButton;
     },
     disableClearButton () {
-      return this.title === '' && this.subtitle === '' && this.description === ''
-          && (this.imageURL === null || this.imageURL === '');
+      return this.title === '' && this.subtitle === '' && this.description === '' && this.musicNotes === '';
     }
   },
   methods: {
@@ -156,7 +155,7 @@ export default {
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
-        imageURL: this.imageURL
+        musicNotes: this.musicNotes.split(',')
       };
       if (!this.isEdit) {
         await this[action.CREATE_TASK](payload)
@@ -182,7 +181,7 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
-      this.imageURL = data.imageURL || null;
+      this.musicNotes = data.musicNotes || '';
     }
   },
   async mounted() {
@@ -195,7 +194,7 @@ export default {
     title: { required, minLength: minLength(8) },
     subtitle: { required, minLength: minLength(8) },
     description: { required, minLength: minLength(8) },
-    imageURL: { url },
+    musicNotes: { required },
   }
 }
 </script>

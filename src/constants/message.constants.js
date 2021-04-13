@@ -43,7 +43,7 @@ const taskMessages = {
   SUBTITLE_REQUIRED: 'Subtitle is required.',
   SHORT_DESCRIPTION: 'Description must be at least 16 characters long.',
   DESCRIPTION_REQUIRED: 'Description is required.',
-  INVALID_IMAGE_URL: 'Image URL must be a valid URL.',
+  MUSIC_NOTES_REQUIRED: 'Music notes are required.',
 };
 
 export {
