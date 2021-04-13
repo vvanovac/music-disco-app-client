@@ -6,6 +6,7 @@ import Administrator from '@/pages/Administrator';
 import Tasks from '@/pages/Tasks';
 import Task from '@/pages/Single.task';
 import { action, getter } from '@/store/store.constants';
+import {messageHeader, messageText, messageValidity} from '@/constants/message.constants';
 
 const routes = [
   { name: 'register', component: Register, path: '/register' },
@@ -33,9 +34,9 @@ const router = (store) => {
     const userData = await store.dispatch(action.GET_USER_DATA);
     if (userData && !userData.isAdmin && store.getters[getter.ADMIN_PROTECTED_ROUTES].includes(to.name)) {
       store.dispatch(action.MESSAGE_PROMPT, {
-        header: 'Access not allowed.',
-        text: 'You cannot access this.',
-        validity: 'error'
+        header: messageHeader.UNAUTHORIZED,
+        text: messageText.UNAUTHORIZED,
+        validity: messageValidity.ERROR
       });
       return next({ name: 'home' });
     }

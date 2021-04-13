@@ -56,6 +56,7 @@ import { validationMixin } from 'vuelidate'
 import { required, minLength, url } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 import { action } from '@/store/store.constants';
+import { taskMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants'
 
 export default {
   name: 'Save.task',
@@ -78,10 +79,10 @@ export default {
         return errors
       }
       if (!this.$v.title.minLength) {
-        errors.push('Title must be at least 8 characters long.')
+        errors.push(taskMessages.SHORT_TITLE);
       }
       if (!this.$v.title.required) {
-        errors.push('Title is required.')
+        errors.push(taskMessages.TITLE_REQUIRED);
       }
       return errors
     },
@@ -91,10 +92,10 @@ export default {
         return errors
       }
       if (!this.$v.subtitle.minLength) {
-        errors.push('Subtitle must be at least 8 characters long.')
+        errors.push(taskMessages.SHORT_SUBTITLE)
       }
       if (!this.$v.subtitle.required) {
-        errors.push('Subtitle is required.')
+        errors.push(taskMessages.SUBTITLE_REQUIRED)
       }
       return errors
     },
@@ -104,10 +105,10 @@ export default {
         return errors
       }
       if (!this.$v.description.minLength) {
-        errors.push('Description must be at least 16 characters long.')
+        errors.push(taskMessages.SHORT_DESCRIPTION);
       }
       if (!this.$v.description.required) {
-        errors.push('Subtitle is required.')
+        errors.push(taskMessages.DESCRIPTION_REQUIRED);
       }
       return errors
     },
@@ -117,7 +118,7 @@ export default {
         return errors
       }
       if (!this.$v.imageURL.url) {
-        errors.push('Image URL must be a valid URL.')
+        errors.push(taskMessages.INVALID_IMAGE_URL);
       }
       return errors
     },
@@ -145,9 +146,9 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this[action.MESSAGE_PROMPT]({
-          header: 'Failed to save.',
-          text: 'Invalid form. Please try again.',
-          validity: 'error',
+          header: messageHeader.SAVING_FAILED,
+          text: messageText.INVALID_FORM,
+          validity: messageValidity.ERROR,
         })
         return;
       }
@@ -173,8 +174,8 @@ export default {
     clear () {
       this.clearFields();
       this[action.MESSAGE_PROMPT]({
-        header: 'All fields cleared.',
-        validity: 'info'
+        header: messageHeader.FIELDS_CLEARED,
+        validity: messageValidity.INFO
       })
     },
     setData (data = {}) {

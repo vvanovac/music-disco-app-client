@@ -60,6 +60,7 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex';
 import { action } from '@/store/store.constants';
+import { userMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
 export default {
   name: 'Register',
@@ -79,13 +80,13 @@ export default {
         return errors
       }
       if (!this.$v.username.minLength) {
-        errors.push('Username must be at least 3 characters long.')
+        errors.push(userMessages.SHORT_USERNAME);
       }
       if (!this.$v.username.maxLength) {
-        errors.push('Username must be at most 16 characters long.')
+        errors.push(userMessages.LONG_USERNAME);
       }
       if (!this.$v.username.required) {
-        errors.push('Username is required.')
+        errors.push(userMessages.USERNAME_REQUIRED);
       }
       return errors
     },
@@ -95,10 +96,10 @@ export default {
         return errors
       }
       if (!this.$v.password.minLength) {
-        errors.push('Password must be at least 8 characters long.')
+        errors.push(userMessages.SHORT_PASSWORD);
       }
       if (!this.$v.password.required) {
-        errors.push('Password is required.')
+        errors.push(userMessages.PASSWORD_REQUIRED);
       }
       return errors
     },
@@ -108,10 +109,10 @@ export default {
         return errors
       }
       if (!this.$v.email.email) {
-        errors.push('Email must be in a valid format.')
+        errors.push(userMessages.INVALID_EMAIL);
       }
       if(!this.$v.email.required) {
-        errors.push('Email is required.')
+        errors.push(userMessages.EMAIL_REQUIRED);
       }
       return errors
     },
@@ -130,9 +131,9 @@ export default {
         this.$v.$touch()
         if (this.$v.$invalid) {
           this[action.MESSAGE_PROMPT]({
-            header: 'Registration failed.',
-            text: 'Invalid form. Please try again.',
-            validity: 'error',
+            header: messageHeader.REGISTRATION_FAILED,
+            text: messageText.INVALID_FORM,
+            validity: messageValidity.ERROR,
           })
         } else {
           const shouldRedirect = await this[action.REGISTER]({
@@ -153,8 +154,8 @@ export default {
       this.password = ''
       this.email = ''
       this[action.MESSAGE_PROMPT]( {
-        header: 'All fields cleared.',
-        validity: 'info'
+        header: messageHeader.FIELDS_CLEARED,
+        validity: messageValidity.INFO
       })
     }
   },

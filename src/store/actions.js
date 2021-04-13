@@ -1,5 +1,6 @@
 import HttpServer from '@/services/http.server';
 import { mutation, action } from './store.constants'
+import { messageHeader, messageValidity } from '@/constants/message.constants';
 
 export default {
   [action.CLEAR_TOKEN]: ({commit}) => {
@@ -24,15 +25,15 @@ export default {
     try {
       await HttpServer.post('/register', {}, payload);
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Successfully registered.',
-        validity: 'success'
+        header: messageHeader.REGISTERED,
+        validity: messageValidity.SUCCESS
       });
       return true;
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Registration failed.',
+        header: messageHeader.REGISTRATION_FAILED,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -40,16 +41,16 @@ export default {
     try {
       const token = await HttpServer.post('/login', {}, payload);
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Successfully logged in.',
-        validity: 'success'
+        header: messageHeader.LOGGED_IN,
+        validity: messageValidity.SUCCESS
       });
       await dispatch(action.STORE_TOKEN, token.accessToken);
       return true;
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Login failed.',
+        header: messageHeader.LOGIN_FAILED,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -57,15 +58,15 @@ export default {
     try {
       await HttpServer.post('/tasks', {token: state.token}, payload);
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Task successfully created.',
-        validity: 'success'
+        header: messageHeader.TASK_CREATED,
+        validity: messageValidity.SUCCESS
       });
       return true;
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Task creating failed.',
+        header: messageHeader.TASK_CREATING_FAILED,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -74,15 +75,15 @@ export default {
       const {taskID, ...rest} = payload;
       await HttpServer.put(`/tasks/${taskID}`, {token: state.token}, rest);
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Task successfully updated.',
-        validity: 'success'
+        header: messageHeader.TASK_UPDATED,
+        validity: messageValidity.SUCCESS
       });
       return true;
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Task updating failed.',
+        header: messageHeader.TASK_UPDATING_FAILED,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -95,9 +96,9 @@ export default {
       }
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Error during fetching.',
+        header: messageHeader.FETCHING_ERROR,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -109,9 +110,9 @@ export default {
       return await HttpServer.get(`/tasks/${taskID}`, {token: state.token});
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Error during fetching.',
+        header: messageHeader.FETCHING_ERROR,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       });
     }
   },
@@ -120,14 +121,14 @@ export default {
       await HttpServer.delete(`/tasks/${taskID}`, {token: state.token})
       dispatch(action.GET_TASKS, true);
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Task successfully deleted.',
-        validity: 'success'
+        header: messageHeader.TASK_DELETED,
+        validity: messageValidity.SUCCESS
       });
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
-        header: 'Deletion error.',
+        header: messageHeader.TASK_DELETING_FAILED,
         text: error.message,
-        validity: 'error'
+        validity: messageValidity.ERROR
       })
     }
   },
