@@ -2,7 +2,7 @@ const messageHeader = {
   REGISTRATION_FAILED: 'Registration failed.',
   REGISTERED: 'Successfully registered.',
   LOGIN_FAILED: 'Login failed.',
-  LOGGED_IN: 'Login failed.',
+  LOGGED_IN: 'Successfully logged in.',
   FIELDS_CLEARED: 'All fields cleared.',
   SAVING_FAILED: 'Failed to save.',
   TASK_CREATING_FAILED: 'Task creating failed.',

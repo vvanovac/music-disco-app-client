@@ -158,13 +158,20 @@ export default {
         musicNotes: this.musicNotes.split(',')
       };
       if (!this.isEdit) {
-        await this[action.CREATE_TASK](payload)
+        const success = await this[action.CREATE_TASK](payload)
+        if (success) {
+          this.clearFields();
+          await this[action.GET_TASKS](true);
+          await this.$router.push({name: 'administrator'});
+        }
       } else {
-        await this[action.UPDATE_TASK]({ ...payload, taskID: this.taskID });
+        const success = await this[action.UPDATE_TASK]({ ...payload, taskID: this.taskID });
+        if (success) {
+          this.clearFields();
+          await this[action.GET_TASKS](true);
+          await this.$router.push({name: 'administrator'});
+        }
       }
-      this.clearFields();
-      await this[action.GET_TASKS](true);
-      await this.$router.push({name: 'administrator'});
     },
     clearFields () {
       this.$v.$reset()
@@ -181,7 +188,11 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
-      this.musicNotes = data.musicNotes || '';
+      if (data.musicNotes) {
+        this.musicNotes = data.musicNotes.toString();
+      } else {
+        this.musicNotes = '';
+      }
     }
   },
   async mounted() {
