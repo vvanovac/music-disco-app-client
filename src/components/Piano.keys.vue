@@ -2,20 +2,22 @@
   <div class="container">
     <div class="keys-wrapper">
       <div class="white-keys-wrapper">
-        <div class="white-key">C</div>
-        <div class="white-key">D</div>
-        <div class="white-key">E</div>
-        <div class="white-key">F</div>
-        <div class="white-key">G</div>
-        <div class="white-key">A</div>
-        <div class="white-key">B</div>
+        <div class="white-key" :class="active.keyC">C</div>
+        <div class="white-key" :class="active.keyD">D</div>
+        <div class="white-key" :class="active.keyE">E</div>
+        <div class="white-key" :class="active.keyF">F</div>
+        <div class="white-key" :class="active.keyG">G</div>
+        <div class="white-key" :class="active.keyA">A</div>
+        <div class="white-key" :class="active.keyB">B</div>
+        <div class="white-key" :class="active.keyC2">C</div>
+
       </div>
       <div class="black-keys-wrapper">
-        <div class="black-key"></div>
-        <div class="black-key"></div>
-        <div class="black-key"></div>
-        <div class="black-key"></div>
-        <div class="black-key"></div>
+        <div class="black-key" :class="active.keyCsharp"></div>
+        <div class="black-key" :class="active.keyDsharp"></div>
+        <div class="black-key" :class="active.keyFsharp"></div>
+        <div class="black-key" :class="active.keyGsharp"></div>
+        <div class="black-key" :class="active.keyAsharp"></div>
       </div>
     </div>
   </div>
@@ -26,83 +28,136 @@ import * as Tone from 'tone';
 
 export default {
   name: 'Piano.keys',
+  props: ['octave'],
   data() {
     const synth = new Tone.Synth().toDestination();
     return {
       synth,
+      active: {
+        keyC: '',
+        keyD: '',
+        keyE: '',
+        keyF: '',
+        keyG: '',
+        keyA: '',
+        keyB: '',
+        keyC2: '',
+        keyCsharp: '',
+        keyDsharp: '',
+        keyFsharp: '',
+        keyGsharp: '',
+        keyAsharp: '',
+      }
     }
   },
   methods: {
     playKey(event) {
       let key = String.fromCharCode(event.keyCode).toLowerCase();
       switch (key) {
-        case 's': {
-          return this.playKeyC4();
-        } case 'd':
-          return this.playKeyD4();
+        case 'a':
+          return this.playKeyC();
+        case 's':
+          return this.playKeyD();
+        case 'd':
+          return this.playKeyE();
         case 'f':
-          return this.playKeyE4();
+          return this.playKeyF();
         case 'g':
-          return this.playKeyF4();
+          return this.playKeyG();
         case 'h':
-          return this.playKeyG4();
+          return this.playKeyA();
         case 'j':
-          return this.playKeyA4();
+          return this.playKeyB();
         case 'k':
-          return this.playKeyB4();
+          return this.playKeyC2();
         case 'e':
-          return this.playKeyCsharp4();
+          return this.playKeyCsharp();
         case 'r':
-          return this.playKeyDsharp4();
+          return this.playKeyDsharp();
         case 'y':
-          return this.playKeyFsharp4();
+          return this.playKeyFsharp();
         case 'u':
-          return this.playKeyGsharp4();
+          return this.playKeyGsharp();
         case 'i':
-          return this.playKeyAsharp4();
+          return this.playKeyAsharp();
         default:
           return null;
       }
     },
-    playKeyC4() {
-      this.synth.triggerAttackRelease('C4', '4n');
+    playKeyC() {
+      this.enableActiveClass('keyC');
+      this.synth.triggerAttackRelease('C' + this.octave, '4n');
     },
-    playKeyD4() {
-      this.synth.triggerAttackRelease('D4', '4n');
+    playKeyD() {
+      this.enableActiveClass('keyD');
+      this.synth.triggerAttackRelease('D' + this.octave, '4n');
     },
-    playKeyE4() {
-      this.synth.triggerAttackRelease('E4', '4n');
+    playKeyE() {
+      this.enableActiveClass('keyE');
+      this.synth.triggerAttackRelease('E' + this.octave, '4n');
     },
-    playKeyF4() {
-      this.synth.triggerAttackRelease('F4', '4n');
+    playKeyF() {
+      this.enableActiveClass('keyF');
+      this.synth.triggerAttackRelease('F' + this.octave, '4n');
     },
-    playKeyG4() {
-      this.synth.triggerAttackRelease('G4', '4n');
+    playKeyG() {
+      this.enableActiveClass('keyG');
+      this.synth.triggerAttackRelease('G' + this.octave, '4n');
     },
-    playKeyA4() {
-      this.synth.triggerAttackRelease('A4', '4n');
+    playKeyA() {
+      this.enableActiveClass('keyA');
+      this.synth.triggerAttackRelease('A' + this.octave, '4n');
     },
-    playKeyB4() {
-      this.synth.triggerAttackRelease('B4', '4n');
+    playKeyB() {
+      this.enableActiveClass('keyB');
+      this.synth.triggerAttackRelease('B' + this.octave, '4n');
     },
-    playKeyCsharp4() {
-      this.synth.triggerAttackRelease('C#4', '4n');
+    playKeyC2() {
+      this.enableActiveClass('keyC2');
+      this.synth.triggerAttackRelease('C' + (+this.octave + 1), '4n');
     },
-    playKeyDsharp4() {
-      this.synth.triggerAttackRelease('D#4', '4n');
+    playKeyCsharp() {
+      this.enableActiveClass('keyCsharp');
+      this.synth.triggerAttackRelease('C#' + this.octave, '4n');
     },
-    playKeyFsharp4() {
-      this.synth.triggerAttackRelease('F#4', '4n');
+    playKeyDsharp() {
+      this.enableActiveClass('keyDsharp');
+      this.synth.triggerAttackRelease('D#' + this.octave, '4n');
     },
-    playKeyGsharp4() {
-      this.synth.triggerAttackRelease('G#4', '4n');
+    playKeyFsharp() {
+      this.enableActiveClass('keyFsharp');
+      this.synth.triggerAttackRelease('F#' + this.octave, '4n');
     },
-    playKeyAsharp4() {
-      this.synth.triggerAttackRelease('A#4', '4n');
+    playKeyGsharp() {
+      this.enableActiveClass('keyGsharp');
+      this.synth.triggerAttackRelease('G#' + this.octave, '4n');
     },
+    playKeyAsharp() {
+      this.enableActiveClass('keyAsharp');
+      this.synth.triggerAttackRelease('A#' + this.octave, '4n');
+    },
+    enableActiveClass(key) {
+      this.active[key] = 'active-key';
+    },
+    disableActiveClass() {
+      this.active.keyC = '';
+      this.active.keyD = '';
+      this.active.keyE = '';
+      this.active.keyF = '';
+      this.active.keyG = '';
+      this.active.keyA = '';
+      this.active.keyB = '';
+      this.active.keyC2 = '';
+      this.active.keyCsharp = '';
+      this.active.keyDsharp = '';
+      this.active.keyFsharp = '';
+      this.active.keyGsharp = '';
+      this.active.keyAsharp = '';
+    }
   },
   mounted() {
     window.addEventListener("keypress", this.playKey);
+    window.addEventListener("keyup", this.disableActiveClass);
   }
 }
 </script>
@@ -150,11 +205,6 @@ export default {
   border-radius: 0 5px 5px 5px;
 }
 
-.active-key {
-  background-color: seagreen;
-  color: white;
-}
-
 .black-key {
   color: white;
   background-color: black;
@@ -173,4 +223,8 @@ export default {
   margin-left: 70px;
 }
 
+.active-key {
+  background-color: seagreen;
+  color: white;
+}
 </style>

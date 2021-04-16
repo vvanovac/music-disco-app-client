@@ -5,7 +5,7 @@
       <h6>{{ subtitle }}</h6>
     </div>
     <p class="title pt-5">{{ description }}</p>
-    <img src="../../assets/task_image.png" alt="task">
+    <piano-keys :octave="octave"/>
   </div>
 </template>
 
@@ -13,14 +13,19 @@
 
 import { mapActions } from 'vuex';
 import { action } from '@/store/store.constants';
+import PianoKeys from '@/components/Piano.keys'
 
 export default {
   name: 'View.task',
+  components: {
+    PianoKeys
+  },
   data() {
     return {
       title: '',
       subtitle: '',
-      description: ''
+      description: '',
+      octave: 4
     }
   },
   methods: {
