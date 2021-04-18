@@ -44,6 +44,7 @@ const taskMessages = {
   SHORT_DESCRIPTION: 'Description must be at least 16 characters long.',
   DESCRIPTION_REQUIRED: 'Description is required.',
   MUSIC_NOTES_REQUIRED: 'Music notes are required.',
+  OCTAVE_REQUIRED: 'Octave is required.'
 };
 
 export {

@@ -25,7 +25,7 @@ export default {
       title: '',
       subtitle: '',
       description: '',
-      octave: 4
+      octave: ''
     }
   },
   methods: {
@@ -34,6 +34,7 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
+      this.octave = data.octave || '';
     }
   },
   async mounted() {

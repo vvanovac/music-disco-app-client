@@ -27,8 +27,14 @@
         <v-text-field
             v-model="$v.musicNotes.$model"
             :error-messages="musicNotesErrors"
-            :required="false"
             label="Music notes"
+            required
+        ></v-text-field>
+        <v-text-field
+            v-model="$v.octave.$model"
+            :error-messages="octaveErrors"
+            label="Octave"
+            required
         ></v-text-field>
         <v-btn
             class="save-buttons"
@@ -68,6 +74,7 @@ export default {
       subtitle: '',
       description: '',
       musicNotes: '',
+      octave: '',
       isEdit: Number.isFinite(+taskID),
     }
   },
@@ -122,6 +129,16 @@ export default {
       }
       return errors
     },
+    octaveErrors () {
+      const errors = []
+      if (!this.$v.octave.$dirty) {
+        return errors
+      }
+      if (!this.$v.octave.required) {
+        errors.push(taskMessages.OCTAVE_REQUIRED);
+      }
+      return errors
+    },
     determineAction () {
       if (!this.isEdit) {
         return 'create'
@@ -131,12 +148,14 @@ export default {
     },
     disableSaveButton () {
       if (!this.isEdit) {
-        return this.title === '' || this.subtitle === '' || this.description === '' || this.musicNotes === '';
+        return this.title === '' || this.subtitle === '' || this.description === '' ||
+            this.musicNotes === '' || this.octave === '';
       }
       return this.disableClearButton;
     },
     disableClearButton () {
-      return this.title === '' && this.subtitle === '' && this.description === '' && this.musicNotes === '';
+      return this.title === '' && this.subtitle === '' && this.description === '' &&
+          this.musicNotes === '' && this.octave === '';
     }
   },
   methods: {
@@ -155,7 +174,8 @@ export default {
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
-        musicNotes: this.musicNotes.split(',')
+        musicNotes: this.musicNotes.split(','),
+        octave: this.octave
       };
       if (!this.isEdit) {
         const success = await this[action.CREATE_TASK](payload)
@@ -193,6 +213,7 @@ export default {
       } else {
         this.musicNotes = '';
       }
+      this.octave = data.octave || '';
     }
   },
   async mounted() {
@@ -206,6 +227,7 @@ export default {
     subtitle: { required, minLength: minLength(8) },
     description: { required, minLength: minLength(8) },
     musicNotes: { required },
+    octave: { required }
   }
 }
 </script>
