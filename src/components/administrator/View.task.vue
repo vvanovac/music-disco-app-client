@@ -5,7 +5,7 @@
       <h6>{{ subtitle }}</h6>
     </div>
     <p class="title pt-5">{{ description }}</p>
-    <piano-keys :octave="octave"/>
+    <piano-keys :octave="octave" :task-goal="musicNotes"/>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
       title: '',
       subtitle: '',
       description: '',
+      musicNotes: [],
       octave: ''
     }
   },
@@ -34,6 +35,7 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
+      this.musicNotes = data.musicNotes || [];
       this.octave = data.octave || '';
     }
   },
