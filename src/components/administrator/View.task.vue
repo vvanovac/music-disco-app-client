@@ -5,28 +5,20 @@
       <h6>{{ subtitle }}</h6>
     </div>
     <p class="title pt-5">{{ description }}</p>
-    <piano-keys :octave="octave" :task-goal="musicNotes"/>
   </div>
 </template>
 
 <script>
-
 import { mapActions } from 'vuex';
 import { action } from '@/store/store.constants';
-import PianoKeys from '@/components/Piano.keys'
 
 export default {
   name: 'View.task',
-  components: {
-    PianoKeys
-  },
   data() {
     return {
       title: '',
       subtitle: '',
-      description: '',
-      musicNotes: [],
-      octave: ''
+      description: ''
     }
   },
   methods: {
@@ -35,8 +27,6 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
-      this.musicNotes = data.musicNotes || [];
-      this.octave = data.octave || '';
     }
   },
   async mounted() {
@@ -50,10 +40,6 @@ export default {
 .title-wrapper {
   text-align: left;
   border-left: 5px solid #2c3e50;
-}
-
-img {
-  width: 45%;
 }
 
 </style>

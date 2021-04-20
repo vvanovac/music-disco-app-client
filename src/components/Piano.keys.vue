@@ -26,23 +26,26 @@
       <p class="subheading font-weight-regular">{{setChordInput}}</p>
       <v-btn
           round
+          :disabled="disablePlayChordButton"
           @click="playInput"
       >
         Play Chord
       </v-btn>
       <v-btn
           round
+          :disabled="disableClearAndCheckButtons"
           @click="clearInput"
       >
         Clear
       </v-btn>
       <v-btn
           round
+          :disabled="disableClearAndCheckButtons"
           @click="checkInput"
       >
         Check
       </v-btn>
-      <p class="subheading font-weight-regular pt-3" :class="taskMessage">{{taskStatus}}</p>
+      <p class="subheading font-weight-regular pt-3" :class="taskCompletionClass">{{taskStatus}}</p>
     </div>
   </div>
 </template>
@@ -52,7 +55,15 @@ import * as Tone from 'tone';
 
 export default {
   name: 'Piano.keys',
-  props: ['octave', 'taskGoal'],
+  props: {
+    octave: {
+      required: true
+    },
+    taskGoal: {
+      type: Array,
+      required: true
+    },
+  },
   data() {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
     return {
@@ -74,7 +85,7 @@ export default {
         keyGsharp: '',
         keyAsharp: '',
       },
-      taskMessage: ''
+      taskCompletionClass: ''
     }
   },
   computed: {
@@ -86,6 +97,12 @@ export default {
         return 'Chord input: ' + this.chordInput;
       }
       return 'Play piano to complete your task.';
+    },
+    disablePlayChordButton() {
+      return this.chordInput.length > 4 || this.chordInput.length < 1;
+    },
+    disableClearAndCheckButtons() {
+      return this.chordInput.length === 0;
     }
   },
   methods: {
@@ -220,7 +237,6 @@ export default {
     },
     addToChordInput(note) {
       this.chordInput.push(note);
-      this.setChordInput();
     },
     playInput() {
       if (this.chordInput.length < 5) {
@@ -231,7 +247,7 @@ export default {
     clearInput() {
       this.chordInput = [];
       this.taskStatus = null;
-      this.taskMessage = '';
+      this.taskCompletionClass = '';
     },
     checkInput() {
       const goal = [];
@@ -242,10 +258,10 @@ export default {
 
       if (JSON.stringify(chordInput) === JSON.stringify(goal)) {
         this.taskStatus = 'WELL DONE! Task successfully completed.';
-        this.taskMessage = 'task-success';
+        this.taskCompletionClass = 'task-success';
       } else {
         this.taskStatus = 'Aww, this is bad. Please try again.';
-        this.taskMessage = 'task-failure';
+        this.taskCompletionClass = 'task-failure';
       }
     }
   },
