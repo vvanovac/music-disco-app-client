@@ -15,8 +15,14 @@
         :items="numberOfRows"
         @input="setDataPerPage"
     ></v-select>
-    <p class="subheading font-weight-regular pt-4">Sort by</p>
+    <p
+        v-if="showSortBy"
+        class="subheading font-weight-regular pt-4"
+    >
+      Sort by
+    </p>
     <v-select
+        v-if="showSortBy"
         :value="criteriaValue"
         class="selector"
         :items="sortBy"
@@ -31,10 +37,11 @@ import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'Pagination',
-  data() {
-    return {
-      numberOfRows: [5, 10, 25, 100],
-      sortBy: ['id', 'title']
+  props: {
+    sortBy: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
   computed: {
@@ -42,6 +49,7 @@ export default {
       dataLength: getter.TASK_DATA_LENGTH,
       page: getter.PAGINATION_PAGE,
       dataPerPage: getter.DATA_PER_PAGE,
+      numberOfRows: getter.NUMBER_OF_ROWS,
       criteria: getter.SORT_CRITERIA
     }),
     pageValue() {
@@ -52,6 +60,9 @@ export default {
     },
     criteriaValue() {
       return this.criteria;
+    },
+    showSortBy() {
+      return this.sortBy.length > 0;
     }
   },
   methods: {

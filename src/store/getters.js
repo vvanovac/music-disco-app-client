@@ -21,5 +21,6 @@ export default {
   [getter.TASK_DATA_LENGTH]: state => state.taskDataLength,
   [getter.PAGINATION_PAGE]: state => state.paginationPage,
   [getter.DATA_PER_PAGE]: state => state.dataPerPage,
+  [getter.NUMBER_OF_ROWS]: state => state.numberOfRows,
   [getter.SORT_CRITERIA]: state => state.sortCriteria
 };

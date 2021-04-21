@@ -9,5 +9,6 @@ export default {
   taskDataLength: 0,
   paginationPage: 0,
   dataPerPage: 10,
+  numberOfRows: [5, 10, 25, 100],
   sortCriteria: null
 };
