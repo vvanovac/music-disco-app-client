@@ -3,22 +3,24 @@
     <div class="piano-container">
       <div class="keys-wrapper">
         <div class="white-keys-wrapper">
-          <div class="white-key" :class="active.keyC">C</div>
-          <div class="white-key" :class="active.keyD">D</div>
-          <div class="white-key" :class="active.keyE">E</div>
-          <div class="white-key" :class="active.keyF">F</div>
-          <div class="white-key" :class="active.keyG">G</div>
-          <div class="white-key" :class="active.keyA">A</div>
-          <div class="white-key" :class="active.keyB">B</div>
-          <div class="white-key" :class="active.keyC2">C</div>
-
+          <div
+              v-for="key in whiteKeys"
+              :key="key.note"
+              class="white-key"
+              :class="active[key.activeClass]"
+          >
+            {{key.note[0]}}
+          </div>
         </div>
         <div class="black-keys-wrapper">
-          <div class="black-key" :class="active.keyCsharp">C#</div>
-          <div class="black-key" :class="active.keyDsharp">D#</div>
-          <div class="black-key" :class="active.keyFsharp">F#</div>
-          <div class="black-key" :class="active.keyGsharp">G#</div>
-          <div class="black-key" :class="active.keyAsharp">A#</div>
+          <div
+              v-for="key in blackKeys"
+              :key="key.note"
+              class="black-key"
+              :class="active[key.activeClass]"
+          >
+            {{key.note}}
+          </div>
         </div>
       </div>
     </div>
@@ -52,11 +54,13 @@
 
 <script>
 import * as Tone from 'tone';
+import { musicNote, pianoKeys } from '@/constants/music.constants';
 
 export default {
   name: 'Piano.keys',
   props: {
     octave: {
+      type: String,
       required: true
     },
     taskGoal: {
@@ -67,6 +71,24 @@ export default {
   data() {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
     return {
+      whiteKeys: [
+        { note: musicNote.C, activeClass: pianoKeys.C },
+        { note: musicNote.D, activeClass: pianoKeys.D },
+        { note: musicNote.E, activeClass: pianoKeys.E },
+        { note: musicNote.F, activeClass: pianoKeys.F },
+        { note: musicNote.G, activeClass: pianoKeys.G },
+        { note: musicNote.A, activeClass: pianoKeys.A },
+        { note: musicNote.B, activeClass: pianoKeys.B },
+        { note: musicNote.C2, activeClass: pianoKeys.C2 },
+      ],
+      blackKeys: [
+        { note: musicNote.Csharp, activeClass: pianoKeys.Csharp },
+        { note: musicNote.Dsharp, activeClass: pianoKeys.Dsharp },
+        { note: musicNote.Fsharp, activeClass: pianoKeys.Fsharp },
+        { note: musicNote.Gsharp, activeClass: pianoKeys.Gsharp },
+        { note: musicNote.Asharp, activeClass: pianoKeys.Asharp },
+
+      ],
       synth,
       chordInput: [],
       taskStatus: null,
@@ -106,114 +128,53 @@ export default {
     }
   },
   methods: {
-    playKey(event) {
+    playPiano(event) {
       let key = String.fromCharCode(event.keyCode).toLowerCase();
       switch (key) {
         case 'a':
-          return this.playKeyC();
+          return this.playWhiteKey(musicNote.C);
         case 's':
-          return this.playKeyD();
+          return this.playWhiteKey(musicNote.D);
         case 'd':
-          return this.playKeyE();
+          return this.playWhiteKey(musicNote.E);
         case 'f':
-          return this.playKeyF();
+          return this.playWhiteKey(musicNote.F);
         case 'g':
-          return this.playKeyG();
+          return this.playWhiteKey(musicNote.G);
         case 'h':
-          return this.playKeyA();
+          return this.playWhiteKey(musicNote.A);
         case 'j':
-          return this.playKeyB();
+          return this.playWhiteKey(musicNote.B);
         case 'k':
-          return this.playKeyC2();
+          return this.playWhiteKey(musicNote.C2);
         case 'w':
-          return this.playKeyCsharp();
+          return this.playBlackKey(musicNote.Csharp);
         case 'e':
-          return this.playKeyDsharp();
+          return this.playBlackKey(musicNote.Dsharp);
         case 't':
-          return this.playKeyFsharp();
+          return this.playBlackKey(musicNote.Fsharp);
         case 'y':
-          return this.playKeyGsharp();
+          return this.playBlackKey(musicNote.Gsharp);
         case 'u':
-          return this.playKeyAsharp();
+          return this.playBlackKey(musicNote.Asharp);
         default:
           return null;
       }
     },
-    playKeyC() {
-      this.enableActiveClass('keyC');
-      const note = 'C' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note)
-    },
-    playKeyD() {
-      this.enableActiveClass('keyD');
-      const note = 'D' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyE() {
-      this.enableActiveClass('keyE');
-      const note = 'E' + this.octave;
+    playWhiteKey(key) {
+      this.enableActiveClass('key' + key);
+      let note = '';
+      if (key === 'C2') {
+        note = 'C' + (+this.octave + 1);
+      } else {
+        note = key + this.octave;
+      }
       this.synth.triggerAttackRelease(note, '2n');
       this.addToChordInput(note);
     },
-    playKeyF() {
-      this.enableActiveClass('keyF');
-      const note = 'F' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyG() {
-      this.enableActiveClass('keyG');
-      const note = 'G' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyA() {
-      this.enableActiveClass('keyA');
-      const note = 'A' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyB() {
-      this.enableActiveClass('keyB');
-      const note = 'B' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyC2() {
-      this.enableActiveClass('keyC2');
-      const note = 'C' + (+this.octave + 1);
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyCsharp() {
-      this.enableActiveClass('keyCsharp');
-      const note = 'C#' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyDsharp() {
-      this.enableActiveClass('keyDsharp');
-      const note = 'D#' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyFsharp() {
-      this.enableActiveClass('keyFsharp');
-      const note = 'F#' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyGsharp() {
-      this.enableActiveClass('keyGsharp');
-      const note = 'G#' + this.octave;
-      this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
-    },
-    playKeyAsharp() {
-      this.enableActiveClass('keyAsharp');
-      const note = 'A#' + this.octave;
+    playBlackKey(key) {
+      this.enableActiveClass('key' + key[0] + 'sharp');
+      const note = key + this.octave;
       this.synth.triggerAttackRelease(note, '2n');
       this.addToChordInput(note);
     },
@@ -250,13 +211,9 @@ export default {
       this.taskCompletionClass = '';
     },
     checkInput() {
-      const goal = [];
-      for (let i = 0; i < this.taskGoal.length; i++) {
-        goal.push(this.taskGoal[i] + this.octave);
-      }
-      const chordInput = this.chordInput;
+      const taskGoal = this.taskGoal.map((task) => task + this.octave);
 
-      if (JSON.stringify(chordInput) === JSON.stringify(goal)) {
+      if (!this.chordInput.join(',').localeCompare(taskGoal.join(','))) {
         this.taskStatus = 'WELL DONE! Task successfully completed.';
         this.taskCompletionClass = 'task-success';
       } else {
@@ -266,8 +223,12 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener("keypress", this.playKey);
+    window.addEventListener("keypress", this.playPiano);
     window.addEventListener("keyup", this.disableActiveClass);
+  },
+  destroyed() {
+    window.removeEventListener("keypress", this.playPiano);
+    window.removeEventListener("keyup", this.disableActiveClass);
   }
 }
 </script>
