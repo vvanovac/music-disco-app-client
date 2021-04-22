@@ -1,4 +1,5 @@
 import TokenService from '../services/token.service';
+import { musicNote, octaves } from '@/constants/music.constants';
 
 export default {
   token: TokenService.get(),
@@ -10,5 +11,8 @@ export default {
   paginationPage: 0,
   dataPerPage: 10,
   numberOfRows: [5, 10, 25, 100],
-  sortCriteria: null
+  sortCriteria: null,
+  octaves: [octaves.TWO, octaves.THREE, octaves.FOUR, octaves.FIVE, octaves.SIX],
+  notes: [ musicNote.C, musicNote.D, musicNote.E, musicNote.F, musicNote.G, musicNote.A, musicNote.B,
+    musicNote.C2, musicNote.Csharp, musicNote.Dsharp, musicNote.Fsharp, musicNote.Gsharp, musicNote.Asharp ],
 };

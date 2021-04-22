@@ -47,6 +47,12 @@
       >
         Check
       </v-btn>
+      <v-btn
+          round
+          @click="updateRedirect"
+      >
+        Update
+      </v-btn>
       <p class="subheading font-weight-regular pt-3" :class="taskCompletionClass">{{taskStatus}}</p>
     </div>
   </div>
@@ -87,7 +93,6 @@ export default {
         { note: musicNote.Fsharp, activeClass: pianoKeys.Fsharp },
         { note: musicNote.Gsharp, activeClass: pianoKeys.Gsharp },
         { note: musicNote.Asharp, activeClass: pianoKeys.Asharp },
-
       ],
       synth,
       chordInput: [],
@@ -200,7 +205,7 @@ export default {
       this.chordInput.push(note);
     },
     playInput() {
-      if (this.chordInput.length < 5) {
+      if (this.chordInput.length < 6) {
         return this.synth.triggerAttackRelease(this.chordInput, '2n');
       }
       return this.chordInput = 'Play piano to complete your task.'
@@ -220,6 +225,9 @@ export default {
         this.taskStatus = 'Aww, this is bad. Please try again.';
         this.taskCompletionClass = 'task-failure';
       }
+    },
+    updateRedirect() {
+      this.$router.push({name: 'updateTasks', params: { taskID: this.$route.params.taskID}})
     }
   },
   mounted() {

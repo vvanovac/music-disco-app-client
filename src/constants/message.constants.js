@@ -13,11 +13,13 @@ const messageHeader = {
   TASK_DELETED: 'Deletion error.',
   FETCHING_ERROR: 'Error during fetching.',
   UNAUTHORIZED: 'Access not allowed.',
+  DUPLICATED_NOTE: 'Adding failed.'
 };
 
 const messageText = {
   INVALID_FORM: 'Invalid form. Please try again.',
-  UNAUTHORIZED: 'You cannot access this.'
+  UNAUTHORIZED: 'You cannot access this.',
+  DUPLICATED_NOTE: 'Unable to add the same note.'
 };
 
 const messageValidity = {

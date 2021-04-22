@@ -24,18 +24,37 @@
             label="Description"
             required
         ></v-text-field>
-        <v-text-field
-            v-model="$v.musicNotes.$model"
-            :error-messages="musicNotesErrors"
-            label="Music notes"
-            required
-        ></v-text-field>
-        <v-text-field
-            v-model="$v.octave.$model"
+        <v-select
+            :value="octaveValue"
             :error-messages="octaveErrors"
+            :items="octaves"
             label="Octave"
             required
-        ></v-text-field>
+            @input="setOctaveValue"
+        ></v-select>
+        <v-select
+            :value="musicNoteValue"
+            :error-messages="musicNotesErrors"
+            :items="notes"
+            label="Music notes"
+            required
+            @input="setMusicNotesArray"
+        ></v-select>
+        <div class="notes-wrapper mb-4">
+          <div
+              v-for="note in chosenNotes"
+              :key="note"
+              class="single-note"
+          >
+            {{ note }}
+            <button
+                class="remove-note-button"
+                @click="removeNote(note)"
+            >
+              X
+            </button>
+          </div>
+        </div>
         <v-btn
             class="save-buttons"
             :round="true"
@@ -60,8 +79,8 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
-import { mapActions } from 'vuex'
-import { action } from '@/store/store.constants';
+import { mapActions, mapGetters } from 'vuex'
+import { action, getter } from '@/store/store.constants';
 import { taskMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants'
 
 export default {
@@ -74,12 +93,19 @@ export default {
       subtitle: '',
       description: '',
       musicNotes: '',
+      chosenNotes: [],
+      lastChosenNote: '',
+      showAddingNotesMessage: false,
       octave: '',
       isEdit: Number.isFinite(+taskID),
     }
   },
   mixins: [validationMixin],
   computed: {
+    ...mapGetters({
+      notes: getter.GET_NOTES,
+      octaves: getter.GET_OCTAVES
+    }),
     titleErrors () {
       const errors = []
       if (!this.$v.title.$dirty) {
@@ -156,6 +182,12 @@ export default {
     disableClearButton () {
       return this.title === '' && this.subtitle === '' && this.description === '' &&
           this.musicNotes === '' && this.octave === '';
+    },
+    octaveValue() {
+      return +this.octave;
+    },
+    musicNoteValue() {
+      return this.lastChosenNote;
     }
   },
   methods: {
@@ -174,7 +206,7 @@ export default {
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
-        musicNotes: this.musicNotes.split(','),
+        musicNotes: this.chosenNotes,
         octave: this.octave
       };
       if (!this.isEdit) {
@@ -194,8 +226,9 @@ export default {
       }
     },
     clearFields () {
-      this.$v.$reset()
+      this.$v.$reset();
       this.setData();
+      this.lastChosenNote = '';
     },
     clear () {
       this.clearFields();
@@ -214,6 +247,29 @@ export default {
         this.musicNotes = '';
       }
       this.octave = data.octave || '';
+      this.chosenNotes = data.musicNotes || [];
+    },
+    setOctaveValue(octaveValue) {
+      this.octave = octaveValue.toString();
+    },
+    setMusicNotesArray(musicNoteValue) {
+      this.lastChosenNote = musicNoteValue;
+      if (this.chosenNotes.indexOf(musicNoteValue) !== -1) {
+        return this[action.MESSAGE_PROMPT]({
+          header: messageHeader.DUPLICATED_NOTE,
+          text: messageText.DUPLICATED_NOTE,
+          validity: messageValidity.ERROR,
+        })
+      }
+      this.chosenNotes.push(musicNoteValue);
+      this.setMusicNotes();
+    },
+    removeNote(note) {
+      this.chosenNotes = this.chosenNotes.filter((target) => target !== note);
+      this.setMusicNotes();
+    },
+    setMusicNotes() {
+      this.musicNotes = this.chosenNotes.toString();
     }
   },
   async mounted() {
@@ -236,6 +292,33 @@ export default {
 h2 {
   margin: 5%;
   text-align: left;
+}
+
+.notes-wrapper, .single-note, .remove-note-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.single-note {
+  justify-content: space-between;
+  color: #2c3e50;
+  width: 60px;
+  height: 24px;
+  padding-left: 7px;
+  margin: 25px 25px 0 0;
+  border: 1px solid #2c3e50;
+  border-radius: 5px;
+}
+
+
+.remove-note-button {
+  justify-content: center;
+  background-color: lightgrey;
+  border-radius: 0 4px 4px 0;
+  width: 20px;
+  height: 22px;
+  font-weight: bolder;
 }
 
 .save-buttons {

@@ -22,5 +22,7 @@ export default {
   [getter.PAGINATION_PAGE]: state => state.paginationPage,
   [getter.DATA_PER_PAGE]: state => state.dataPerPage,
   [getter.NUMBER_OF_ROWS]: state => state.numberOfRows,
-  [getter.SORT_CRITERIA]: state => state.sortCriteria
+  [getter.SORT_CRITERIA]: state => state.sortCriteria,
+  [getter.GET_OCTAVES]: state => state.octaves,
+  [getter.GET_NOTES]: state => state.notes
 };
