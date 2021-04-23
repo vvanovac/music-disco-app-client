@@ -42,14 +42,14 @@
         ></v-select>
         <div class="notes-wrapper mb-4">
           <div
-              v-for="note in chosenNotes"
-              :key="note"
+              v-for="(note, index) in musicNotes"
+              :key="index"
               class="single-note"
           >
             {{ note }}
             <button
                 class="remove-note-button"
-                @click="removeNote(note)"
+                @click="removeNote(index)"
             >
               X
             </button>
@@ -92,10 +92,8 @@ export default {
       title: '',
       subtitle: '',
       description: '',
-      musicNotes: '',
-      chosenNotes: [],
+      musicNotes: [],
       lastChosenNote: '',
-      showAddingNotesMessage: false,
       octave: '',
       isEdit: Number.isFinite(+taskID),
     }
@@ -175,13 +173,13 @@ export default {
     disableSaveButton () {
       if (!this.isEdit) {
         return this.title === '' || this.subtitle === '' || this.description === '' ||
-            this.musicNotes === '' || this.octave === '';
+            this.musicNotes.length === 0 || this.octave === '';
       }
       return this.disableClearButton;
     },
     disableClearButton () {
       return this.title === '' && this.subtitle === '' && this.description === '' &&
-          this.musicNotes === '' && this.octave === '';
+          this.musicNotes.length === 0 && this.octave === '';
     },
     octaveValue() {
       return +this.octave;
@@ -206,7 +204,7 @@ export default {
         title: this.title,
         subtitle: this.subtitle,
         description: this.description,
-        musicNotes: this.chosenNotes,
+        musicNotes: this.musicNotes,
         octave: this.octave
       };
       if (!this.isEdit) {
@@ -228,7 +226,6 @@ export default {
     clearFields () {
       this.$v.$reset();
       this.setData();
-      this.lastChosenNote = '';
     },
     clear () {
       this.clearFields();
@@ -241,35 +238,17 @@ export default {
       this.title = data.title || '';
       this.subtitle = data.subtitle || '';
       this.description = data.description || '';
-      if (data.musicNotes) {
-        this.musicNotes = data.musicNotes.toString();
-      } else {
-        this.musicNotes = '';
-      }
+      this.musicNotes = data.musicNotes || [];
       this.octave = data.octave || '';
-      this.chosenNotes = data.musicNotes || [];
     },
     setOctaveValue(octaveValue) {
       this.octave = octaveValue.toString();
     },
     setMusicNotesArray(musicNoteValue) {
-      this.lastChosenNote = musicNoteValue;
-      if (this.chosenNotes.indexOf(musicNoteValue) !== -1) {
-        return this[action.MESSAGE_PROMPT]({
-          header: messageHeader.DUPLICATED_NOTE,
-          text: messageText.DUPLICATED_NOTE,
-          validity: messageValidity.ERROR,
-        })
-      }
-      this.chosenNotes.push(musicNoteValue);
-      this.setMusicNotes();
+      this.musicNotes.push(musicNoteValue);
     },
-    removeNote(note) {
-      this.chosenNotes = this.chosenNotes.filter((target) => target !== note);
-      this.setMusicNotes();
-    },
-    setMusicNotes() {
-      this.musicNotes = this.chosenNotes.toString();
+    removeNote(index) {
+      this.musicNotes = this.musicNotes.filter((target, indx) => indx !== index);
     }
   },
   async mounted() {
@@ -310,7 +289,6 @@ h2 {
   border: 1px solid #2c3e50;
   border-radius: 5px;
 }
-
 
 .remove-note-button {
   justify-content: center;

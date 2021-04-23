@@ -126,7 +126,7 @@ export default {
       return 'Play piano to complete your task.';
     },
     disablePlayChordButton() {
-      return this.chordInput.length > 4 || this.chordInput.length < 1;
+      return this.chordInput.length > 5 || this.chordInput.length < 1;
     },
     disableClearAndCheckButtons() {
       return this.chordInput.length === 0;
