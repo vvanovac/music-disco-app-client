@@ -36,10 +36,17 @@ const octaves = {
   FOUR: 4,
   FIVE: 5,
   SIX: 6,
+};
+
+const difficulties = {
+  BEGINNER: 'beginner',
+  AMATEUR: 'amateur',
+  MEDIUM: 'medium',
 }
 
 export {
   musicNote,
   pianoKeys,
-  octaves
+  octaves,
+  difficulties
 }

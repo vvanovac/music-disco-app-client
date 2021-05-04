@@ -279,6 +279,7 @@ h2 {
   align-items: center;
   flex-wrap: wrap;
 }
+
 .single-note {
   justify-content: space-between;
   color: #2c3e50;

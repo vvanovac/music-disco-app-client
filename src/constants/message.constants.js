@@ -49,10 +49,21 @@ const taskMessages = {
   OCTAVE_REQUIRED: 'Octave is required.'
 };
 
+const lessonMessages = {
+  SHORT_TITLE: 'Title must be at least 8 characters long.',
+  TITLE_REQUIRED: 'Title is required.',
+  SHORT_DESCRIPTION: 'Description must be at least 16 characters long.',
+  DESCRIPTION_REQUIRED: 'Description is required.',
+  LIST_OF_TASKS_REQUIRED: 'List of Tasks is required.',
+  DIFFICULTY_REQUIRED: 'Difficulty is required.',
+  COURSE_ID_REQUIRED: 'Course ID is required.',
+}
+
 export {
   messageHeader,
   messageText,
   messageValidity,
   userMessages,
-  taskMessages
+  taskMessages,
+  lessonMessages
 }

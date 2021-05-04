@@ -1,5 +1,5 @@
 import TokenService from '../services/token.service';
-import { musicNote, octaves } from '@/constants/music.constants';
+import { difficulties, musicNote, octaves } from '@/constants/music.constants';
 
 export default {
   token: TokenService.get(),
@@ -15,4 +15,5 @@ export default {
   octaves: [octaves.TWO, octaves.THREE, octaves.FOUR, octaves.FIVE, octaves.SIX],
   notes: [ musicNote.C, musicNote.D, musicNote.E, musicNote.F, musicNote.G, musicNote.A, musicNote.B,
     musicNote.C2, musicNote.Csharp, musicNote.Dsharp, musicNote.Fsharp, musicNote.Gsharp, musicNote.Asharp ],
+  difficulties: [difficulties.BEGINNER, difficulties.AMATEUR, difficulties.MEDIUM],
 };

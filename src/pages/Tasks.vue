@@ -1,14 +1,14 @@
 <template>
-  <edit-task/>
+  <save-task/>
 </template>
 
 <script>
-import EditTask from '@/components/administrator/Save.task'
+import SaveTask from '@/components/administrator/Save.task'
 
 export default {
   name: 'Tasks',
   components: {
-    EditTask,
+    SaveTask,
   },
 }
 </script>
