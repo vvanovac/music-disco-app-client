@@ -16,4 +16,5 @@ export default {
   notes: [ musicNote.C, musicNote.D, musicNote.E, musicNote.F, musicNote.G, musicNote.A, musicNote.B,
     musicNote.C2, musicNote.Csharp, musicNote.Dsharp, musicNote.Fsharp, musicNote.Gsharp, musicNote.Asharp ],
   difficulties: [difficulties.BEGINNER, difficulties.AMATEUR, difficulties.MEDIUM],
+  lessonData: null
 };

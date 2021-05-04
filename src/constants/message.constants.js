@@ -13,7 +13,11 @@ const messageHeader = {
   TASK_DELETED: 'Deletion error.',
   FETCHING_ERROR: 'Error during fetching.',
   UNAUTHORIZED: 'Access not allowed.',
-  DUPLICATED_NOTE: 'Adding failed.'
+  DUPLICATED_NOTE: 'Adding failed.',
+  LESSON_CREATING_FAILED: 'Lesson creating failed.',
+  LESSON_CREATED: 'Lesson successfully created.',
+  LESSON_UPDATING_FAILED: 'Lesson updating failed.',
+  LESSON_UPDATED: 'Lesson successfully updated.',
 };
 
 const messageText = {

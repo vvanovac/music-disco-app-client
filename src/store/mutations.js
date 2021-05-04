@@ -38,5 +38,8 @@ export default {
   },
   [mutation.SET_SORT_CRITERIA]: (state, criteria) => {
     state.sortCriteria = criteria;
-  }
+  },
+  [mutation.STORE_LESSON_DATA]: (state, payload) => {
+    state.lessonData = payload;
+  },
 };

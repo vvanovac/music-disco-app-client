@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>To save a lesson, please fill the fields bellow.</h2>
+    <h2>To {{ determineAction }} a lesson, please fill the fields bellow.</h2>
     <form>
       <v-container>
         <v-text-field
@@ -29,6 +29,7 @@
             :items="difficulties"
             label="Difficulty"
             required
+            @input="setDifficultyValue"
         ></v-select>
         <v-text-field
             v-model="$v.courseID.$model"
@@ -36,6 +37,22 @@
             label="Course ID"
             required
         ></v-text-field>
+        <v-btn
+            class="save-buttons"
+            :round="true"
+            :disabled="disableSaveButton"
+            @click="save"
+        >
+          {{ determineAction }} Lesson
+        </v-btn>
+        <v-btn
+            class="save-buttons"
+            :round="true"
+            :disabled="disableClearButton"
+            @click="clear"
+        >
+          Clear
+        </v-btn>
       </v-container>
     </form>
   </div>
@@ -43,20 +60,23 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { minLength, required } from 'vuelidate/lib/validators';
-import { lessonMessages } from '@/constants/message.constants';
-import { mapGetters } from 'vuex';
-import { getter } from '@/store/store.constants';
+import { required, minLength } from 'vuelidate/lib/validators';
+import { mapGetters, mapActions } from 'vuex';
+import { action, getter } from '@/store/store.constants';
+import { lessonMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
 export default {
   name: 'Save.lesson',
   data() {
+    const lessonID = this.$route.params.lessonID;
     return {
+      lessonID,
       title: '',
       description: '',
-      listOfTasks: '',
+      listOfTasks: [],
       difficulty: '',
-      courseID: ''
+      courseID: '',
+      isEdit: Number.isFinite(+lessonID)
     }
   },
   mixins: [validationMixin],
@@ -120,8 +140,90 @@ export default {
       }
       return errors;
     },
+    determineAction() {
+      if (!this.isEdit) {
+        return 'create';
+      }
+      return 'update';
+    },
+    disableSaveButton() {
+      if (!this.isEdit) {
+        return this.title === '' || this.description === '' || this.listOfTasks.length === 0 ||
+            this.difficulty === '' || this.courseID === '';
+      }
+      return this.disableClearButton;
+    },
+    disableClearButton() {
+      return this.title === '' && this.description === '' && this.listOfTasks.length === 0 &&
+          this.difficulty === '' && this.courseID === '';
+    },
     difficultyValue() {
       return this.difficulty;
+    }
+  },
+  methods: {
+    ...mapActions([
+        action.MESSAGE_PROMPT, action.CREATE_LESSON, action.UPDATE_LESSON, action.GET_LESSON, action.GET_LESSONS
+    ]),
+    async save() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this[action.MESSAGE_PROMPT]({
+          header: messageHeader.SAVING_FAILED,
+          text: messageText.INVALID_FORM,
+          validity: messageValidity.ERROR,
+        });
+        return;
+      }
+      const payload = {
+        title: this.title,
+        description: this.description,
+        listOfTasks: this.listOfTasks,
+        difficulty: this.difficulty,
+        courseID: +this.courseID
+      };
+      if (!this.isEdit) {
+        const success = await this[action.CREATE_LESSON](payload);
+        if (success) {
+          this.clearFields();
+          await this[action.GET_LESSONS](true);
+          await this.$router.push({ name: 'administrator' });
+        }
+      } else {
+        const success = await this[action.UPDATE_LESSON]({ ...payload, lessonID: this.lessonID });
+        if (success) {
+          this.clearFields();
+          await this[action.GET_LESSONS](true);
+          await this.$router.push({ name: 'administrator' });
+        }
+      }
+    },
+    clearFields() {
+      this.$v.$reset();
+      this.setData();
+    },
+    clear() {
+      this.clearFields();
+      this[action.MESSAGE_PROMPT]({
+        header: messageHeader.FIELDS_CLEARED,
+        validity: messageValidity.INFO
+      });
+    },
+    setData(data = {}) {
+      this.title = data.title || '';
+      this.description = data.description || '';
+      this.listOfTasks = data.listOfTasks || [];
+      this.difficulty = data.difficulty || '';
+      this.courseID = data.courseID || '';
+    },
+    setDifficultyValue(difficulty) {
+      this.difficulty = difficulty;
+    }
+  },
+  async mounted() {
+    if (this.isEdit) {
+      const data = await this[action.GET_LESSON](this.$route.params.lessonID);
+      this.setData(data);
     }
   },
   validations: {
@@ -140,4 +242,13 @@ h2 {
   text-align: left;
 }
 
+.save-buttons {
+  justify-content: center;
+  color: #2c3e50;
+  font-size: 2em;
+  font-weight: bolder;
+  background-color: #a2d2ff;
+  margin: 10px 40px;
+  border: 1px solid #2c3e50;
+}
 </style>

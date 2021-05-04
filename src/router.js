@@ -17,7 +17,8 @@ const routes = [
   { name: 'createTasks', component: Tasks, path: '/administrator/tasks' },
   { name: 'updateTasks', component: Tasks, path: `/administrator/tasks/:taskID` },
   { name: 'task', component: Task, path: `/tasks/:taskID` },
-  { name: 'createLessons', component: Lessons, path: '/administrator/lessons' }
+  { name: 'createLessons', component: Lessons, path: '/administrator/lessons' },
+  { name: 'updateLessons', component: Lessons, path: '/administrator/lessons/:lessonID' }
 ];
 
 const router = (store) => {

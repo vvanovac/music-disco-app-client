@@ -140,5 +140,66 @@ export default {
   },
   [action.SET_SORT_CRITERIA]: ({commit}, criteria) => {
     commit(mutation.SET_SORT_CRITERIA, criteria);
-  }
+  },
+  [action.CREATE_LESSON]: async ({dispatch, state}, payload) => {
+    try {
+      await HttpServer.post('/lessons', {token: state.token}, payload);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_CREATED,
+        validity: messageValidity.SUCCESS
+      });
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_CREATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.UPDATE_LESSON]: async ({dispatch, state}, payload) => {
+    try {
+      const { lessonID, ...rest } = payload;
+      await HttpServer.put(`/lessons/${lessonID}`, {token: state.token}, rest);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_UPDATED,
+        validity: messageValidity.SUCCESS
+      });
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_UPDATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_LESSONS]: async ({dispatch, commit, state}, forceFetch) => {
+    try {
+      if (!state.lessonData || forceFetch) {
+        const data = await HttpServer.get('/lessons', {token: state.token});
+        commit(mutation.STORE_LESSON_DATA, data);
+      }
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_LESSON]: async ({dispatch, state}, lessonID) => {
+    try {
+      if (state.lessonData && state.lessonData.length > 0) {
+        return state.lessonData.find((lesson) => lesson.id === lessonID);
+      }
+      return await HttpServer.get(`/lessons/${lessonID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
 };
