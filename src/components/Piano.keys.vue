@@ -25,24 +25,24 @@
       </div>
     </div>
     <div class="input-container">
-      <p class="subheading font-weight-regular">{{setChordInput}}</p>
+      <p class="input subheading font-weight-regular">{{setInput}}</p>
       <v-btn
           round
-          :disabled="disablePlayChordButton"
+          :disabled="disableCommandButtons"
           @click="playInput"
       >
-        Play Chord
+        Play
       </v-btn>
       <v-btn
           round
-          :disabled="disableClearAndCheckButtons"
+          :disabled="disableCommandButtons"
           @click="clearInput"
       >
         Clear
       </v-btn>
       <v-btn
           round
-          :disabled="disableClearAndCheckButtons"
+          :disabled="disableCommandButtons"
           @click="checkInput"
       >
         Check
@@ -95,7 +95,7 @@ export default {
         { note: musicNote.Asharp, activeClass: pianoKeys.Asharp },
       ],
       synth,
-      chordInput: [],
+      input: [],
       taskStatus: null,
       active: {
         keyC: '',
@@ -116,21 +116,15 @@ export default {
     }
   },
   computed: {
-    setChordInput() {
-      if (this.chordInput.length > 12) {
-        return 'Chord input is too long to display.';
-      }
-      if (this.chordInput.length > 0) {
-        return 'Chord input: ' + this.chordInput;
+    setInput() {
+      if (this.input.length > 0) {
+        return 'Your input: ' + this.input.map((tone) => ' ' + tone.note);
       }
       return 'Play piano to complete your task.';
     },
-    disablePlayChordButton() {
-      return this.chordInput.length > 5 || this.chordInput.length < 1;
+    disableCommandButtons() {
+      return this.input.length === 0;
     },
-    disableClearAndCheckButtons() {
-      return this.chordInput.length === 0;
-    }
   },
   methods: {
     playPiano(event) {
@@ -175,13 +169,13 @@ export default {
         note = key + this.octave;
       }
       this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
+      this.addToInput(note);
     },
     playBlackKey(key) {
       this.enableActiveClass('key' + key[0] + 'sharp');
       const note = key + this.octave;
       this.synth.triggerAttackRelease(note, '2n');
-      this.addToChordInput(note);
+      this.addToInput(note);
     },
     enableActiveClass(key) {
       this.active[key] = 'active-key';
@@ -201,24 +195,24 @@ export default {
       this.active.keyGsharp = '';
       this.active.keyAsharp = '';
     },
-    addToChordInput(note) {
-      this.chordInput.push(note);
+    addToInput(note) {
+      const time = Tone.now();
+      this.input.push({ note, time });
     },
     playInput() {
-      if (this.chordInput.length < 6) {
-        return this.synth.triggerAttackRelease(this.chordInput, '2n');
-      }
-      return this.chordInput = 'Play piano to complete your task.'
+      const now = Tone.now();
+      this.input.forEach((tone) => this.synth.triggerAttackRelease(tone.note, '2n', now + tone.time));
     },
     clearInput() {
-      this.chordInput = [];
+      this.input = [];
       this.taskStatus = null;
       this.taskCompletionClass = '';
     },
     checkInput() {
       const taskGoal = this.taskGoal.map((task) => task + this.octave);
+      const inputNotes = this.input.map((tone) => tone.note);
 
-      if (!this.chordInput.join(',').localeCompare(taskGoal.join(','))) {
+      if (!inputNotes.join(',').localeCompare(taskGoal.join(','))) {
         this.taskStatus = 'WELL DONE! Task successfully completed.';
         this.taskCompletionClass = 'task-success';
       } else {
@@ -242,7 +236,7 @@ export default {
 </script>
 
 <style scoped>
-.piano-container, .keys-wrapper, .white-keys-wrapper, .black-keys-wrapper, .white-key, .black-key {
+.piano-container, .keys-wrapper, .white-keys-wrapper, .black-keys-wrapper, .white-key, .black-key, .input {
   display: flex;
   justify-content: center;
 }
@@ -311,6 +305,14 @@ export default {
 
 .input-container {
   margin-top: 30px;
+}
+
+.input {
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+  line-height: 1.5em;
 }
 
 .task-success {
