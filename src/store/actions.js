@@ -178,6 +178,7 @@ export default {
     try {
       if (!state.lessonData || forceFetch) {
         const data = await HttpServer.get('/lessons', {token: state.token});
+        state.lessonDataLength = data.length;
         commit(mutation.STORE_LESSON_DATA, data);
       }
     } catch (error) {

@@ -13,16 +13,19 @@
     >
       Reload
     </v-btn>
+    <pagination dataset="lessons" :sort-by="['id', 'title']"/>
   </div>
 </template>
 
 <script>
 import LessonsTabItem from '@/components/administrator/Lessons.tab.item';
+import Pagination from '@/components/administrator/Pagination';
 
 export default {
   name: 'Lessons.tab',
   components: {
     LessonsTabItem,
+    Pagination
   }
 }
 </script>

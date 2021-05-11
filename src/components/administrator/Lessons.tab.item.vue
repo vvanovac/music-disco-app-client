@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar
-        v-for="lesson in lessonData"
+        v-for="lesson in lessonData.slice(page * dataPerPage, (page + 1) * dataPerPage)"
         :key="lesson.id"
     >
       <v-toolbar-title>{{ lesson.id }}</v-toolbar-title>

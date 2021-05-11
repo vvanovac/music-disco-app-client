@@ -38,6 +38,10 @@ import { action, getter } from '@/store/store.constants';
 export default {
   name: 'Pagination',
   props: {
+    dataset: {
+      type: String,
+      required: true
+    },
     sortBy: {
       type: Array,
       required: false,
@@ -46,7 +50,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataLength: getter.TASK_DATA_LENGTH,
+      taskDataLength: getter.TASK_DATA_LENGTH,
+      lessonDataLength: getter.LESSON_DATA_LENGTH,
       page: getter.PAGINATION_PAGE,
       dataPerPage: getter.DATA_PER_PAGE,
       numberOfRows: getter.NUMBER_OF_ROWS,
@@ -55,8 +60,17 @@ export default {
     pageValue() {
       return this.page + 1;
     },
+    determineDataset() {
+      if (this.dataset === 'tasks') {
+        return this.taskDataLength;
+      } else if (this.dataset === 'lessons') {
+        return this.lessonDataLength;
+      } else {
+        return null;
+      }
+    },
     lengthValue() {
-      return this.dataLength > 0 ? Math.ceil(this.dataLength / this.dataPerPage) : 3;
+      return this.determineDataset > 0 ? Math.ceil(this.determineDataset / this.dataPerPage) : 3;
     },
     criteriaValue() {
       return this.criteria;

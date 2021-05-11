@@ -13,7 +13,7 @@
     >
       Reload
     </v-btn>
-    <pagination :sort-by="['id', 'title']"/>
+    <pagination dataset="tasks" :sort-by="['id', 'title']"/>
   </div>
 </template>
 
