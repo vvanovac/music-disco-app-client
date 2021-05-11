@@ -18,6 +18,8 @@ const messageHeader = {
   LESSON_CREATED: 'Lesson successfully created.',
   LESSON_UPDATING_FAILED: 'Lesson updating failed.',
   LESSON_UPDATED: 'Lesson successfully updated.',
+  LESSON_DELETING_FAILED: 'Lesson successfully deleted.',
+  LESSON_DELETED: 'Deletion error.',
 };
 
 const messageText = {

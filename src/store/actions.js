@@ -202,4 +202,20 @@ export default {
       });
     }
   },
+  [action.DELETE_LESSON]: async ({dispatch, state}, lessonID) => {
+    try {
+      await HttpServer.delete(`/lessons/${lessonID}`, {token: state.token});
+      dispatch(action.GET_LESSONS, true);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_DELETED,
+        validity: messageValidity.SUCCESS
+      });
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_DELETING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      })
+    }
+  },
 };

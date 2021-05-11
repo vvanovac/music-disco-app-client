@@ -73,7 +73,7 @@ export default {
       lessonID,
       title: '',
       description: '',
-      listOfTasks: [],
+      listOfTasks: '',
       difficulty: '',
       courseID: '',
       isEdit: Number.isFinite(+lessonID)
@@ -178,7 +178,7 @@ export default {
       const payload = {
         title: this.title,
         description: this.description,
-        listOfTasks: this.listOfTasks,
+        listOfTasks: this.listOfTasks.split(','),
         difficulty: this.difficulty,
         courseID: +this.courseID
       };
@@ -212,7 +212,11 @@ export default {
     setData(data = {}) {
       this.title = data.title || '';
       this.description = data.description || '';
-      this.listOfTasks = data.listOfTasks || [];
+      if (data.listOfTasks) {
+        this.listOfTasks = data.listOfTasks.toString();
+      } else {
+        this.listOfTasks = '';
+      }
       this.difficulty = data.difficulty || '';
       this.courseID = data.courseID || '';
     },
