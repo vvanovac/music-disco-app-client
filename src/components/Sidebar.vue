@@ -40,10 +40,10 @@ export default {
     items() {
       return [
           { title: 'Home', icon: 'home', route: 'home', show: true },
-          { title: 'Lessons', icon: 'home', route: '', show: true }, //icon should be something like book-music
-          { title: 'Courses', icon: 'home', route: '', show: true }, //icon should be something like box-music
-          { title: 'Challenges', icon: 'home', route: '', show: true }, //icon should be something like award
-          { title: 'Admin Panel', icon: 'home', route: 'administrator', show: this.adminProtected } //icon should be something like dashboard/panel
+          { title: 'Lessons', icon: 'home', route: 'lessons', show: true },
+          { title: 'Courses', icon: 'home', route: '', show: true },
+          { title: 'Challenges', icon: 'home', route: '', show: true },
+          { title: 'Admin Panel', icon: 'home', route: 'administrator', show: this.adminProtected }
         ]
     }
   }
