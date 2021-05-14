@@ -49,6 +49,7 @@
       </v-btn>
       <v-btn
           round
+          v-show="showUpdateButton"
           @click="updateRedirect"
       >
         Update
@@ -61,18 +62,16 @@
 <script>
 import * as Tone from 'tone';
 import { musicNote, pianoKeys } from '@/constants/music.constants';
+import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'Piano.keys',
   props: {
-    octave: {
-      type: String,
+    taskID: {
+      type: Number,
       required: true
-    },
-    taskGoal: {
-      type: Array,
-      required: true
-    },
+    }
   },
   data() {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
@@ -95,6 +94,8 @@ export default {
         { note: musicNote.Asharp, activeClass: pianoKeys.Asharp },
       ],
       synth,
+      octave: '',
+      taskGoal: [],
       input: [],
       taskStatus: null,
       active: {
@@ -116,6 +117,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([getter.ADMIN_PROTECTED_ROUTES]),
     setInput() {
       if (this.input.length > 0) {
         return 'Your input: ' + this.input.map((tone) => ' ' + tone.note);
@@ -125,8 +127,16 @@ export default {
     disableCommandButtons() {
       return this.input.length === 0;
     },
+    showUpdateButton() {
+      return this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name);
+    }
   },
   methods: {
+    ...mapActions([action.GET_TASK]),
+    setData(data = {}) {
+      this.octave = data.octave || '';
+      this.taskGoal = data.musicNotes || [];
+    },
     playPiano(event) {
       let key = String.fromCharCode(event.keyCode).toLowerCase();
       switch (key) {
@@ -223,6 +233,10 @@ export default {
     updateRedirect() {
       this.$router.push({name: 'updateTasks', params: { taskID: this.$route.params.taskID}})
     }
+  },
+  async created() {
+    const data = await this[action.GET_TASK](this.taskID);
+    this.setData(data);
   },
   mounted() {
     window.addEventListener("keypress", this.playPiano);

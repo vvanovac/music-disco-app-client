@@ -1,15 +1,13 @@
 <template>
   <div>
-    <view-task/>
-    <piano-keys :octave="octave" :task-goal="musicNotes"/>
+    <view-task :taskID="taskID"/>
+    <piano-keys :taskID="taskID"/>
   </div>
 </template>
 
 <script>
 import ViewTask from '@/components/administrator/View.task';
 import PianoKeys from '@/components/Piano.keys';
-import { mapActions } from 'vuex';
-import { action } from '@/store/store.constants';
 
 export default {
   name: 'Task',
@@ -18,22 +16,11 @@ export default {
     PianoKeys
   },
   data() {
+    const taskID = +this.$route.params.taskID;
     return {
-      octave: '',
-      musicNotes: []
+      taskID,
     }
   },
-  methods: {
-    ...mapActions([action.GET_TASK]),
-    setData (data = {}) {
-      this.octave = data.octave || '';
-      this.musicNotes = data.musicNotes || [];
-    }
-  },
-  async mounted() {
-    const data = await this[action.GET_TASK](this.$route.params.taskID);
-    this.setData(data);
-  }
 }
 </script>
 

@@ -14,6 +14,12 @@ import { action } from '@/store/store.constants';
 
 export default {
   name: 'View.task',
+  props: {
+    taskID: {
+      type: Number,
+      required: true,
+    }
+  },
   data() {
     return {
       title: '',
@@ -30,7 +36,7 @@ export default {
     }
   },
   async mounted() {
-    const data = await this[action.GET_TASK](this.$route.params.taskID)
+    const data = await this[action.GET_TASK](this.taskID);
     this.setData(data);
   }
 }
