@@ -49,6 +49,7 @@ export default {
 .card-wrapper {
   width: 100%;
   font-size: 1.25em;
+  font-weight: bold;
   text-align: left;
   border: 1px solid gray;
   border-radius: 5px;
@@ -56,10 +57,10 @@ export default {
 
 .card-header {
   background-color: #2a9d8f;
+  color: white;
   border-radius: 4px 4px 0 0;
   padding: 13px 10px;
   height: 50px;
-  font-weight: bold;
 }
 
 .card-body {

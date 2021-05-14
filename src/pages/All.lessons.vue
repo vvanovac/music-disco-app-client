@@ -6,6 +6,7 @@
           v-for="(lesson, index) in lessonData"
           :key="lesson.id"
           class="cards"
+          @click="redirectToLesson(lesson)"
       >
         <lesson-card
             :header="`Lesson ${index + 1}`"
@@ -18,8 +19,8 @@
 </template>
 
 <script>
-import Sidebar from '@/components/Sidebar'
-import LessonCard from '@/components/Lesson.card'
+import Sidebar from '@/components/Sidebar';
+import LessonCard from '@/components/Lesson.card';
 import { mapActions, mapGetters } from 'vuex';
 import { action, getter } from '@/store/store.constants';
 
@@ -35,7 +36,10 @@ export default {
     })
   },
   methods: {
-    ...mapActions([action.GET_LESSONS])
+    ...mapActions([action.GET_LESSONS]),
+    redirectToLesson(lesson) {
+      this.$router.push({ name: 'lesson', params: { lessonID: lesson.id }});
+    },
   },
   created() {
     this[action.GET_LESSONS]();
