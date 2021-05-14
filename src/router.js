@@ -7,6 +7,7 @@ import Tasks from '@/pages/Tasks';
 import Task from '@/pages/Single.task';
 import Lessons from '@/pages/Lessons';
 import AllLessons from '@/pages/All.lessons';
+import Lesson from '@/pages/Single.lesson';
 import { action, getter } from '@/store/store.constants';
 import { messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
@@ -21,6 +22,7 @@ const routes = [
   { name: 'createLessons', component: Lessons, path: '/administrator/lessons' },
   { name: 'updateLessons', component: Lessons, path: '/administrator/lessons/:lessonID' },
   { name: 'lessons', component: AllLessons, path: '/lessons' },
+  { name: 'lesson', component: Lesson, path: '/lessons/:lessonID' },
 ];
 
 const router = (store) => {
