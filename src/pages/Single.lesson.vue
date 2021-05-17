@@ -1,16 +1,19 @@
 <template>
   <div class="container">
     <sidebar class="sidebar"/>
+    <view-lesson class="lesson"/>
   </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar';
+import ViewLesson from '@/components/View.lesson';
 
 export default {
   name: 'Lesson',
   components: {
     Sidebar,
+    ViewLesson,
   }
 }
 </script>
@@ -31,4 +34,11 @@ export default {
 .sidebar {
   width: 20%;
 }
+
+.lesson {
+  width: 100%;
+  margin: 25px;
+  padding: 25px
+}
+
 </style>

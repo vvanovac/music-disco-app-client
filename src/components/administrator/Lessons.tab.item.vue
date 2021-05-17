@@ -9,6 +9,12 @@
       <v-spacer></v-spacer>
       <v-btn
           :round="true"
+          @click="viewLesson(lesson)"
+      >
+        View
+      </v-btn>
+      <v-btn
+          :round="true"
           @click="updateRedirect(lesson)"
       >
         Update
@@ -70,6 +76,9 @@ export default {
     async confirmDeleting(lessonID) {
       await this[action.DELETE_LESSON](lessonID);
       this.toggleDeleteDialog(false);
+    },
+    viewLesson(lesson) {
+      this.$router.push({ name: 'lesson', params: { lessonID: lesson.id }});
     }
   },
   created() {
