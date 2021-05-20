@@ -143,12 +143,12 @@ export default {
   },
   [action.CREATE_LESSON]: async ({dispatch, state}, payload) => {
     try {
-      await HttpServer.post('/lessons', {token: state.token}, payload);
+      const lesson = await HttpServer.post('/lessons', {token: state.token}, payload);
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_CREATED,
         validity: messageValidity.SUCCESS
       });
-      return true;
+      return { data: lesson, status: true };
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_CREATING_FAILED,
@@ -160,12 +160,12 @@ export default {
   [action.UPDATE_LESSON]: async ({dispatch, state}, payload) => {
     try {
       const { lessonID, ...rest } = payload;
-      await HttpServer.put(`/lessons/${lessonID}`, {token: state.token}, rest);
+      const lesson = await HttpServer.put(`/lessons/${lessonID}`, {token: state.token}, rest);
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_UPDATED,
         validity: messageValidity.SUCCESS
       });
-      return true;
+      return { data: lesson, status: true };
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_UPDATING_FAILED,
@@ -211,6 +211,53 @@ export default {
         header: messageHeader.LESSON_DELETED,
         validity: messageValidity.SUCCESS
       });
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_DELETING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      })
+    }
+  },
+  [action.CREATE_TASK_LESSON]: async ({dispatch, state}, payload) => {
+    try {
+      await HttpServer.post('/taskLesson', {token: state.token}, payload);
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_CREATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.UPDATE_TASK_LESSON]: async ({dispatch, state}, payload) => {
+    try {
+      const {taskLessonID, ...rest} = payload;
+      await HttpServer.put(`/taskLesson/${taskLessonID}`, {token: state.token}, rest);
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.LESSON_UPDATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_TASK_LESSON_ID]: async ({dispatch, state}, payload) => {
+    try {
+      return await HttpServer.get(`/taskLesson/${payload.lessonID}/${payload.taskID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.DELETE_TASK_LESSON]: async ({dispatch, state}, taskLessonID) => {
+    try {
+      await HttpServer.delete(`/taskLesson/${taskLessonID}`, {token: state.token});
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_DELETING_FAILED,

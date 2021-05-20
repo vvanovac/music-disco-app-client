@@ -82,7 +82,7 @@ export default {
   mixins: [validationMixin],
   computed: {
     ...mapGetters({
-      difficulties: getter.GET_DIFFICULTIES
+      difficulties: getter.GET_DIFFICULTIES,
     }),
     titleErrors() {
       const errors = [];
@@ -163,7 +163,8 @@ export default {
   },
   methods: {
     ...mapActions([
-        action.MESSAGE_PROMPT, action.CREATE_LESSON, action.UPDATE_LESSON, action.GET_LESSON, action.GET_LESSONS
+        action.MESSAGE_PROMPT, action.CREATE_LESSON, action.UPDATE_LESSON, action.GET_LESSON, action.GET_LESSONS,
+        action.CREATE_TASK_LESSON, action.UPDATE_TASK_LESSON, action.GET_TASK_LESSON_ID,
     ]),
     async save() {
       this.$v.$touch();
@@ -175,7 +176,7 @@ export default {
         });
         return;
       }
-      const payload = {
+      const lessonPayload = {
         title: this.title,
         description: this.description,
         listOfTasks: this.listOfTasks.split(','),
@@ -183,15 +184,31 @@ export default {
         courseID: +this.courseID
       };
       if (!this.isEdit) {
-        const success = await this[action.CREATE_LESSON](payload);
-        if (success) {
+        const success = await this[action.CREATE_LESSON](lessonPayload);
+        for (const task of lessonPayload.listOfTasks) {
+          const index = lessonPayload.listOfTasks.indexOf(task);
+          const taskLessonPayload = this.setTaskLessonData(success.data.id, task, index);
+          await this[action.CREATE_TASK_LESSON](taskLessonPayload);
+        }
+        if (success.status) {
           this.clearFields();
           await this[action.GET_LESSONS](true);
           await this.$router.push({ name: 'administrator' });
         }
       } else {
-        const success = await this[action.UPDATE_LESSON]({ ...payload, lessonID: this.lessonID });
-        if (success) {
+        const success = await this[action.UPDATE_LESSON]({ ...lessonPayload, lessonID: this.lessonID });
+        for (const task of lessonPayload.listOfTasks) {
+          const index = lessonPayload.listOfTasks.indexOf(task);
+          const taskLessonPayload = this.setTaskLessonData(success.data.id, task, index);
+
+          let taskLesson = await this[action.GET_TASK_LESSON_ID]({ lessonID: this.lessonID, taskID: +task });
+          if (!taskLesson) {
+            await this[action.CREATE_TASK_LESSON](taskLessonPayload);
+            taskLesson = await this[action.GET_TASK_LESSON_ID]({ lessonID: this.lessonID, taskID: +task });
+          }
+          await this[action.UPDATE_TASK_LESSON]({ ...taskLessonPayload, taskLessonID: taskLesson.id });
+        }
+        if (success.status) {
           this.clearFields();
           await this[action.GET_LESSONS](true);
           await this.$router.push({ name: 'administrator' });
@@ -200,7 +217,7 @@ export default {
     },
     clearFields() {
       this.$v.$reset();
-      this.setData();
+      this.setLessonData();
     },
     clear() {
       this.clearFields();
@@ -209,7 +226,7 @@ export default {
         validity: messageValidity.INFO
       });
     },
-    setData(data = {}) {
+    setLessonData(data = {}) {
       this.title = data.title || '';
       this.description = data.description || '';
       if (data.listOfTasks) {
@@ -220,6 +237,14 @@ export default {
       this.difficulty = data.difficulty || '';
       this.courseID = data.courseID || '';
     },
+    setTaskLessonData(lessonID, task, index) {
+      return {
+        lessons: +lessonID,
+        tasks: +task,
+        difficulty: this.difficulty,
+        taskOrder: index + 1,
+      }
+    },
     setDifficultyValue(difficulty) {
       this.difficulty = difficulty;
     }
@@ -227,7 +252,7 @@ export default {
   async mounted() {
     if (this.isEdit) {
       const data = await this[action.GET_LESSON](this.$route.params.lessonID);
-      this.setData(data);
+      this.setLessonData(data);
     }
   },
   validations: {
