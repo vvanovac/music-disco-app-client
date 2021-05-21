@@ -1,28 +1,38 @@
 <template>
   <div>
-    <div
-        v-for="(id, index) in taskIDs"
-        :key="id"
-    >
-      <div v-if="showTask((index + 1), taskStep)">
-        <view-task :taskID="id"/>
-        <piano-keys :taskID="id"/>
+    <div class="container">
+      <h3
+          class="title-wrapper display-2 mb-5"
+          @click="redirectToLessons"
+      >
+        {{ lessonTitle }}
+      </h3>
+      <div
+          v-for="(id, index) in taskIDs"
+          :key="id"
+      >
+        <div v-if="showTask((index + 1), taskStep)">
+          <view-task :taskID="id"/>
+          <piano-keys :taskID="id"/>
+        </div>
       </div>
+      <v-btn
+          :round="true"
+          v-show="true"
+          :disabled="disablePreviousButton"
+          @click="previousTask"
+      >
+        Previous
+      </v-btn>
+      <v-btn
+          :round="true"
+          v-show="true"
+          :disabled="disableNextButton"
+          @click="nextTask"
+      >
+        Next
+      </v-btn>
     </div>
-    <v-btn
-        :round="true"
-        :disabled="disablePreviousButton"
-        @click="previousTask"
-    >
-      Previous
-    </v-btn>
-    <v-btn
-        :round="true"
-        :disabled="disableNextButton"
-        @click="nextTask"
-    >
-      Next
-    </v-btn>
   </div>
 </template>
 
@@ -40,6 +50,7 @@ export default {
   },
   data() {
     return {
+      lessonTitle: '',
       taskIDs: [],
       taskStep: 1,
     }
@@ -54,6 +65,12 @@ export default {
   },
   methods: {
     ...mapActions([action.GET_LESSON]),
+    setLessonTitle(lesson = {}) {
+      this.lessonTitle = lesson.title;
+    },
+    redirectToLessons() {
+      this.$router.push({ name: 'lessons' });
+    },
     setTaskIDs(lesson = {}){
       this.taskIDs = lesson.listOfTasks || [];
     },
@@ -69,11 +86,23 @@ export default {
   },
   async created() {
     const lesson = await this[action.GET_LESSON](this.$route.params.lessonID);
+    this.setLessonTitle(lesson);
     this.setTaskIDs(lesson);
   }
 }
 </script>
 
 <style scoped>
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+.title-wrapper {
+  text-align: left;
+  font-weight: bolder;
+}
 
 </style>

@@ -66,8 +66,8 @@ export default {
 .card-body {
   background-color: whitesmoke;
   border-radius: 0 0 5px 5px;
-  padding: 20px 10px;
-  height: 80px;
+  padding: 25px 10px;
+  height: 100px;
 }
 
 </style>
