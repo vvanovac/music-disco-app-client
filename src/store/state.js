@@ -17,5 +17,6 @@ export default {
     musicNote.C2, musicNote.Csharp, musicNote.Dsharp, musicNote.Fsharp, musicNote.Gsharp, musicNote.Asharp ],
   difficulties: [difficulties.BEGINNER, difficulties.AMATEUR, difficulties.MEDIUM],
   lessonData: null,
-  lessonDataLength: 0
+  lessonDataLength: 0,
+  taskProgressData: null,
 };

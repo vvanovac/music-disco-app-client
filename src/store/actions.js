@@ -148,7 +148,7 @@ export default {
         header: messageHeader.LESSON_CREATED,
         validity: messageValidity.SUCCESS
       });
-      return { data: lesson, status: true };
+      return {data: lesson, status: true};
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_CREATING_FAILED,
@@ -159,13 +159,13 @@ export default {
   },
   [action.UPDATE_LESSON]: async ({dispatch, state}, payload) => {
     try {
-      const { lessonID, ...rest } = payload;
+      const {lessonID, ...rest} = payload;
       const lesson = await HttpServer.put(`/lessons/${lessonID}`, {token: state.token}, rest);
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_UPDATED,
         validity: messageValidity.SUCCESS
       });
-      return { data: lesson, status: true };
+      return {data: lesson, status: true};
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.LESSON_UPDATING_FAILED,
@@ -264,6 +264,18 @@ export default {
         text: error.message,
         validity: messageValidity.ERROR
       })
+    }
+  },
+  [action.GET_TASK_PROGRESS]: async ({dispatch, commit, state}, payload) => {
+    try {
+      const data = await HttpServer.get(`/userProgress/taskProgress/${payload.userID}/${payload.lessonID}`, {token: state.token});
+      commit(mutation.STORE_TASK_PROGRESS_DATA, data);
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
     }
   },
 };

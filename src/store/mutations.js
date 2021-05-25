@@ -42,4 +42,7 @@ export default {
   [mutation.STORE_LESSON_DATA]: (state, payload) => {
     state.lessonData = payload;
   },
+  [mutation.STORE_TASK_PROGRESS_DATA]: (state, payload) => {
+    state.taskProgressData = payload;
+  },
 };
