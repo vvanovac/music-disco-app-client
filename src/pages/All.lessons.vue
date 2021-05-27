@@ -14,6 +14,8 @@
               :header="`Lesson ${index + 1}`"
               :color-index="index"
               :body="lesson.title"
+              :lessonID="lesson.id"
+              :number-of-tasks="lesson.listOfTasks.length"
           />
         </div>
       </div>

@@ -5,6 +5,12 @@
         :style="randomBackgroundColor"
     >
       {{ header }}
+      <v-progress-circular
+          class="progress"
+          :size="17.5"
+          :width="5"
+          :value="setProgressValue"
+      ></v-progress-circular>
     </div>
     <div class="card-body">
       {{ body }}
@@ -13,11 +19,15 @@
 </template>
 
 <script>
+import { action, getter } from '@/store/store.constants';
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'Lesson.card',
   data() {
     return {
-      colors: ['#40916c', '#e63946', '#fb8500', '#f9c74f', '#219ebc', '#f72585', '#9b5de5', '#80b918']
+      colors: ['#40916c', '#e63946', '#fb8500', '#f9c74f', '#219ebc', '#f72585', '#9b5de5', '#80b918'],
+      progress: 0,
     }
   },
   props: {
@@ -32,16 +42,42 @@ export default {
     body: {
       type: String,
       required: true
-    }
+    },
+    lessonID: {
+      type: Number,
+      required: true,
+    },
+    numberOfTasks: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
+    ...mapGetters({
+      lessonProgress: getter.GET_LESSON_PROGRESS,
+      userData: getter.USER_DATA,
+    }),
     randomBackgroundColor() {
       let number = this.colorIndex % 8;
       return {
         'background-color': this.colors[number]
       }
+    },
+    setProgressValue() {
+      return this.progress / this.numberOfTasks * 100;
     }
-  }
+  },
+  methods: {
+    ...mapActions([action.GET_LESSON_PROGRESS]),
+    async getLessonProgress(userID, lessonID) {
+      this.progress = await this[action.GET_LESSON_PROGRESS]({ userID, lessonID });
+    }
+  },
+  mounted() {
+    const userID = this.userData.id;
+    const lessonID = this.lessonID;
+    this.getLessonProgress(userID, lessonID);
+  },
 }
 </script>
 
@@ -61,6 +97,10 @@ export default {
   border-radius: 4px 4px 0 0;
   padding: 13px 10px;
   height: 50px;
+}
+
+.progress {
+  float: right;
 }
 
 .card-body {
