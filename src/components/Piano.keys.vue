@@ -61,9 +61,9 @@
 
 <script>
 import * as Tone from 'tone';
-import { musicNote, pianoKeys } from '@/constants/music.constants';
 import { mapActions, mapGetters } from 'vuex';
 import { action, getter } from '@/store/store.constants';
+import { musicNote, pianoKeys } from '@/constants/music.constants';
 
 export default {
   name: 'Piano.keys',
@@ -71,7 +71,12 @@ export default {
     taskID: {
       type: Number,
       required: true
-    }
+    },
+    completed: {
+      type: Boolean,
+      required: false,
+      default: () => false,
+    },
   },
   data() {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
@@ -113,7 +118,8 @@ export default {
         keyGsharp: '',
         keyAsharp: '',
       },
-      taskCompletionClass: ''
+      taskCompletionClass: '',
+      currentlyPressedKey: null,
     }
   },
   computed: {
@@ -139,6 +145,10 @@ export default {
     },
     playPiano(event) {
       let key = String.fromCharCode(event.keyCode).toLowerCase();
+      if (key === this.currentlyPressedKey) {
+        return;
+      }
+      this.currentlyPressedKey = key;
       switch (key) {
         case 'a':
           return this.playWhiteKey(musicNote.C);
@@ -204,6 +214,7 @@ export default {
       this.active.keyFsharp = '';
       this.active.keyGsharp = '';
       this.active.keyAsharp = '';
+      this.currentlyPressedKey = null;
     },
     addToInput(note) {
       const time = Tone.now();

@@ -18,5 +18,5 @@ export default {
   difficulties: [difficulties.BEGINNER, difficulties.AMATEUR, difficulties.MEDIUM],
   lessonData: null,
   lessonDataLength: 0,
-  taskProgressData: null,
+  taskProgressData: [],
 };
