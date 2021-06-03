@@ -13,25 +13,43 @@
       >
         <div v-if="showTask(index, taskStep)">
           <view-task :taskID="id"/>
-          <piano-keys :taskID="id" :completed="completionStatus(id)"/>
+          <piano-keys
+              :taskID="id"
+              :progressID="setProgressID(id)"
+              :completed="completionStatus(id)"
+          />
+          <div
+              v-show="completionStatus(id)"
+          >
+            <div
+                class="completed"
+            >
+              TASK COMPLETED!
+              <v-icon
+                  class="icon"
+              >
+                check_circle
+              </v-icon>
+            </div>
+            <div>
+              <v-btn
+                  :round="true"
+                  :disabled="disablePreviousButton"
+                  @click="previousTask"
+              >
+                <v-icon left>arrow_back</v-icon>Previous
+              </v-btn>
+              <v-btn
+                  :round="true"
+                  :disabled="disableNextButton"
+                  @click="nextTask"
+              >
+                Next<v-icon right>arrow_forward</v-icon>
+              </v-btn>
+            </div>
+          </div>
         </div>
       </div>
-      <v-btn
-          :round="true"
-          v-show="true"
-          :disabled="disablePreviousButton"
-          @click="previousTask"
-      >
-        Previous
-      </v-btn>
-      <v-btn
-          :round="true"
-          v-show="true"
-          :disabled="disableNextButton"
-          @click="nextTask"
-      >
-        Next
-      </v-btn>
     </div>
   </div>
 </template>
@@ -53,6 +71,7 @@ export default {
       lessonTitle: '',
       taskIDs: [],
       taskStep: 0,
+      progressID: 0,
     }
   },
   computed: {
@@ -94,6 +113,10 @@ export default {
     completionStatus(taskID) {
       const status = this.taskProgressData.filter((progress) => progress.taskID === taskID);
       return status.length > 0 ? status[0].completed : false;
+    },
+    setProgressID(taskID) {
+      const target = this.taskProgressData.filter((progress) => progress.taskID === taskID);
+      return this.progressID = target[0].progressID;
     }
   },
   async created() {
@@ -119,6 +142,19 @@ export default {
 .title-wrapper {
   text-align: left;
   font-weight: bolder;
+}
+
+.completed, .icon {
+  color: seagreen;
+}
+
+.completed {
+  font-size: 36px;
+  padding-bottom: 20px;
+}
+
+.icon {
+  font-size: 40px;
 }
 
 </style>

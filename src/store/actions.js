@@ -289,4 +289,16 @@ export default {
       });
     }
   },
+  [action.UPDATE_USER_PROGRESS]: async ({dispatch, state}, payload) => {
+    try {
+      const { id, ...rest } = payload;
+      return await HttpServer.put(`/userProgress/${id}`, {token: state.token}, rest);
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
 };

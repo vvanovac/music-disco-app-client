@@ -26,6 +26,7 @@
     </div>
     <div class="input-container">
       <p class="input subheading font-weight-regular">{{setInput}}</p>
+      <p class="subheading font-weight-regular" :class="taskCompletionClass">{{taskStatus}}</p>
       <v-btn
           round
           :disabled="disableCommandButtons"
@@ -54,7 +55,6 @@
       >
         Update
       </v-btn>
-      <p class="subheading font-weight-regular pt-3" :class="taskCompletionClass">{{taskStatus}}</p>
     </div>
   </div>
 </template>
@@ -72,11 +72,16 @@ export default {
       type: Number,
       required: true
     },
+    progressID: {
+      type: Number,
+      required: false,
+      default: () => 0,
+    },
     completed: {
       type: Boolean,
       required: false,
       default: () => false,
-    },
+    }
   },
   data() {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
@@ -123,10 +128,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([getter.ADMIN_PROTECTED_ROUTES]),
+    ...mapGetters({
+      adminRoutes: getter.ADMIN_PROTECTED_ROUTES,
+      userData: getter.USER_DATA,
+    }),
     setInput() {
       if (this.input.length > 0) {
         return 'Your input: ' + this.input.map((tone) => ' ' + tone.note);
+      }
+      if (this.completed) {
+        return 'You can play piano to practise your skills.';
       }
       return 'Play piano to complete your task.';
     },
@@ -134,11 +145,11 @@ export default {
       return this.input.length === 0;
     },
     showUpdateButton() {
-      return this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name);
+      return this.adminRoutes.includes(this.$route.name);
     }
   },
   methods: {
-    ...mapActions([action.GET_TASK]),
+    ...mapActions([action.GET_TASK, action.UPDATE_USER_PROGRESS, action.GET_TASK_PROGRESS]),
     setData(data = {}) {
       this.octave = data.octave || '';
       this.taskGoal = data.musicNotes || [];
@@ -229,13 +240,25 @@ export default {
       this.taskStatus = null;
       this.taskCompletionClass = '';
     },
-    checkInput() {
+    async checkInput() {
       const taskGoal = this.taskGoal.map((task) => task + this.octave);
       const inputNotes = this.input.map((tone) => tone.note);
 
       if (!inputNotes.join(',').localeCompare(taskGoal.join(','))) {
-        this.taskStatus = 'WELL DONE! Task successfully completed.';
-        this.taskCompletionClass = 'task-success';
+        if (this.adminRoutes.includes(this.$route.name)) {
+          this.taskStatus = 'WELL DONE! Task successfully completed.';
+          this.taskCompletionClass = 'task-success';
+          return;
+        }
+        if (this.completed) {
+          this.taskStatus = 'Well done again! Maybe you should try next task.';
+          this.taskCompletionClass = 'task-success';
+        } else {
+          await this[action.UPDATE_USER_PROGRESS]({ completed: true, id: this.progressID });
+          const userID = this.userData.id;
+          const lessonID = this.$route.params.lessonID;
+          await this[action.GET_TASK_PROGRESS]({ userID, lessonID });
+        }
       } else {
         this.taskStatus = 'Aww, this is bad. Please try again.';
         this.taskCompletionClass = 'task-failure';
@@ -330,6 +353,7 @@ export default {
 
 .input-container {
   margin-top: 30px;
+  margin-bottom: 35px;
 }
 
 .input {
@@ -341,7 +365,7 @@ export default {
 }
 
 .task-success {
-  color: green;
+  color: seagreen;
 }
 
 .task-failure {
