@@ -8,7 +8,6 @@
             v-for="(lesson, index) in lessonData"
             :key="lesson.id"
             class="cards"
-            @click="redirectToLesson(lesson)"
         >
           <lesson-card
               :header="`Lesson ${index + 1}`"
@@ -44,9 +43,6 @@ export default {
   },
   methods: {
     ...mapActions([action.GET_LESSONS]),
-    redirectToLesson(lesson) {
-      this.$router.push({ name: 'lesson', params: { lessonID: lesson.id }});
-    },
   },
   created() {
     this[action.GET_LESSONS]();

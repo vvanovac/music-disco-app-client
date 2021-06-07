@@ -13,7 +13,16 @@
       ></v-progress-circular>
     </div>
     <div class="card-body">
-      {{ body }}
+      <div>
+        {{ body }}
+      </div>
+      <v-btn
+          class="redirect-button ml-0 mt-3"
+          :round="true"
+          @click="redirectToLesson"
+      >
+        {{action}}
+      </v-btn>
     </div>
   </div>
 </template>
@@ -28,6 +37,7 @@ export default {
     return {
       colors: ['#40916c', '#e63946', '#fb8500', '#f9c74f', '#219ebc', '#f72585', '#9b5de5', '#80b918'],
       progress: 0,
+      action: '',
     }
   },
   props: {
@@ -54,7 +64,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lessonProgress: getter.GET_LESSON_PROGRESS,
       userData: getter.USER_DATA,
     }),
     randomBackgroundColor() {
@@ -68,15 +77,26 @@ export default {
     }
   },
   methods: {
-    ...mapActions([action.GET_LESSON_PROGRESS]),
+    ...mapActions([action.COUNT_COMPLETED_TASKS]),
     async getLessonProgress(userID, lessonID) {
-      this.progress = await this[action.GET_LESSON_PROGRESS]({ userID, lessonID });
-    }
+      this.progress = await this[action.COUNT_COMPLETED_TASKS]({ userID, lessonID });
+      this.determineAction();
+    },
+    determineAction() {
+      if (this.setProgressValue === 0) {
+        return this.action = 'start';
+      } else if (this.setProgressValue > 0 && this.setProgressValue < 100) {
+        return this.action = 'continue';
+      } else {
+        return this.action = 'repeat';
+      }
+    },
+    redirectToLesson() {
+      this.$router.push({ name: 'lesson', params: { lessonID: this.lessonID } });
+    },
   },
   mounted() {
-    const userID = this.userData.id;
-    const lessonID = this.lessonID;
-    this.getLessonProgress(userID, lessonID);
+    this.getLessonProgress(this.userData.id, this.lessonID);
   },
 }
 </script>
@@ -107,7 +127,11 @@ export default {
   background-color: whitesmoke;
   border-radius: 0 0 5px 5px;
   padding: 25px 10px;
-  height: 100px;
+  height: 130px;
+}
+
+.redirect-button {
+  float: right;
 }
 
 </style>

@@ -116,7 +116,9 @@ export default {
     },
     setProgressID(taskID) {
       const target = this.taskProgressData.filter((progress) => progress.taskID === taskID);
-      return this.progressID = target[0].progressID;
+      if (target.length > 0) {
+        return this.progressID = target[0].progressID;
+      }
     }
   },
   async created() {

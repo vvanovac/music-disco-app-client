@@ -278,9 +278,9 @@ export default {
       });
     }
   },
-  [action.GET_LESSON_PROGRESS]: async ({dispatch, state}, payload) => {
+  [action.COUNT_COMPLETED_TASKS]: async ({dispatch, state}, payload) => {
     try {
-      return await HttpServer.get(`/userProgress/lessonProgress/${payload.userID}/${payload.lessonID}`, {token: state.token});
+      return await HttpServer.get(`/userProgress/completedTasks/${payload.userID}/${payload.lessonID}`, {token: state.token});
     } catch (error) {
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.FETCHING_ERROR,
