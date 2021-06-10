@@ -123,12 +123,15 @@ export default {
   },
   async created() {
     const lessonID = this.$route.params.lessonID;
-    const userID = this.userData.id;
     const lesson = await this[action.GET_LESSON](lessonID);
 
-    await this[action.GET_TASK_PROGRESS]({ userID, lessonID });
     this.setLessonTitle(lesson);
     this.setTaskIDs(lesson);
+  },
+  async updated() {
+    const lessonID = this.$route.params.lessonID;
+    const userID = this.userData.id;
+    await this[action.GET_TASK_PROGRESS]({ userID, lessonID });
   }
 }
 </script>

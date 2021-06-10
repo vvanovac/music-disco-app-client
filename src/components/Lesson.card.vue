@@ -19,17 +19,17 @@
       <v-btn
           class="redirect-button ml-0 mt-3"
           :round="true"
-          @click="redirectToLesson"
+          @click="redirectAndStart"
       >
-        {{action}}
+        {{ action }}
       </v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import { action, getter } from '@/store/store.constants';
 import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'Lesson.card',
@@ -38,6 +38,8 @@ export default {
       colors: ['#40916c', '#e63946', '#fb8500', '#f9c74f', '#219ebc', '#f72585', '#9b5de5', '#80b918'],
       progress: 0,
       action: '',
+      isStarted: false,
+      taskIDs: [],
     }
   },
   props: {
@@ -77,26 +79,48 @@ export default {
     }
   },
   methods: {
-    ...mapActions([action.COUNT_COMPLETED_TASKS]),
+    ...mapActions([
+      action.COUNT_COMPLETED_TASKS, action.CREATE_USER_PROGRESS, action.GET_USER_PROGRESS_ID, action.GET_LESSON,
+      action.IS_LESSON_STARTED,
+    ]),
     async getLessonProgress(userID, lessonID) {
       this.progress = await this[action.COUNT_COMPLETED_TASKS]({ userID, lessonID });
       this.determineAction();
     },
     determineAction() {
-      if (this.setProgressValue === 0) {
+      const progress = this.setProgressValue;
+      if (progress === 0) {
         return this.action = 'start';
-      } else if (this.setProgressValue > 0 && this.setProgressValue < 100) {
+      } else if (progress > 0 && progress < 100) {
         return this.action = 'continue';
       } else {
         return this.action = 'repeat';
       }
     },
+    async determineIsStarted() {
+      this.isStarted = await this[action.IS_LESSON_STARTED]({ userID: this.userData.id, lessonID: this.lessonID});
+    },
+    redirectAndStart () {
+      if (!this.isStarted) {
+        this.taskIDs.forEach((id) => {
+          this[action.CREATE_USER_PROGRESS]({ userID: this.userData.id, lessonID: this.lessonID, taskID: id })
+        })
+      }
+      this.redirectToLesson();
+    },
     redirectToLesson() {
       this.$router.push({ name: 'lesson', params: { lessonID: this.lessonID } });
     },
+    setTaskIDs(lesson = {}){
+      this.taskIDs = lesson.listOfTasks || [];
+    },
   },
-  mounted() {
-    this.getLessonProgress(this.userData.id, this.lessonID);
+  async mounted() {
+    await this.getLessonProgress(this.userData.id, this.lessonID);
+    await this.determineIsStarted();
+
+    const lesson = await this[action.GET_LESSON](this.lessonID);
+    this.setTaskIDs(lesson);
   },
 }
 </script>
