@@ -1,6 +1,6 @@
 import HttpServer from '@/services/http.server';
 import { mutation, action } from './store.constants'
-import { messageHeader, messageValidity } from '@/constants/message.constants';
+import {messageHeader, messageText, messageValidity} from '@/constants/message.constants';
 
 export default {
   [action.CLEAR_TOKEN]: ({commit}) => {
@@ -289,6 +289,33 @@ export default {
       });
     }
   },
+  [action.CREATE_USER_PROGRESS]: async ({dispatch, state}, payload) => {
+    try {
+      const { userID, lessonID, taskID } = payload;
+      const taskLessonID = await dispatch(action.GET_TASK_LESSON_ID, {lessonID, taskID});
+      return await HttpServer.post(
+          `/userProgress`,
+          { token: state.token },
+          { users: userID, taskLesson: taskLessonID.id, completed: false },
+      );
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.STARTING_ERROR,
+        text: messageText.STARTING_ERROR,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_USER_PROGRESS_ID]: async ({dispatch, state}, payload) => {
+    try {
+      return await HttpServer.get(`/userProgress/id/${payload.userID}/${payload.lessonID}/${payload.taskID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });    }
+  },
   [action.UPDATE_USER_PROGRESS]: async ({dispatch, state}, payload) => {
     try {
       const { id, ...rest } = payload;
@@ -301,4 +328,21 @@ export default {
       });
     }
   },
+  [action.IS_LESSON_STARTED]: async ({dispatch}, payload) => {
+    try {
+      const lesson = await dispatch(action.GET_LESSON, payload.lessonID);
+      const userProgress = await dispatch(action.GET_USER_PROGRESS_ID, {
+        userID: payload.userID,
+        lessonID: payload.lessonID,
+        taskID: lesson.listOfTasks[0],
+      });
+      return !!userProgress;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  }
 };

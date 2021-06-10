@@ -20,12 +20,14 @@ const messageHeader = {
   LESSON_UPDATED: 'Lesson successfully updated.',
   LESSON_DELETING_FAILED: 'Lesson successfully deleted.',
   LESSON_DELETED: 'Deletion error.',
+  STARTING_ERROR: 'Error during starting lesson.',
 };
 
 const messageText = {
   INVALID_FORM: 'Invalid form. Please try again.',
   UNAUTHORIZED: 'You cannot access this.',
-  DUPLICATED_NOTE: 'Unable to add the same note.'
+  DUPLICATED_NOTE: 'Unable to add the same note.',
+  STARTING_ERROR: 'Unable to start progress for this lesson.'
 };
 
 const messageValidity = {
