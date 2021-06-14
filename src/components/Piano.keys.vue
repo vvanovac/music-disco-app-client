@@ -245,8 +245,8 @@ export default {
       const inputNotes = this.input.map((tone) => tone.note);
 
       if (!inputNotes.join(',').localeCompare(taskGoal.join(','))) {
-        if (this.adminRoutes.includes(this.$route.name)) {
-          this.taskStatus = 'WELL DONE! Task successfully completed.';
+        if (this.userData.isAdmin || this.adminRoutes.includes(this.$route.name)) {
+          this.taskStatus = 'Task successfully completed.';
           this.taskCompletionClass = 'task-success';
           return;
         }

@@ -18,11 +18,10 @@
               :progressID="setProgressID(id)"
               :completed="completionStatus(id)"
           />
-          <div
-              v-show="completionStatus(id)"
-          >
+          <div>
             <div
                 class="completed"
+                v-show="showCompletionMessage(id)"
             >
               TASK COMPLETED!
               <v-icon
@@ -35,6 +34,7 @@
               <v-btn
                   :round="true"
                   :disabled="disablePreviousButton"
+                  v-show="showNavigationButtons(id)"
                   @click="previousTask"
               >
                 <v-icon left>arrow_back</v-icon>Previous
@@ -42,6 +42,7 @@
               <v-btn
                   :round="true"
                   :disabled="disableNextButton"
+                  v-show="showNavigationButtons(id)"
                   @click="nextTask"
               >
                 Next<v-icon right>arrow_forward</v-icon>
@@ -119,7 +120,16 @@ export default {
       if (target.length > 0) {
         return this.progressID = target[0].progressID;
       }
-    }
+    },
+    showNavigationButtons(taskID) {
+      return this.userData.isAdmin ? true : this.completionStatus(taskID);
+    },
+    showCompletionMessage(taskID) {
+      if (this.userData.isAdmin) {
+        return false;
+      }
+      return this.completionStatus(taskID);
+    },
   },
   async created() {
     const lessonID = this.$route.params.lessonID;

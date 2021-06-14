@@ -10,6 +10,7 @@
           :size="17.5"
           :width="5"
           :value="setProgressValue"
+          v-show="showProgressCircular"
       ></v-progress-circular>
     </div>
     <div class="card-body">
@@ -76,7 +77,10 @@ export default {
     },
     setProgressValue() {
       return this.progress / this.numberOfTasks * 100;
-    }
+    },
+    showProgressCircular() {
+      return !this.userData.isAdmin;
+    },
   },
   methods: {
     ...mapActions([
@@ -89,6 +93,9 @@ export default {
     },
     determineAction() {
       const progress = this.setProgressValue;
+      if (this.userData.isAdmin) {
+        return this.action = 'view';
+      }
       if (progress === 0) {
         return this.action = 'start';
       } else if (progress > 0 && progress < 100) {
@@ -101,7 +108,7 @@ export default {
       this.isStarted = await this[action.IS_LESSON_STARTED]({ userID: this.userData.id, lessonID: this.lessonID});
     },
     redirectAndStart () {
-      if (!this.isStarted) {
+      if (!this.isStarted && !this.userData.isAdmin) {
         this.taskIDs.forEach((id) => {
           this[action.CREATE_USER_PROGRESS]({ userID: this.userData.id, lessonID: this.lessonID, taskID: id })
         })
