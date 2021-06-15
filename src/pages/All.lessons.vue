@@ -23,10 +23,10 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import Sidebar from '@/components/Sidebar';
 import SelectingNavbar from '@/components/Selecting.navbar';
 import LessonCard from '@/components/Lesson.card';
-import { mapActions, mapGetters } from 'vuex';
 import { action, getter } from '@/store/store.constants';
 
 export default {
@@ -80,7 +80,7 @@ export default {
 }
 
 .cards {
-  width: 25%;
+  width: clamp(219px, 25%, 400px);
   margin: 1% 6.16% 5%;
 }
 

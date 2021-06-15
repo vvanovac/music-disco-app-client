@@ -13,17 +13,27 @@
           v-show="showProgressCircular"
       ></v-progress-circular>
     </div>
-    <div class="card-body">
-      <div>
+    <div class="card-body-wrapper">
+      <div class="card-body-text">
         {{ body }}
       </div>
-      <v-btn
-          class="redirect-button ml-0 mt-3"
-          :round="true"
-          @click="redirectAndStart"
-      >
-        {{ action }}
-      </v-btn>
+      <div class="card-body-buttons">
+        <v-btn
+            class="redirect-button"
+            :round="true"
+            @click="redirectAndStart"
+        >
+          {{ action }}
+        </v-btn>
+        <v-btn
+            class="redirect-button"
+            :round="true"
+            v-show="showUpdateButton"
+            @click="updateRedirect"
+        >
+          Update
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -81,6 +91,9 @@ export default {
     showProgressCircular() {
       return !this.userData.isAdmin;
     },
+    showUpdateButton() {
+      return this.userData.isAdmin;
+    },
   },
   methods: {
     ...mapActions([
@@ -118,6 +131,9 @@ export default {
     redirectToLesson() {
       this.$router.push({ name: 'lesson', params: { lessonID: this.lessonID } });
     },
+    updateRedirect() {
+      this.$router.push({ name: 'updateLessons', params: { lessonID: this.lessonID }});
+    },
     setTaskIDs(lesson = {}){
       this.taskIDs = lesson.listOfTasks || [];
     },
@@ -154,15 +170,27 @@ export default {
   float: right;
 }
 
-.card-body {
+.card-body-wrapper {
+  display: flex;
+  flex-direction: column;
   background-color: whitesmoke;
   border-radius: 0 0 5px 5px;
-  padding: 25px 10px;
-  height: 130px;
+}
+
+.card-body-text {
+  height: 75px;
+  padding: 25px 10px 10px;
+}
+
+.card-body-buttons {
+  height: 60px;
+  padding: 0 10px;
 }
 
 .redirect-button {
   float: right;
+  padding: 0;
+  margin: 12px 0 12px 10px;
 }
 
 </style>
