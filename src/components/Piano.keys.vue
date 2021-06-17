@@ -44,7 +44,7 @@
       <v-btn
           round
           :disabled="disableCommandButtons"
-          @click="checkInput"
+          @click="updateProgress"
       >
         Check
       </v-btn>
@@ -233,26 +233,45 @@ export default {
     },
     playInput() {
       const now = Tone.now();
-      this.input.forEach((tone) => this.synth.triggerAttackRelease(tone.note, '2n', now + tone.time));
+      const firstTone = this.input[0];
+      this.input.forEach((tone) => this.synth.triggerAttackRelease(tone.note, '2n', now + tone.time - firstTone.time));
     },
     clearInput() {
       this.input = [];
       this.taskStatus = null;
       this.taskCompletionClass = '';
     },
-    async checkInput() {
-      const taskGoal = this.taskGoal.map((task) => task + this.octave);
-      const inputNotes = this.input.map((tone) => tone.note);
-
-      if (!inputNotes.join(',').localeCompare(taskGoal.join(','))) {
-        if (this.userData.isAdmin || this.adminRoutes.includes(this.$route.name)) {
+    checkInput(input = [], goal = []) {
+      return input.join(',').localeCompare(goal.join(','))
+    },
+    isItAdmin() {
+      return this.userData.isAdmin || this.adminRoutes.includes(this.$route.name);
+    },
+    setStatusAndCompletionClass(isCompleted, isAdmin) {
+      if (isCompleted) {
+        if (isAdmin) {
           this.taskStatus = 'Task successfully completed.';
           this.taskCompletionClass = 'task-success';
           return;
         }
+        this.taskStatus = 'Well done again! Maybe you should try next task.';
+        this.taskCompletionClass = 'task-success';
+      } else {
+        this.taskStatus = 'Aww, this is bad. Please try again.';
+        this.taskCompletionClass = 'task-failure';
+      }
+    },
+    async updateProgress() {
+      const taskGoal = this.taskGoal.map((task) => task + this.octave);
+      const inputNotes = this.input.map((tone) => tone.note);
+
+      if (!this.checkInput(inputNotes, taskGoal)) {
+        if (this.isItAdmin()) {
+          this.setStatusAndCompletionClass(true, true);
+          return;
+        }
         if (this.completed) {
-          this.taskStatus = 'Well done again! Maybe you should try next task.';
-          this.taskCompletionClass = 'task-success';
+          this.setStatusAndCompletionClass(true, false);
         } else {
           await this[action.UPDATE_USER_PROGRESS]({ completed: true, id: this.progressID });
           const userID = this.userData.id;
@@ -260,8 +279,7 @@ export default {
           await this[action.GET_TASK_PROGRESS]({ userID, lessonID });
         }
       } else {
-        this.taskStatus = 'Aww, this is bad. Please try again.';
-        this.taskCompletionClass = 'task-failure';
+        this.setStatusAndCompletionClass(false, true);
       }
     },
     updateRedirect() {

@@ -138,7 +138,7 @@ export default {
     this.setLessonTitle(lesson);
     this.setTaskIDs(lesson);
   },
-  async updated() {
+  async mounted() {
     const lessonID = this.$route.params.lessonID;
     const userID = this.userData.id;
     await this[action.GET_TASK_PROGRESS]({ userID, lessonID });
