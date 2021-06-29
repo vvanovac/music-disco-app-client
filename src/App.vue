@@ -1,17 +1,28 @@
 <template>
   <div class="app-container" data-app>
-    <component :is="navbarToShow"></component>
-    <router-view></router-view>
+    <div class="d-flex flex-row justify-start align-start ma-0 pa-0 app-wrapper">
+      <div
+          class="ma-0 pa-0 app-sidebar"
+          v-show="showSidebar"
+      >
+        <sidebar/>
+      </div>
+      <div class="ma-0 pa-0 app-main">
+        <component :is="navbarToShow"></component>
+        <router-view></router-view>
+      </div>
+    </div>
     <form-message/>
   </div>
 </template>
 
 <script>
-import AdministratorNavbar from '@/components/administrator/Administrator.navbar'
-import HomeNavbar from '@/components/home/Home.navbar'
-import FormMessage from '@/components/Form.message'
 import { mapGetters } from 'vuex';
 import { getter } from '@/store/store.constants';
+import AdministratorNavbar from '@/components/administrator/Administrator.navbar'
+import HomeNavbar from '@/components/home/Home.navbar'
+import Sidebar from '@/components/Sidebar'
+import FormMessage from '@/components/Form.message'
 
 export default {
   name: 'App',
@@ -19,6 +30,7 @@ export default {
     AdministratorNavbar,
     HomeNavbar,
     FormMessage,
+    Sidebar,
   },
   data() {
     return {
@@ -41,8 +53,11 @@ export default {
         return null;
       }
       return 'HomeNavbar';
-    }
-  }
+    },
+    showSidebar() {
+      return!this[getter.UNPROTECTED_ROUTES].includes(this.$route.name) && !this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name);
+    },
+  },
 }
 </script>
 
@@ -58,4 +73,13 @@ body {
   text-align: center;
   color: #2c3e50;
 }
+
+.app-main {
+  width: 80%;
+}
+
+.app-sidebar {
+  width: 20%;
+}
+
 </style>
