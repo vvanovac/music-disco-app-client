@@ -1,11 +1,14 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height class="pa-0">
     <v-layout align-left>
       <v-flex>
-        <v-card>
+        <v-card flat>
           <v-card-title primary-title>
             <div>
-              <h3 class="headline mb-0">Courses</h3>
+              <h3 class="headline mb-0">
+                <v-icon>school</v-icon>
+                Courses
+              </h3>
               <p>No courses yet.</p>
             </div>
           </v-card-title>
@@ -17,7 +20,7 @@
 
 <script>
 export default {
-  name: 'Home.courses'
+  name: 'Home.courses',
 }
 </script>
 
@@ -26,4 +29,5 @@ export default {
   padding: 0 15px 25px;
   text-align: left;
 }
+
 </style>

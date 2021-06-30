@@ -46,16 +46,24 @@ export default {
   computed: {
     ...mapGetters([getter.ADMIN_PROTECTED_ROUTES, getter.UNPROTECTED_ROUTES]),
     navbarToShow() {
-      if (this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name)) {
+      if (this.isRouteAdminProtected(this.$route.name)) {
         return 'AdministratorNavbar';
       }
-      if (this[getter.UNPROTECTED_ROUTES].includes(this.$route.name)) {
+      if (this.isRouteUnprotected(this.$route.name) || this.$route.name === 'lessons') {
         return null;
       }
       return 'HomeNavbar';
     },
     showSidebar() {
-      return!this[getter.UNPROTECTED_ROUTES].includes(this.$route.name) && !this[getter.ADMIN_PROTECTED_ROUTES].includes(this.$route.name);
+      return !this.isRouteUnprotected(this.$route.name) && !this.isRouteAdminProtected(this.$route.name);
+    },
+  },
+  methods: {
+    isRouteAdminProtected(route) {
+      return this[getter.ADMIN_PROTECTED_ROUTES].includes(route);
+    },
+    isRouteUnprotected(route) {
+      return this[getter.UNPROTECTED_ROUTES].includes(route);
     },
   },
 }

@@ -1,11 +1,14 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height class="pa-0">
     <v-layout align-left>
       <v-flex>
-        <v-card>
+        <v-card flat>
           <v-card-title primary-title>
             <div>
-              <h3 class="headline mb-0">Challenges</h3>
+              <h3 class="headline mb-0">
+                <v-icon>emoji_events</v-icon>
+                Challenges
+              </h3>
               <p>No challenges yet.</p>
             </div>
           </v-card-title>
@@ -17,7 +20,7 @@
 
 <script>
 export default {
-  name: 'Home.challenges'
+  name: 'Home.challenges',
 }
 </script>
 
@@ -26,4 +29,5 @@ export default {
   padding: 0 15px 25px;
   text-align: left;
 }
+
 </style>
