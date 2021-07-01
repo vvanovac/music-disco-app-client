@@ -1,19 +1,17 @@
 <template>
-  <div class="d-flex flex-row justify-start align-start home-container">
-    <sidebar class="home-sidebar"/>
-    <div class="justify-end home-main">
+  <div class="wrapper">
+    <div class="pa-0 ma-0">
       <welcome-message class="welcome-message"/>
       <home-lessons class="lessons"></home-lessons>
       <v-divider class="divider"></v-divider>
-      <home-courses></home-courses>
+      <home-courses class="courses"></home-courses>
       <v-divider class="divider"></v-divider>
-      <home-challenges></home-challenges>
+      <home-challenges class="challenges"></home-challenges>
     </div>
   </div>
 </template>
 
 <script>
-import Sidebar from '@/components/Sidebar';
 import WelcomeMessage from '@/components/home/Home.welcome.message'
 import HomeLessons from '@/components/home/Home.lessons'
 import HomeCourses from '@/components/home/Home.courses'
@@ -22,35 +20,31 @@ import HomeChallenges from '@/components/home/Home.challenges'
 export default {
   name: 'Home',
   components: {
-    Sidebar,
     WelcomeMessage,
     HomeLessons,
     HomeCourses,
-    HomeChallenges
+    HomeChallenges,
   },
 }
 </script>
 
 <style scoped>
-.home-container {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-.home-sidebar {
-  width: 20%;
-}
-
-.home-main {
+.wrapper {
+  height: 90vh;
   width: 100%;
 }
 
-.welcome-message, .lessons {
+.welcome-message {
   margin: 2% auto auto;
 }
 
+.lessons, .courses, .challenges {
+  margin: 2% 5% auto 5%;
+}
+
 .divider {
-  width: 75%;
+  width: 90%;
   margin: auto;
 }
+
 </style>

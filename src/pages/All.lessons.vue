@@ -1,22 +1,19 @@
 <template>
-  <div class="container">
-    <sidebar class="sidebar"/>
-    <div class="main-container">
-      <selecting-navbar/>
-      <div class="cards-container">
-        <div
-            v-for="(lesson, index) in lessonData"
-            :key="lesson.id"
-            class="cards"
-        >
-          <lesson-card
-              :header="`Lesson ${index + 1}`"
-              :color-index="index"
-              :body="lesson.title"
-              :lessonID="lesson.id"
-              :number-of-tasks="lesson.listOfTasks.length"
-          />
-        </div>
+  <div class="pa-0 ma-0 main-container">
+    <selecting-navbar/>
+    <div class="pa-0 ma-0 cards-container">
+      <div
+          v-for="(lesson, index) in lessonData"
+          :key="lesson.id"
+          class="cards"
+      >
+        <lesson-card
+            :header="`Lesson ${index + 1}`"
+            :color-index="index"
+            :body="lesson.title"
+            :lessonID="lesson.id"
+            :number-of-tasks="lesson.listOfTasks.length"
+        />
       </div>
     </div>
   </div>
@@ -24,22 +21,20 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Sidebar from '@/components/Sidebar';
+import { action, getter } from '@/store/store.constants';
 import SelectingNavbar from '@/components/Selecting.navbar';
 import LessonCard from '@/components/Lesson.card';
-import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'All.lessons',
   components: {
-    Sidebar,
     SelectingNavbar,
-    LessonCard
+    LessonCard,
   },
   computed: {
     ...mapGetters({
-      lessonData: getter.LESSON_DATA
-    })
+      lessonData: getter.LESSON_DATA,
+    }),
   },
   methods: {
     ...mapActions([action.GET_LESSONS]),
@@ -51,27 +46,16 @@ export default {
 </script>
 
 <style scoped>
-.container, .main-container, .cards-container {
+.main-container, .cards-container {
   display: flex;
   justify-content: flex-start;
   align-content: flex-start;
   width: 100%;
   max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  height: 100vh;
-  flex-direction: row;
 }
 
 .main-container {
   flex-direction: column;
-}
-
-.sidebar {
-  width: 20%;
 }
 
 .cards-container {
