@@ -1,57 +1,27 @@
 <template>
-  <v-navigation-drawer permanent>
-    <v-divider></v-divider>
-    <v-list dense class="pt-0">
-      <v-list-tile
-          class="list"
-          v-for="item in items"
-          :key="item.title"
-          @click="$router.push({name: item.route})"
-          v-show="item.show"
-      >
-        <v-list-tile-action>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-action>
-
-        <v-list-tile-content>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-list>
-  </v-navigation-drawer>
+  <div class="container pa-0 ma-0">
+    <sidebar-account/>
+    <sidebar-navigation/>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getter } from '@/store/store.constants';
+import SidebarAccount from '@/components/Sidebar.account';
+import SidebarNavigation from '@/components/Sidebar.navigation';
 
 export default {
   name: 'Sidebar',
-  data () {
-    return {
-      right: null
-    }
+  components: {
+    SidebarAccount,
+    SidebarNavigation,
   },
-  computed: {
-    ...mapGetters([getter.USER_DATA]),
-    adminProtected() {
-      return this[getter.USER_DATA] && this[getter.USER_DATA].isAdmin;
-    },
-    items() {
-      return [
-          { title: 'Home', icon: 'home', route: 'home', show: true },
-          { title: 'Lessons', icon: 'home', route: 'lessons', show: true },
-          { title: 'Courses', icon: 'home', route: '', show: true },
-          { title: 'Challenges', icon: 'home', route: '', show: true },
-          { title: 'Admin Panel', icon: 'home', route: 'administrator', show: this.adminProtected }
-        ]
-    }
-  }
 }
 </script>
 
 <style scoped>
-.list:hover {
-  background-color: #f5f5f5;
+.container {
+  width: 100%;
+  height: 62vh;
 }
+
 </style>
