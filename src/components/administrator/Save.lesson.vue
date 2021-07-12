@@ -164,7 +164,7 @@ export default {
   methods: {
     ...mapActions([
         action.MESSAGE_PROMPT, action.CREATE_LESSON, action.UPDATE_LESSON, action.GET_LESSON, action.GET_LESSONS,
-        action.CREATE_TASK_LESSON, action.UPDATE_TASK_LESSON, action.GET_TASK_LESSON_ID,
+        action.CREATE_TASK_LESSON, action.UPDATE_TASK_LESSON, action.GET_TASK_LESSON_ID, action.GET_COURSE_ID,
     ]),
     async save() {
       this.$v.$touch();
@@ -181,7 +181,7 @@ export default {
         description: this.description,
         listOfTasks: this.listOfTasks.split(','),
         difficulty: this.difficulty,
-        courseID: +this.courseID
+        courses: +this.courseID
       };
       if (!this.isEdit) {
         const success = await this[action.CREATE_LESSON](lessonPayload);
@@ -251,8 +251,9 @@ export default {
   },
   async mounted() {
     if (this.isEdit) {
-      const data = await this[action.GET_LESSON](this.$route.params.lessonID);
-      this.setLessonData(data);
+      const lesson = await this[action.GET_LESSON](this.$route.params.lessonID);
+      const courseID = await this[action.GET_COURSE_ID](this.$route.params.lessonID);
+      this.setLessonData({ ...lesson, courseID});
     }
   },
   validations: {

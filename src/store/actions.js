@@ -203,6 +203,17 @@ export default {
       });
     }
   },
+  [action.GET_COURSE_ID]: async ({dispatch, state}, lessonID) => {
+    try {
+      return await HttpServer.get(`/lessons/courseID/${lessonID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
   [action.DELETE_LESSON]: async ({dispatch, state}, lessonID) => {
     try {
       await HttpServer.delete(`/lessons/${lessonID}`, {token: state.token});
