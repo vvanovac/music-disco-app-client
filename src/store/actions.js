@@ -355,5 +355,83 @@ export default {
         validity: messageValidity.ERROR
       });
     }
-  }
+  },
+  [action.CREATE_COURSE]: async ({dispatch, state}, payload) => {
+    try {
+      await HttpServer.post('/courses', {token: state.token}, payload);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_CREATED,
+        validity: messageValidity.SUCCESS
+      });
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_CREATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_COURSES]: async ({dispatch, commit, state}, forceFetch) => {
+    try {
+      if (!state.courseData || forceFetch) {
+        const data = await HttpServer.get('/courses', {token: state.token});
+        state.courseDataLength = data.length;
+        commit(mutation.STORE_COURSE_DATA, data);
+      }
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.GET_COURSE]: async ({dispatch, state}, courseID) => {
+    try {
+      if (state.courseData && state.courseData.length > 0) {
+        return state.courseData.find((course) => course.id === courseID);
+      }
+      return await HttpServer.get(`/courses/${courseID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.UPDATE_COURSE]: async ({dispatch, state}, payload) => {
+    try {
+      const {courseID, ...rest} = payload;
+      await HttpServer.put(`/courses/${courseID}`, {token: state.token}, rest);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_UPDATED,
+        validity: messageValidity.SUCCESS
+      });
+      return true;
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_UPDATING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
+  [action.DELETE_COURSE]: async ({dispatch, state}, courseID) => {
+    try {
+      await HttpServer.delete(`/courses/${courseID}`, {token: state.token});
+      dispatch(action.GET_COURSES, true);
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_DELETED,
+        validity: messageValidity.SUCCESS
+      });
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.COURSE_DELETING_FAILED,
+        text: error.message,
+        validity: messageValidity.ERROR
+      })
+    }
+  },
 };

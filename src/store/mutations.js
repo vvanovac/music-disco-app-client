@@ -45,4 +45,7 @@ export default {
   [mutation.STORE_TASK_PROGRESS_DATA]: (state, payload) => {
     state.taskProgressData = payload;
   },
+  [mutation.STORE_COURSE_DATA]: (state, payload) => {
+    state.courseData = payload;
+  },
 };

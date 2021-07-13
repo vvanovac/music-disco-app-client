@@ -19,4 +19,6 @@ export default {
   lessonData: null,
   lessonDataLength: 0,
   taskProgressData: [],
+  courseData: null,
+  courseDataLength: 0,
 };
