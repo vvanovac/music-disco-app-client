@@ -21,6 +21,12 @@ const messageHeader = {
   LESSON_DELETING_FAILED: 'Lesson successfully deleted.',
   LESSON_DELETED: 'Deletion error.',
   STARTING_ERROR: 'Error during starting lesson.',
+  COURSE_CREATING_FAILED: 'Course creating failed.',
+  COURSE_CREATED: 'Course successfully created.',
+  COURSE_UPDATING_FAILED: 'Course updating failed.',
+  COURSE_UPDATED: 'Course successfully updated.',
+  COURSE_DELETING_FAILED: 'Course successfully deleted.',
+  COURSE_DELETED: 'Deletion error.',
 };
 
 const messageText = {
@@ -67,11 +73,19 @@ const lessonMessages = {
   COURSE_ID_REQUIRED: 'Course ID is required.',
 }
 
+const courseMessages = {
+  SHORT_TITLE: 'Title must be at least 8 characters long.',
+  TITLE_REQUIRED: 'Title is required.',
+  SHORT_DESCRIPTION: 'Description must be at least 16 characters long.',
+  DESCRIPTION_REQUIRED: 'Description is required.',
+}
+
 export {
   messageHeader,
   messageText,
   messageValidity,
   userMessages,
   taskMessages,
-  lessonMessages
+  lessonMessages,
+  courseMessages,
 }

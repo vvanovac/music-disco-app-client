@@ -8,6 +8,7 @@ import Task from '@/pages/Single.task';
 import Lessons from '@/pages/Lessons';
 import AllLessons from '@/pages/All.lessons';
 import Lesson from '@/pages/Single.lesson';
+import Courses from '@/pages/Courses';
 import { action, getter } from '@/store/store.constants';
 import { messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
@@ -23,6 +24,8 @@ const routes = [
   { name: 'updateLessons', component: Lessons, path: '/administrator/lessons/:lessonID' },
   { name: 'lessons', component: AllLessons, path: '/lessons' },
   { name: 'lesson', component: Lesson, path: '/lessons/:lessonID' },
+  { name: 'createCourses', component: Courses, path: '/administrator/courses' },
+  { name: 'updateCourses', component: Courses, path: '/administrator/courses/:courseID' },
 ];
 
 const router = (store) => {
