@@ -3,7 +3,12 @@
     <v-dialog v-model="showDialog" persistent max-width="290">
       <v-card>
         <v-card-title class="headline">Confirm Deletion</v-card-title>
-        <v-card-text class="text-xs-left">Are you sure you want to delete <strong>{{ title }}</strong>?</v-card-text>
+        <v-card-text class="text-xs-left">
+          <span v-show="attentionDelete">
+            <strong>Attention!</strong> All the lessons inside this course will be deleted.<br><br>
+          </span>
+          Are you sure you want to delete <strong>{{ title }}</strong>?
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -30,13 +35,17 @@
 
 <script>
 export default {
-  name: "Delete.dialog",
+  name: 'Delete.dialog',
   props: {
     title: {
       type: String,
       required: false
     },
     showDialog: {
+      type: Boolean,
+      required: true
+    },
+    attentionDelete: {
       type: Boolean,
       required: true
     }

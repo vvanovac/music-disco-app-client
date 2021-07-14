@@ -29,6 +29,7 @@
     <delete-dialog
       :title="deletingLesson.title"
       :show-dialog="showDialog"
+      :attention-delete="false"
       @cancel="toggleDeleteDialog(false)"
       @confirm="confirmDeleting(deletingLesson.lessonID)"
     />
@@ -36,9 +37,9 @@
 </template>
 
 <script>
-import DeleteDialog from '@/components/administrator/Delete.dialog';
 import { mapActions, mapGetters } from 'vuex';
 import { action, getter } from '@/store/store.constants';
+import DeleteDialog from '@/components/administrator/Delete.dialog';
 
 export default {
   name: 'Lessons.tab.item',
