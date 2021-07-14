@@ -422,6 +422,7 @@ export default {
     try {
       await HttpServer.delete(`/courses/${courseID}`, {token: state.token});
       dispatch(action.GET_COURSES, true);
+      dispatch(action.GET_LESSONS, true);
       dispatch(action.MESSAGE_PROMPT, {
         header: messageHeader.COURSE_DELETED,
         validity: messageValidity.SUCCESS

@@ -52,6 +52,7 @@ export default {
     ...mapGetters({
       taskDataLength: getter.TASK_DATA_LENGTH,
       lessonDataLength: getter.LESSON_DATA_LENGTH,
+      courseDataLength: getter.COURSE_DATA_LENGTH,
       page: getter.PAGINATION_PAGE,
       dataPerPage: getter.DATA_PER_PAGE,
       numberOfRows: getter.NUMBER_OF_ROWS,
@@ -65,6 +66,8 @@ export default {
         return this.taskDataLength;
       } else if (this.dataset === 'lessons') {
         return this.lessonDataLength;
+      } else if (this.dataset === 'courses') {
+        return this.courseDataLength;
       } else {
         return null;
       }

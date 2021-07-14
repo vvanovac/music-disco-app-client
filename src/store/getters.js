@@ -32,4 +32,6 @@ export default {
   [getter.LESSON_DATA]: state => DataSort(state.lessonData, state.sortCriteria),
   [getter.LESSON_DATA_LENGTH]: state => state.lessonDataLength,
   [getter.GET_TASK_PROGRESS_DATA]: state => state.taskProgressData,
+  [getter.COURSE_DATA]: state => DataSort(state.courseData, state.sortCriteria),
+  [getter.COURSE_DATA_LENGTH]: state => state.courseDataLength,
 };
