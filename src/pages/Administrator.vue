@@ -19,15 +19,17 @@
 <script>
 import Tasks from '@/components/administrator/Tasks.tab'
 import Lessons from '@/components/administrator/Lessons.tab'
+import Courses from '@/components/administrator/Courses.tab';
 
 export default {
   name: 'Administrator',
   components: {
     Tasks,
-    Lessons
+    Lessons,
+    Courses,
   },
   data() {
-    const tabs = ['Tasks', 'Lessons'];
+    const tabs = ['Tasks', 'Lessons', 'Courses'];
     return {
       currentTab: tabs[0],
       tabs
