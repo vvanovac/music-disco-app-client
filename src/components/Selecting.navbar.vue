@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="container">
-      <h4 class="display-1">Lessons</h4>
+      <div>
+        <v-icon>{{ icon }}</v-icon>
+        <span class="page-header display-1"> {{ page }}</span>
+      </div>
       <div class="select-wrapper">
         <v-select
             :items="dataset"
@@ -16,12 +19,32 @@
 <script>
 export default {
   name: 'Selecting.navbar',
+  props: {
+    page: {
+      type: String,
+      required: true,
+    }
+  },
   data() {
     return {
       groupBy: '',
       dataset: [],
+      icon: '',
     }
   },
+  methods: {
+    determineIcon() {
+      if (this.page === 'lessons') {
+        this.icon = 'music_note';
+      }
+      if (this.page === 'courses') {
+        this.icon = 'school';
+      }
+    },
+  },
+  created() {
+    this.determineIcon();
+  }
 }
 </script>
 
@@ -33,6 +56,10 @@ export default {
   align-content: flex-end;
   padding: 30px 0 5px 0;
   margin: 0 0 0 6.16%;
+}
+
+.page-header {
+  text-transform: capitalize;
 }
 
 .select-wrapper {

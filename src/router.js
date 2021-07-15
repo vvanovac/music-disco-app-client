@@ -9,6 +9,7 @@ import Lessons from '@/pages/Lessons';
 import AllLessons from '@/pages/All.lessons';
 import Lesson from '@/pages/Single.lesson';
 import Courses from '@/pages/Courses';
+import AllCourses from '@/pages/All.courses';
 import { action, getter } from '@/store/store.constants';
 import { messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
@@ -26,6 +27,7 @@ const routes = [
   { name: 'lesson', component: Lesson, path: '/lessons/:lessonID' },
   { name: 'createCourses', component: Courses, path: '/administrator/courses' },
   { name: 'updateCourses', component: Courses, path: '/administrator/courses/:courseID' },
+  { name: 'courses', component: AllCourses, path: '/courses' },
 ];
 
 const router = (store) => {

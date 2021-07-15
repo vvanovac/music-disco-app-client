@@ -401,6 +401,17 @@ export default {
       });
     }
   },
+  [action.COUNT_LESSONS]: async ({dispatch, state}, courseID) => {
+    try {
+      return await HttpServer.get(`/courses/countLessons/${courseID}`, {token: state.token});
+    } catch (error) {
+      dispatch(action.MESSAGE_PROMPT, {
+        header: messageHeader.FETCHING_ERROR,
+        text: error.message,
+        validity: messageValidity.ERROR
+      });
+    }
+  },
   [action.UPDATE_COURSE]: async ({dispatch, state}, payload) => {
     try {
       const {courseID, ...rest} = payload;

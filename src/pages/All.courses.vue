@@ -1,20 +1,17 @@
 <template>
   <div class="pa-0 ma-0 main-container">
     <selecting-navbar
-        page="lessons"
+        page="courses"
     />
     <div class="pa-0 ma-0 cards-container">
       <div
-          v-for="(lesson, index) in lessonData"
-          :key="lesson.id"
+          v-for="course in courseData"
+          :key="course.id"
           class="cards"
       >
-        <lesson-card
-            :header="`Lesson ${index + 1}`"
-            :color-index="index"
-            :body="lesson.title"
-            :lessonID="lesson.id"
-            :number-of-tasks="lesson.listOfTasks.length"
+        <course-card
+            :courseID="course.id"
+            :title="course.title"
         />
       </div>
     </div>
@@ -25,24 +22,24 @@
 import { mapActions, mapGetters } from 'vuex';
 import { action, getter } from '@/store/store.constants';
 import SelectingNavbar from '@/components/Selecting.navbar';
-import LessonCard from '@/components/Lesson.card';
+import CourseCard from '@/components/Course.card';
 
 export default {
-  name: 'All.lessons',
+  name: 'All.courses',
   components: {
     SelectingNavbar,
-    LessonCard,
+    CourseCard,
   },
   computed: {
     ...mapGetters({
-      lessonData: getter.LESSON_DATA,
+      courseData: getter.COURSE_DATA,
     }),
   },
   methods: {
-    ...mapActions([action.GET_LESSONS]),
+    ...mapActions([action.GET_COURSES]),
   },
   created() {
-    this[action.GET_LESSONS]();
+    this[action.GET_COURSES]();
   }
 }
 </script>
@@ -61,18 +58,17 @@ export default {
 }
 
 .cards-container {
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .cards {
-  width: clamp(219px, 25%, 400px);
-  margin: 1% 6.16% 5%;
+  width: 35%;
+  margin: 5% 10%;
 }
 
-.cards:nth-child(3n+2) {
+.cards:nth-child(2n) {
   margin-left: 0;
-  margin-right: 0;
 }
 
 </style>
