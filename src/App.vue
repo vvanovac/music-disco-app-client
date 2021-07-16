@@ -49,7 +49,7 @@ export default {
       if (this.isRouteAdminProtected(this.$route.name)) {
         return 'AdministratorNavbar';
       }
-      if (this.isRouteUnprotected(this.$route.name) || this.$route.name === 'lessons') {
+      if (this.showNoNavbar(this.$route.name)) {
         return null;
       }
       return 'HomeNavbar';
@@ -65,6 +65,9 @@ export default {
     isRouteUnprotected(route) {
       return this[getter.UNPROTECTED_ROUTES].includes(route);
     },
+    showNoNavbar(route) {
+      return this.isRouteUnprotected(this.$route.name) || route === 'lessons' || route === 'courses';
+    }
   },
 }
 </script>

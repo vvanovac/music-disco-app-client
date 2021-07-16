@@ -21,16 +21,24 @@
     </div>
     <div class="container-bottom">
       <div class="user-wrapper">
-        <h3 class="pb-2">User's name</h3>
-        <h4>@username</h4>
+        <h3 class="pb-2">{{ userData && userData.username }}</h3>
+        <h4>{{ userData && userData.email }}</h4>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { getter } from '@/store/store.constants';
+
 export default {
   name: 'Sidebar.account',
+  computed: {
+    ...mapGetters({
+      userData: getter.USER_DATA,
+    }),
+  }
 }
 </script>
 

@@ -36,13 +36,17 @@ export default {
     adminProtected() {
       return this[getter.USER_DATA] && this[getter.USER_DATA].isAdmin;
     },
+    showLogOut() {
+      return !(this.$route.name === 'home');
+    },
     items() {
       return [
         { title: 'Home', icon: 'home', route: 'home', show: true },
         { title: 'Lessons', icon: 'music_note', route: 'lessons', show: true },
-        { title: 'Courses', icon: 'school', route: '', show: true },
+        { title: 'Courses', icon: 'school', route: 'courses', show: true },
         { title: 'Challenges', icon: 'emoji_events', route: '', show: true },
         { title: 'Admin Panel', icon: 'manage_accounts', route: 'administrator', show: this.adminProtected },
+        { title: 'Log Out', icon: 'logout', route: 'login', show: this.showLogOut },
       ]
     },
   }

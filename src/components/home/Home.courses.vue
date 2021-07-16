@@ -12,6 +12,17 @@
               <p>No courses yet.</p>
             </div>
           </v-card-title>
+
+          <v-card-actions>
+            <v-btn
+                flat
+                color="gray"
+                class="show-more-button"
+                @click="$router.push({name: 'courses'})"
+            >
+              show more
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -28,6 +39,10 @@ export default {
 .headline {
   padding: 0 15px 25px;
   text-align: left;
+}
+
+.show-more-button {
+  padding-left: 24px;
 }
 
 </style>
