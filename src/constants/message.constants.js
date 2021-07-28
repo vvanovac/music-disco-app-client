@@ -78,6 +78,7 @@ const courseMessages = {
   TITLE_REQUIRED: 'Title is required.',
   SHORT_DESCRIPTION: 'Description must be at least 16 characters long.',
   DESCRIPTION_REQUIRED: 'Description is required.',
+  INSTRUMENT_REQUIRED: 'Instrument is required.',
 }
 
 export {

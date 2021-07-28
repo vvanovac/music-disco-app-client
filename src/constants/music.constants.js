@@ -44,9 +44,14 @@ const difficulties = {
   MEDIUM: 'medium',
 }
 
+const instruments = {
+  PIANO: 'piano',
+}
+
 export {
   musicNote,
   pianoKeys,
   octaves,
-  difficulties
+  difficulties,
+  instruments,
 }

@@ -17,6 +17,14 @@
             label="Description"
             required
         ></v-text-field>
+        <v-select
+            :value="instrumentValue"
+            :error-messages="instrumentErrors"
+            :items="instruments"
+            label="Instrument"
+            required
+            @input="setInstrumentValue"
+        ></v-select>
         <v-btn
             class="save-buttons"
             :round="true"
@@ -41,8 +49,8 @@
 <script>
 import { validationMixin } from 'vuelidate/src';
 import { required, minLength } from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
-import { action } from '@/store/store.constants';
+import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
 import { courseMessages, messageHeader, messageText, messageValidity } from '@/constants/message.constants';
 
 export default {
@@ -53,11 +61,15 @@ export default {
       courseID,
       title: '',
       description: '',
+      instrument: '',
       isEdit: Number.isFinite(+courseID)
     }
   },
   mixins: [validationMixin],
   computed: {
+    ...mapGetters({
+      instruments: getter.GET_INSTRUMENTS,
+    }),
     titleErrors() {
       const errors = [];
       if (!this.$v.title.$dirty) {
@@ -84,6 +96,16 @@ export default {
       }
       return errors;
     },
+    instrumentErrors() {
+      const errors = [];
+      if (!this.$v.instrument.$dirty) {
+        return errors;
+      }
+      if (!this.$v.description.required) {
+        errors.push(courseMessages.INSTRUMENT_REQUIRED);
+      }
+      return errors;
+    },
     determineAction() {
       if (!this.isEdit) {
         return 'create';
@@ -92,12 +114,15 @@ export default {
     },
     disableSaveButton() {
       if (!this.isEdit) {
-        return this.title === '' || this.description === '';
+        return this.title === '' || this.description === '' || this.instrument === '';
       }
       return this.disableClearButton;
     },
     disableClearButton() {
-      return this.title === '' && this.description === '';
+      return this.title === '' && this.description === '' && this.instrument === '';
+    },
+    instrumentValue() {
+      return this.instrument;
     }
   },
   methods: {
@@ -116,6 +141,7 @@ export default {
       const payload = {
         title: this.title,
         description: this.description,
+        instrument: this.instrument,
       };
       if (!this.isEdit) {
         const success = await this[action.CREATE_COURSE](payload);
@@ -147,7 +173,11 @@ export default {
     setCourseData(data = {}) {
       this.title = data.title || '';
       this.description = data.description || '';
-    }
+      this.instrument = data.instrument || '';
+    },
+    setInstrumentValue(instrumentValue) {
+      this.instrument = instrumentValue;
+    },
   },
   async mounted() {
     if (this.isEdit) {
@@ -158,6 +188,7 @@ export default {
   validations: {
     title: { required, minLength: minLength(8) },
     description: { required, minLength: minLength(16) },
+    instrument: { required },
   }
 }
 </script>

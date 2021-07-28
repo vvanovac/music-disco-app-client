@@ -1,5 +1,5 @@
 import TokenService from '../services/token.service';
-import { difficulties, musicNote, octaves } from '@/constants/music.constants';
+import { difficulties, instruments, musicNote, octaves } from '@/constants/music.constants';
 
 export default {
   token: TokenService.get(),
@@ -21,4 +21,5 @@ export default {
   taskProgressData: [],
   courseData: null,
   courseDataLength: 0,
+  instruments: [instruments.PIANO],
 };

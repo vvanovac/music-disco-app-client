@@ -45,6 +45,7 @@ export default {
 <style scoped>
 .wrapper {
   width: 100%;
+  border-right: 1px solid lightgray;
 }
 
 .container-top {
@@ -60,7 +61,7 @@ export default {
 .container-middle {
   height: 100px;
   width: 100%;
-  margin-top: 150px;
+  margin-top: 154px;
   position: absolute;
   z-index: 1;
   display: flex;
