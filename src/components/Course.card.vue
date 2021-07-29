@@ -4,17 +4,30 @@
     <div class="pa-0 ma-0 main-container">
       <p class="heading">Keyboard instruments</p>
       <p class="heading course-heading">{{ title }}</p>
-      <p class="lessons-number">{{ numberOfLessons }}
-        <span v-if="showLessonsLabel">lessons</span>
-        <span v-if="!showLessonsLabel">lesson</span>
-      </p>
+      <div class="buttons">
+        <v-btn
+            class="redirect-button"
+            :round="true"
+            v-show="showUpdateButton"
+            @click="updateRedirect"
+        >
+          Update
+        </v-btn>
+        <v-btn
+            class="redirect-button"
+            :round="true"
+            @click="lessonsRedirect"
+        >
+          {{ lessonsButton }}
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { action } from '@/store/store.constants';
+import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
 
 export default {
   name: 'Course.card',
@@ -34,12 +47,24 @@ export default {
     }
   },
   computed: {
-    showLessonsLabel() {
-      return this.numberOfLessons > 1;
-    }
+    ...mapGetters({
+      userData: getter.USER_DATA,
+    }),
+    showUpdateButton() {
+      return this.userData.isAdmin;
+    },
+    lessonsButton() {
+      return this.numberOfLessons + (this.numberOfLessons > 1 ? ' lessons' : ' lesson' );
+    },
   },
   methods: {
     ...mapActions([action.COUNT_LESSONS]),
+    updateRedirect() {
+      this.$router.push({ name: 'updateCourses', params: { courseID: this.courseID }});
+    },
+    lessonsRedirect() {
+      this.$router.push({ name: 'lessons' });
+    },
   },
   async created() {
     this.numberOfLessons = await this[action.COUNT_LESSONS](this.courseID);
@@ -60,14 +85,14 @@ export default {
 }
 
 .img-container {
-  background-color: #E0E0E0;
+  background-color: whitesmoke;
   width: 30%;
   height: 100%;
   border-radius: 5px 0 0 5px;
 }
 
 .main-container {
-  background-color: whitesmoke;
+  background-color: white;
   width: 70%;
   height: 100%;
   border-left: 1px solid gray;
@@ -76,7 +101,7 @@ export default {
 
 .heading {
   text-align: left;
-  margin: 35px 20px 0;
+  margin: 25px 20px 0;
   color: #2c3e50;
   font-weight: lighter;
   font-size: 1.15em;
@@ -88,9 +113,12 @@ export default {
   font-size: 1.25em;
 }
 
-.lessons-number {
+.buttons {
   float: right;
-  margin: 25px 20px 0 0;
+  margin: 15px 10px 0 0;
+}
+
+.redirect-button {
   font-size: 1.1em;
 }
 

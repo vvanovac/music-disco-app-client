@@ -29,6 +29,7 @@
             <v-btn
                 flat
                 color="gray"
+                :round="true"
                 class="show-more-button"
                 @click="$router.push({name: 'lessons'})"
             >
@@ -63,7 +64,7 @@ export default {
 }
 
 .show-more-button {
-  padding-left: 24px;
+  margin-left: 10px;
 }
 
 </style>
