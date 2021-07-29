@@ -1,7 +1,9 @@
 <template>
   <div class="pa-0 ma-0 main-container">
     <selecting-navbar
-        page="lessons"
+        :page-lessons="true"
+        :page-courses="false"
+        :sort-by="['title']"
     />
     <div class="pa-0 ma-0 cards-container">
       <div

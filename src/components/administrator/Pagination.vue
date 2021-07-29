@@ -93,6 +93,9 @@ export default {
     setSortCriteria(criteria) {
       this[action.SET_SORT_CRITERIA](criteria)
     }
+  },
+  destroyed() {
+    this[action.SET_SORT_CRITERIA]('id');
   }
 }
 </script>

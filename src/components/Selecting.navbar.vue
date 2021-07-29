@@ -3,13 +3,16 @@
     <div class="container">
       <div>
         <v-icon>{{ icon }}</v-icon>
-        <span class="page-header display-1"> {{ page }}</span>
+        <span class="page-header display-1"> {{ header }}</span>
       </div>
       <div class="select-wrapper">
         <v-select
-            :items="dataset"
-            :label="`Group by ${groupBy}`"
+            v-if="showSortBy"
+            :value="criteriaValue"
+            :items="sortBy"
+            label="Sort by"
             solo
+            @input="setSortCriteria"
         ></v-select>
       </div>
     </div>
@@ -17,33 +20,64 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import { action, getter } from '@/store/store.constants';
+
 export default {
   name: 'Selecting.navbar',
   props: {
-    page: {
-      type: String,
+    pageLessons: {
+      type: Boolean,
       required: true,
-    }
+    },
+    pageCourses: {
+      type: Boolean,
+      required: true,
+    },
+    sortBy: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
   },
   data() {
     return {
-      groupBy: '',
-      dataset: [],
+      header: '',
       icon: '',
     }
   },
+  computed: {
+    ...mapGetters({
+      criteria: getter.SORT_CRITERIA,
+    }),
+    showSortBy() {
+      return this.sortBy.length > 0;
+    },
+    criteriaValue() {
+      return this.criteria;
+    }
+  },
   methods: {
-    determineIcon() {
-      if (this.page === 'lessons') {
+    ...mapActions([action.SET_SORT_CRITERIA]),
+    setHeader() {
+      if (this.pageLessons) {
+        this.header = 'Lessons';
         this.icon = 'music_note';
       }
-      if (this.page === 'courses') {
+      if (this.pageCourses) {
+        this.header = 'Courses';
         this.icon = 'school';
       }
     },
+    setSortCriteria(criteria) {
+      this[action.SET_SORT_CRITERIA](criteria);
+    },
   },
   created() {
-    this.determineIcon();
+    this.setHeader();
+  },
+  destroyed() {
+    this[action.SET_SORT_CRITERIA]('id');
   }
 }
 </script>
@@ -64,6 +98,7 @@ export default {
 
 .select-wrapper {
   width: 25%;
-  margin-right: 15%;
+  margin-right: 10%;
 }
+
 </style>
